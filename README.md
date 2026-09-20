@@ -1,26 +1,23 @@
 # berty-run
 
-**Product:** Pipe Draft (working title) · **Repo:** `berty-run`
-**Mascot:** Berty · **Class:** Solvay Middle School Technology Education
+**Product (working):** Pipe Draft · **Mascot:** Berty  
+Solvay Middle School Technology Education — **idea list / repo placeholder only.**
 
-Chromebook-first **2D** marble-tunnel strategy game: steer through pipes, grab every gem, exit. Map knowledge beats twitch spam. No student accounts; no names in saves (Ed Law 2-d / FERPA).
+## HOLD BUILD
 
-## Classroom URL (planned)
+Diego: list item only — **do not build** (no MVP, no engine, no deploy of a game) until he says GO.
 
-**https://apps.kulibert.net/berty-run/**
+Tech Room tile (planned): `https://apps.kulibert.net/berty-run/`  
+School DNS: `*.kulibert.net` only (never `vercel.app` for classroom links).
 
-School DNS lock — ship under `*.kulibert.net`, never `vercel.app` for classroom links.
+## Briefs (shared box)
 
-## Crew briefs (source of truth lives in shared box)
-
-- Feature brief: `shared/tekdash/crew-reports/FEATUREBOT-PIPE-DRAFT.md`
+- Feature: `shared/tekdash/crew-reports/FEATUREBOT-PIPE-DRAFT.md`
 - Mock: `shared/tekdash/visual-eval/featurebot-pipe-draft-mock.png`
 - Brochure: `shared/tekdash/brochure/PIPE-DRAFT-SALES-BROCHURE.pdf`
 
-## Stack (stub)
+## Idea list (not scheduled)
 
-Vanilla HTML/CSS/JS or light Vite — mid/low Chromebook safe. Fat targets · keyboard + on-screen pad · results on screen (not sound-only). Berty family chrome via StyleBot later.
-
-## Status
-
-Scaffold only. Game loop not built yet. Build owns wire when Flo pulls.
+- Chromebook 2D marble-tunnel: steer · grab gems · exit (strategy over twitch)
+- **2-player team mode** so kids can team
+- No student accounts / no names in saves (Ed Law 2-d / FERPA)
