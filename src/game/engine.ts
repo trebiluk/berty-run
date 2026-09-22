@@ -16,9 +16,11 @@ import { makePack, parsePack, type BertyPack } from "./techworks";
 import type { Course, CourseId, HudSnap, Seg } from "./types";
 
 const STEP = 1 / 60;
-const GRAVITY = 2100;
-const JUMP = -820;
-const HOLD_GRAVITY = 1280;
+const GRAVITY = 2400;
+const JUMP = -780;
+const HOLD_GRAVITY = 1600;
+const HOLD_BOOST_WINDOW = 0.2;
+const MAX_FALL_SPEED = 1400;
 const RUN_MIN = 360;
 const RUN_MAX = 500;
 const RUN_RAMP = 8;
@@ -214,6 +216,7 @@ type Player = {
   squash: number;
   frame: number;
   anim: number;
+  jumpHold: number;
 };
 
 export class Engine {
@@ -259,6 +262,7 @@ export class Engine {
   speed = RUN_MIN;
   deadT = 0;
   hudAcc = 0;
+  closeArmed = new Set<string>();
 
   constructor(canvas: HTMLCanvasElement, canvas3d: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
     this.canvas = canvas;
@@ -454,6 +458,7 @@ export class Engine {
     this.lastEarn = 0;
     this.deadT = 0;
     this.hudAcc = 0;
+    this.closeArmed = new Set();
     this.jumpHeld = false;
     this.jumpQueued = false;
     this.cam.x = 0;
@@ -478,6 +483,7 @@ export class Engine {
       squash: 1,
       frame: 0,
       anim: 0,
+      jumpHold: 0,
     };
   }
 
@@ -534,15 +540,20 @@ export class Engine {
       p.onGround = false;
       p.coyote = 0;
       p.buffer = 0;
+      p.jumpHold = 0;
       this.jumpQueued = false;
       p.squash = 0.82;
       sfxJump();
     }
     this.jumpQueued = false;
 
-    const g = p.holding && p.vy < 0 ? HOLD_GRAVITY : GRAVITY;
+    if (p.onGround) p.jumpHold = 0;
+    else p.jumpHold += dt;
+    const boosting = !p.onGround && p.vy < 0 && p.holding && p.jumpHold < HOLD_BOOST_WINDOW;
+    const g = boosting ? HOLD_GRAVITY : GRAVITY;
     p.vy += g * dt;
-    if (!p.holding && p.vy < -120) p.vy *= 0.92;
+    if (!p.holding && p.vy < -80) p.vy = Math.max(p.vy, p.vy * 0.55);
+    p.vy = clamp(p.vy, JUMP * 1.15, MAX_FALL_SPEED);
 
     p.x += p.vx * dt;
     p.y += p.vy * dt;
@@ -553,6 +564,7 @@ export class Engine {
     if (p.y > VIEW_H + 80) this.kill();
 
     this.pickups(p);
+    this.nearMiss(p);
     this.hazards(p);
     this.checkWin(p);
 
@@ -617,6 +629,32 @@ export class Engine {
         this.speed = Math.min(RUN_MAX + 40, this.speed + 70);
         sfxBoost();
         this.burst(b.x + b.w / 2, b.y, "#22D3EE", 10);
+      }
+    }
+  }
+
+  private nearMiss(p: Player) {
+    const cx = p.x + p.w / 2;
+    for (let i = 0; i < this.crates.length; i++) {
+      const cr = this.crates[i];
+      const id = `c${i}`;
+      if (this.closeArmed.has(id)) continue;
+      if (Math.abs(cx - (cr.x + cr.w / 2)) > 12) continue;
+      const gap = cr.y - (p.y + p.h);
+      if (gap > 0 && gap <= 14) {
+        this.closeArmed.add(id);
+        this.pops.push({ x: cr.x + cr.w / 2, y: cr.y - 8, life: 0.4, max: 0.4, label: "close" });
+      }
+    }
+    for (let i = 0; i < this.saws.length; i++) {
+      const s = this.saws[i];
+      const id = `s${i}`;
+      if (this.closeArmed.has(id)) continue;
+      if (Math.abs(cx - s.x) > 14) continue;
+      const gap = s.y - s.r - (p.y + p.h);
+      if (gap > 0 && gap <= 14) {
+        this.closeArmed.add(id);
+        this.pops.push({ x: s.x, y: s.y - s.r - 8, life: 0.4, max: 0.4, label: "close" });
       }
     }
   }
@@ -860,9 +898,6 @@ export class Engine {
     else {
       ctx.fillStyle = "#1A5C3A";
       ctx.fillRect(this.exit.x, this.exit.y, this.exit.w, this.exit.h);
-      ctx.fillStyle = "#F8FAFC";
-      ctx.font = "bold 14px Outfit, sans-serif";
-      ctx.fillText("GATE", this.exit.x + 18, this.exit.y + 36);
     }
   }
 
