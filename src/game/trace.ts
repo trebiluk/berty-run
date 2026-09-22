@@ -444,7 +444,7 @@ export function stepRun(run: Run, dt: number, input: TickInput): Run {
   }
 
   const upcoming = BEATS.find((b) => p.x < b.x + b.w && p.x > b.cueFrom - 300);
-  next.hot = !!upcoming && p.x >= upcoming.cueFrom && p.x <= upcoming.cueTo;
+  next.hot = !!upcoming && inTap(upcoming, p.x);
 
   if (fate === "dead") {
     next.phase = "fail";
@@ -466,13 +466,19 @@ export function stepRun(run: Run, dt: number, input: TickInput): Run {
   return next;
 }
 
+function inTap(b: Beat, x: number) {
+  if (b.hasGem) return x >= b.gemFrom && x <= b.gemTo;
+  const mid = (b.cueFrom + b.cueTo) / 2;
+  return x >= mid - 48 && x <= mid + 48;
+}
+
 export function glowFor(run: Run) {
   if (run.phase !== "play") return null;
   const b = BEATS.find((beat) => run.p.x > beat.cueFrom - 280 && run.p.x < beat.x + beat.w + 20);
   if (!b) return null;
   const span = Math.max(1, b.cueTo - (b.cueFrom - 280));
   const k = Math.min(1, Math.max(0, (run.p.x - (b.cueFrom - 280)) / span));
-  return { beat: b, hot: run.p.x >= b.cueFrom && run.p.x <= b.cueTo, k };
+  return { beat: b, hot: inTap(b, run.p.x), k };
 }
 
 export function gemCount(run: Run) {
