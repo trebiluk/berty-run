@@ -300,9 +300,6 @@ export function GameShell() {
                   <Button className="min-h-14 min-w-[12rem] text-base" onClick={() => e?.retry()}>
                     Run again
                   </Button>
-                  <Button variant="navy" onClick={() => nextCourse(hud.courseId, e)}>
-                    Next trace
-                  </Button>
                   <Button
                     variant="ghost"
                     onClick={() => {
@@ -338,13 +335,6 @@ export function GameShell() {
       ) : null}
     </main>
   );
-}
-
-function nextCourse(id: CourseId, e: Engine | null) {
-  const i = COURSES.findIndex((c) => c.id === id);
-  const n = COURSES[(i + 1) % COURSES.length];
-  e?.selectCourse(n.id);
-  e?.startPlay();
 }
 
 function IconBtn({
@@ -392,7 +382,7 @@ function TitleCard({
   onShop: () => void;
   onJob: () => void;
 }) {
-  const list = COURSES;
+  const list = COURSES.filter((c) => c.id === "roll-out");
   return (
     <div className="flex flex-col gap-4">
       <div
@@ -435,7 +425,7 @@ function TitleCard({
           );
         })}
         <span className="ml-1 text-[10px] font-semibold uppercase tracking-wider text-muted">
-          {hud.stamps}/{COURSES.length} stamped
+          {hud.stamps}/1 stamped
         </span>
       </div>
       {how ? (

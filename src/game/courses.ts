@@ -1,6 +1,7 @@
 import type { Course, CourseId, Seg } from "./types";
 
 export const TILE = 48;
+export const L1_ID: CourseId = "roll-out";
 
 function track(segs: Seg[]): Seg[] {
   return segs;
@@ -385,6 +386,7 @@ export const COURSES: Course[] = [
 ];
 
 export function courseById(id: CourseId): Course {
+  if (id !== L1_ID) return COURSES[0];
   const found = COURSES.find((c) => c.id === id);
   if (!found) throw new Error(`Unknown course ${id}`);
   return found;

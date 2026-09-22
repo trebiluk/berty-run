@@ -22,6 +22,8 @@ Proof: `shared/tekdash/crew-reports/REPOSCOUT-BERTY-RUN-2026-09-22.md`
 
 Finite course (not endless). Gate at the end. Three hearts. Official shop-robot sprites.
 
+**L1 lock:** First Trace only. Do not invent later heats as playable. Other course ids stay in data for later; picker + `courseById` force `roll-out`.
+
 ## Later (not this cut)
 
 | Kit game | Heat |
