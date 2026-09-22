@@ -60,7 +60,7 @@ export function JobPacket({
       )}
       <div className="flex flex-wrap gap-2">
         <Button onClick={onPlay}>
-          <ClipboardList className="size-4" /> Play Roll Out
+          <ClipboardList className="size-4" /> Play First Trace
         </Button>
         <Button variant="navy" onClick={onLab}>
           Build Lab

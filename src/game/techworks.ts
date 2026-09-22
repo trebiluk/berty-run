@@ -33,8 +33,8 @@ export const MST5_STATEMENT =
 
 export const MST_TAGS = [
   { code: "CT", name: "Computer technology", body: "Computers as tools for design, modeling, and control. This lab is a model of a real machine." },
-  { code: "TS", name: "Technological systems", body: "Input, process, output. Bits in, traces, port out. Subsystems plug the board." },
-  { code: "ED", name: "Engineering design", body: "Plan a lean, test, change one thing, test again. Ghosts are recorded procedures." },
+  { code: "TS", name: "Technological systems", body: "Input, process, output. Bits in, traces, gate out. Subsystems plug the board." },
+  { code: "ED", name: "Engineering design", body: "Plan a jump, test, change one thing, test again. Ghosts are recorded procedures." },
   { code: "TR", name: "Tools, resources, processes", body: "Choose the right part. Power, cooling, and storage change energy and information into a working system." },
   { code: "IT", name: "Impacts of technology", body: "No names on a network. Phishing is a fake ask. Design can protect people." },
 ] as const;
@@ -85,8 +85,8 @@ export const HOUR = {
   say: "You are inside the computer. Bits in. Gate out.",
   beats: [
     { id: "enter", name: "Enter", body: "Sit. Open Berty's Run from the Tech Room." },
-    { id: "listen", name: "Listen", body: "Bits, traces, port. You are inside the machine." },
-    { id: "crew", name: "Crew work", body: "Run Roll Out. Stamp Bits. Install a part if watts allow." },
+    { id: "listen", name: "Listen", body: "Bits, traces, gate. You are inside the machine." },
+    { id: "crew", name: "Crew work", body: "Run First Trace. Stamp Bits. Install a part if watts allow." },
     { id: "clean", name: "Clean up", body: "Export .bertyrun.json if asked. Close the tab." },
   ],
 };

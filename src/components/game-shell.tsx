@@ -19,7 +19,7 @@ function fmt(t: number) {
 const idle: HudSnap = {
   phase: "boot",
   courseId: "roll-out",
-  courseName: "Roll Out",
+  courseName: "First Trace",
   time: 0,
   gems: 0,
   gemTotal: 0,
@@ -142,9 +142,7 @@ export function GameShell() {
 
       {hud.phase === "play" && hud.time < 5.5 ? (
         <p className="pointer-events-none absolute bottom-36 left-1/2 z-10 w-[min(92vw,28rem)] -translate-x-1/2 rounded-xl bg-navy/80 px-3 py-2 text-center text-sm font-semibold text-fg ring-1 ring-line">
-          {hud.is3d
-            ? "W rolls · A/D steers · copper bus boosts · stay on the board"
-            : "Space or tap to jump · bits first · then the gate"}
+          Space or tap to jump · bits first · then the gate
         </p>
       ) : null}
 
@@ -163,7 +161,7 @@ export function GameShell() {
             )}
           >
             {hud.phase === "boot" ? (
-              <p className="text-muted">Loading the board…</p>
+              <p className="text-muted">Loading the copper…</p>
             ) : null}
 
             {titlePane && induct ? (
@@ -258,7 +256,7 @@ export function GameShell() {
               <div className="flex flex-col gap-4">
                 <h2 className="text-2xl font-bold tracking-tight">Paused</h2>
                 <p className="text-muted">
-                  {hud.is3d ? "W rolls forward. A/D steers. Stay on the board." : "Berty keeps running. Space or tap to jump."}
+                  Berty keeps running. Space or tap to jump.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => e?.togglePause()}>Resume</Button>
@@ -283,7 +281,7 @@ export function GameShell() {
 
             {hud.phase === "win" ? (
               <div className="flex flex-col gap-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Port locked in</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Gate locked</p>
                 <h2 className="text-3xl font-extrabold tracking-tight">Clear</h2>
                 <div className="flex gap-1">
                   {[1, 2, 3].map((n) => (
@@ -303,7 +301,7 @@ export function GameShell() {
                     Run again
                   </Button>
                   <Button variant="navy" onClick={() => nextCourse(hud.courseId, e)}>
-                    Next board
+                    Next trace
                   </Button>
                   <Button
                     variant="ghost"
@@ -442,7 +440,7 @@ function TitleCard({
       </div>
       {how ? (
         <ul className="grid gap-1 text-sm text-fg">
-          <li>Play boards to earn watts. Build Lab spends them on a real machine.</li>
+          <li>Play traces to earn watts. Build Lab spends them on a real machine.</li>
           <li>Fifteen lessons: hardware, software, thinking. Pass a check, then install the part.</li>
           <li>Boot needs motherboard, PSU, CPU, RAM, and BertyOS.</li>
           <li>One button: Space, click, or tap to jump. Hold for a higher jump.</li>

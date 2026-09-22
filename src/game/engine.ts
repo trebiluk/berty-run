@@ -267,6 +267,7 @@ export class Engine {
   deadT = 0;
   hudAcc = 0;
   closeArmed = new Set<string>();
+  reduced = false;
 
   constructor(canvas: HTMLCanvasElement, canvas3d: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
     this.canvas = canvas;
@@ -278,6 +279,7 @@ export class Engine {
     this.save = readSave();
     this.mute = this.save.mute;
     setMuted(this.mute);
+    this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.bind();
   }
 
@@ -327,6 +329,12 @@ export class Engine {
     el.addEventListener("pointerdown", this.onPtrDown);
     el.addEventListener("pointerup", this.onPtrUp);
     el.addEventListener("pointercancel", this.onPtrUp);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onMq = () => {
+      this.reduced = mq.matches;
+    };
+    mq.addEventListener?.("change", onMq);
+    this.reduced = mq.matches;
   }
 
   private jumpDown() {
@@ -746,6 +754,7 @@ export class Engine {
   }
 
   private shake(n: number) {
+    if (this.reduced) return;
     this.cam.trauma = Math.min(1, this.cam.trauma + n);
   }
 
@@ -776,8 +785,8 @@ export class Engine {
     ctx.translate(ox, oy);
     ctx.scale(scale, scale);
 
-    const jx = (Math.random() - 0.5) * this.cam.trauma * 12;
-    const jy = (Math.random() - 0.5) * this.cam.trauma * 10;
+    const jx = this.reduced ? 0 : (Math.random() - 0.5) * this.cam.trauma * 12;
+    const jy = this.reduced ? 0 : (Math.random() - 0.5) * this.cam.trauma * 10;
     ctx.translate(-this.cam.x + jx, jy);
 
     this.drawBackdrop();

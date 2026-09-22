@@ -124,7 +124,7 @@ export const LESSONS: Lesson[] = [
       "Clock speed is how many of those loops it can attempt per second. More cores means more loops in parallel.",
       "A CPU without instructions is a heater. Programs tell it what to do.",
     ],
-    board: "You are the CPU when you plan a lean. Sequence first, then act.",
+    board: "You are the CPU when you plan a jump. Sequence first, then act.",
     q: {
       prompt: "The CPU loop is best described as:",
       choices: ["Heat, cool, sleep", "Fetch, decode, execute", "Click, drag, save", "Ping, pong, pause"],
@@ -141,7 +141,7 @@ export const LESSONS: Lesson[] = [
     body: [
       "RAM is working memory. Fast. The CPU can read it in nanoseconds.",
       "It is volatile: power off, the contents vanish. That is why unsaved work disappears.",
-      "Empty sockets on Mind the Pit are RAM slots with nothing in them. A missing stick is a hole in the machine.",
+      "Empty slots on Mind the Pit are RAM sockets with nothing in them. A missing stick is a hole in the machine.",
     ],
     board: "Fall in a socket and you feel what a machine feels with no memory mapped there.",
     q: {
@@ -166,7 +166,7 @@ export const LESSONS: Lesson[] = [
       "Fans move air. Heat sinks spread heat. Thermal paste fills microscopic gaps between CPU and cooler.",
       "You already dodged fans and slid on paste. That was not decoration. That is the thermal path.",
     ],
-    board: "Fan Line and Thermal Paste are the cooling chapter, written as a marble run.",
+    board: "Fan Line and Thermal Paste are the cooling chapter, written as a copper run.",
     q: {
       prompt: "Thermal paste is used to:",
       choices: [
@@ -250,7 +250,7 @@ export const LESSONS: Lesson[] = [
     stamps: 3,
     body: [
       "A program is a list of instructions a CPU can run. Languages like Python or JavaScript compile or interpret down toward those instructions.",
-      "This game is a program. Your lean is input. Physics is the process. The canvas is output.",
+      "This game is a program. Your jump is input. Physics is the process. The canvas is output.",
       "Code is not magic. It is precise writing that a machine will follow even when you are wrong.",
     ],
     board: "When Berty slides too far, that is not Berty being wild. That is the program doing exactly what we wrote.",
@@ -336,7 +336,7 @@ export const LESSONS: Lesson[] = [
     body: [
       "A bug is a mismatch between what you meant and what the machine did. The machine is not guessing.",
       "Debug like a scientist: reproduce, isolate, change one thing, test again.",
-      "Retry after a fall is a debug loop. You form a hypothesis (too much lean), then test it.",
+      "Retry after a fall is a debug loop. You form a hypothesis (jumped too late), then test it.",
     ],
     board: "Three hearts are three experiments. The board did not cheat.",
     q: {
