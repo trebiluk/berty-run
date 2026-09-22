@@ -14,6 +14,7 @@ Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
 | Fail | Calm “Trace broke · try again” + fat RETRY |
 | Win | 3 gems + exit · text + gems (**never sound-only success**) |
 | Start | PLAY + HELP · “Tap JUMP · collect all 3 gems.” Zero lecture overlay. |
+| IP | Original Kulibert / Berty + PCB. **No** Geometry Dash / Arrow / Tron / Curveball names, art, fonts, skins. |
 
 ## Play
 - Chromebook 2D one-button timing auto-runner
