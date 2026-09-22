@@ -46,5 +46,6 @@ UX from `FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md` — **patterns only, not 
 3. Success readable without audio. **TRUE** — muted clear still shows Trace complete, 3 bits + gate, three gem tiles.
 4. Reduced-motion: no shake/flash spam. **TRUE** — `prefers-reduced-motion: reduce` kills camera shake, hitstop, particle bursts, jump spin, saw spin. CSS zeros overlay animation.
 5. Hand Debugzy: preview URL + graft note for `apps.kulibert.net/berty-run/`. **TRUE** — `docs/crew/DEBUGZY-BERTY-RUN-GROK-BUILD-HANDOFF.md`
+6. Debugzy proves live school door before hub chip flips off list. **HELD** — https://apps.kulibert.net/berty-run/ still **idea list · not built yet**. Grok Build will not flip it.
 
 *FeatureBot · 2026-09-22*
