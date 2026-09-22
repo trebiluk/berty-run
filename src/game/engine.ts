@@ -735,15 +735,20 @@ export class Engine {
 
   private checkWin(p: Player) {
     const got = this.gems.filter((g) => g.got).length;
-    if (got < this.gems.length) return;
-    if (aabb(p.x, p.y, p.w, p.h, this.exit.x, this.exit.y, this.exit.w, this.exit.h)) {
-      this.phase = "win";
-      sfxWin();
-      sfxGate();
-      this.burst(p.x, p.y, "#e87722", 24);
-      this.awardClear();
-      this.emit();
+    const atGate = aabb(p.x, p.y, p.w, p.h, this.exit.x, this.exit.y, this.exit.w, this.exit.h);
+    if (!atGate) return;
+    if (got < 3) {
+      if (!this.pops.some((q) => q.label === "Need 3 bits")) {
+        this.pops.push({ x: p.x, y: p.y - 40, life: 1.1, max: 1.1, label: "Need 3 bits" });
+      }
+      return;
     }
+    this.phase = "win";
+    sfxWin();
+    sfxGate();
+    this.burst(p.x, p.y, "#e87722", 24);
+    this.awardClear();
+    this.emit();
   }
 
   private awardClear() {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Pause, Play, RotateCcw, Volume2, VolumeX, Heart, Ghost, Star, CircuitBoard, Home, Wrench, ClipboardList } from "lucide-react";
+import { Pause, Play, RotateCcw, Volume2, VolumeX, Heart, Ghost, CircuitBoard, Home, Wrench, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COURSES, fmtTime, starsFromBest } from "@/game/courses";
 import { Engine } from "@/game/engine";
@@ -286,18 +286,24 @@ export function GameShell() {
 
             {hud.phase === "win" ? (
               <div className="flex flex-col gap-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Gate locked</p>
-                <h2 className="text-3xl font-extrabold tracking-tight">Clear</h2>
-                <div className="flex gap-1">
-                  {[1, 2, 3].map((n) => (
-                    <Star
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">First Trace</p>
+                <h2 className="text-3xl font-extrabold tracking-tight">Trace complete</h2>
+                <p className="text-sm font-semibold text-fg">3 bits + gate</p>
+                <div className="flex gap-2" aria-label="3 bits collected">
+                  {[0, 1, 2].map((n) => (
+                    <span
                       key={n}
-                      className={cn("size-6", n <= hud.stars ? "fill-orange text-orange" : "text-line")}
-                    />
+                      className={cn(
+                        "grid size-11 place-items-center rounded-xl text-lg font-extrabold ring-1",
+                        n < hud.gems ? "bg-orange text-ink ring-crate" : "bg-navy-2 text-muted ring-line",
+                      )}
+                    >
+                      ◆
+                    </span>
                   ))}
                 </div>
                 <p className="text-muted">
-                  {fmt(hud.time)} · par {fmt(hud.par)} · {hud.gems} bits
+                  {fmt(hud.time)}
                   {hud.best != null ? ` · best ${fmt(hud.best)}` : ""}
                   {hud.earned > 0 ? ` · +${hud.earned} W` : ""}
                 </p>

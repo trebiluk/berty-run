@@ -12,6 +12,7 @@ Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
 | Heat | ~30–40s · start → gap → spike-via → gem → overhang → gem → window → gem → EXIT |
 | Gems | **3** on the auto-path |
 | Fail | Calm “Trace broke · try again” + fat RETRY |
+| Win | 3 gems + exit · text + gems (**never sound-only success**) |
 
 ## Play
 - Chromebook 2D one-button timing auto-runner
