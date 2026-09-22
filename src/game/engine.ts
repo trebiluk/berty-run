@@ -25,9 +25,10 @@ const JUMP = -780;
 const HOLD_GRAVITY = 1600;
 const HOLD_BOOST_WINDOW = 0.2;
 const MAX_FALL_SPEED = 1400;
-const RUN_MIN = 360;
-const RUN_MAX = 500;
-const RUN_RAMP = 8;
+const RUN = 430;
+const RUN_MIN = RUN;
+const RUN_MAX = RUN;
+const RUN_RAMP = 0;
 const HEARTS = 3;
 const VIEW_W = 1280;
 const VIEW_H = 760;
@@ -221,6 +222,7 @@ type Player = {
   frame: number;
   anim: number;
   jumpHold: number;
+  spin: number;
 };
 
 export class Engine {
@@ -496,6 +498,7 @@ export class Engine {
       frame: 0,
       anim: 0,
       jumpHold: 0,
+      spin: 0,
     };
   }
 
@@ -555,12 +558,19 @@ export class Engine {
       p.jumpHold = 0;
       this.jumpQueued = false;
       p.squash = 0.82;
+      p.spin += Math.PI / 2;
       sfxJump();
     }
     this.jumpQueued = false;
 
-    if (p.onGround) p.jumpHold = 0;
-    else p.jumpHold += dt;
+    if (p.onGround) {
+      p.jumpHold = 0;
+      const q = Math.PI / 2;
+      p.spin = this.reduced ? 0 : Math.round(p.spin / q) * q;
+    } else {
+      p.jumpHold += dt;
+      if (!this.reduced) p.spin += Math.PI * 1.15 * dt;
+    }
     const boosting = !p.onGround && p.vy < 0 && p.holding && p.jumpHold < HOLD_BOOST_WINDOW;
     const g = boosting ? HOLD_GRAVITY : GRAVITY;
     p.vy += g * dt;
@@ -943,8 +953,7 @@ export class Engine {
     ctx.fill();
     ctx.translate(cx, feet);
     ctx.scale(1, p.squash);
-    const tilt = p.onGround ? 0 : clamp(p.vy / 1100, -0.28, 0.38);
-    ctx.rotate(tilt);
+    ctx.rotate(this.reduced ? 0 : p.spin);
     const sw = 92;
     const sh = 92;
     if (sp) {
