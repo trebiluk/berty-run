@@ -1,6 +1,6 @@
 # Notice — Pixel Runner jump feel
 
-L1 First Trace jump timing (tap vs hold, 200ms hold-boost window, fall cap, near-miss pop) is adapted from **Pixel Runner** in:
+L1 First Trace jump timing (auto-scroll, one JUMP, 200ms hold-gravity window, obstacle timing) is adapted from **runner** in:
 
 [ftaip/waiting-game](https://github.com/ftaip/waiting-game) (`react-waiting-game`) · MIT License · Copyright (c) 2026
 

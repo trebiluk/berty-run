@@ -35,29 +35,15 @@ export type Course = {
 };
 
 export type HudSnap = {
-  phase: "boot" | "title" | "play" | "pause" | "win" | "fail";
-  courseId: CourseId;
+  phase: "boot" | "title" | "play" | "pause" | "win" | "fail" | "short";
   courseName: string;
   time: number;
   gems: number;
   gemTotal: number;
-  hearts: number;
-  crew: boolean;
   mute: boolean;
   best: number | null;
-  stars: number;
-  is3d: boolean;
-  par: number;
-  bests: Record<string, number>;
-  ghost: boolean;
-  hasGhost: boolean;
-  stamps: number;
-  watts: number;
-  parts: string[];
-  passed: string[];
-  earned: number;
-  booted: boolean;
-  inducted: boolean;
+  hint: string;
+  hot: boolean;
 };
 
 export type ControlsProbe = {
@@ -70,6 +56,14 @@ export type ControlsProbe = {
 declare global {
   interface Window {
     __controlsTest?: ControlsProbe;
-    __bertyRun?: { phase: string; gems: number; time: number };
+    __bertyRun?: {
+      phase: string;
+      gems: number;
+      gemTotal: number;
+      time: number;
+      x: number;
+      hot: boolean;
+      hint: string;
+    };
   }
 }

@@ -20,7 +20,7 @@ Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
 
 Vanilla canvas or light Vite + canvas. Chromebook mid/low. Prefer zero-deps path from waiting-game `runner`.
 
-L1 play loop is `src/game/engine.ts` — 2D canvas, no Phaser / Three / Matter. Shell is Vite + React (preview + `/berty-run/` cart). `bend3d.ts` is not on the L1 path.
+L1 play loop is `src/game/trace.ts` plus canvas draw in `src/game/engine.ts`. Flat 2D only. Shell is Vite + React. `npm run build:cart` emits static `dist/` with base `/berty-run/`. `bend3d.ts` is not on the L1 path.
 
 ## Play
 - Chromebook 2D one-button timing auto-runner
