@@ -35,8 +35,8 @@ const VIEW_H = 760;
 const GROUND = 598;
 const PW = 34;
 const PH = 52;
-const COYOTE = 0.1;
-const BUFFER = 0.12;
+const COYOTE = 0.14;
+const BUFFER = 0.16;
 const SAVE_KEY = "bertys-run-v1";
 
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; max: number; c: string; s: number };
@@ -345,6 +345,11 @@ export class Engine {
 
   private jumpUp() {
     this.jumpHeld = false;
+  }
+
+  holdJump(on: boolean) {
+    if (on) this.jumpDown();
+    else this.jumpUp();
   }
 
   private onKeyDown = (e: KeyboardEvent) => {

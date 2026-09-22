@@ -132,10 +132,21 @@ export function GameShell() {
         </div>
       ) : null}
 
-      {hud.phase === "play" && hud.time < 5.5 ? (
-        <p className="pointer-events-none absolute bottom-36 left-1/2 z-10 w-[min(92vw,28rem)] -translate-x-1/2 rounded-xl bg-navy/80 px-3 py-2 text-center text-sm font-semibold text-fg ring-1 ring-line">
-          Space or tap to jump · bits first · then the gate
-        </p>
+      {hud.phase === "play" ? (
+        <button
+          type="button"
+          aria-label="Jump"
+          className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-10 min-h-16 min-w-28 rounded-2xl bg-orange px-6 text-base font-extrabold uppercase tracking-wide text-ink ring-1 ring-crate"
+          onPointerDown={(ev) => {
+            ev.preventDefault();
+            e?.holdJump(true);
+          }}
+          onPointerUp={() => e?.holdJump(false)}
+          onPointerCancel={() => e?.holdJump(false)}
+          onPointerLeave={() => e?.holdJump(false)}
+        >
+          Jump
+        </button>
       ) : null}
 
       {overlay ? (
