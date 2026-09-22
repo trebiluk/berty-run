@@ -48,4 +48,10 @@ UX from `FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md` — **patterns only, not 
 5. Hand Debugzy: preview URL + graft note for `apps.kulibert.net/berty-run/`. **TRUE** — `docs/crew/DEBUGZY-BERTY-RUN-GROK-BUILD-HANDOFF.md`
 6. Debugzy proves live school door before hub chip flips off list. **HELD** — https://apps.kulibert.net/berty-run/ still **idea list · not built yet**. Grok Build will not flip it.
 
+## Out of scope (HOLD)
+
+Beatz playable · Hub accounts · multiplayer · gravity heats · Alias Pass · Baboo floorist
+
+L1 does not ship any of these. Jump gravity is Pixel Runner feel, not flip heats. No login. No p2p. No Beatz. No alias chrome. No floorist.
+
 *FeatureBot · 2026-09-22*
