@@ -59,6 +59,11 @@ export function sfxBump() {
   beep(90, 0.08, "square", 0.08);
 }
 
+export function sfxJump() {
+  beep(310, 0.07, "square", 0.05);
+  beep(470, 0.1, "triangle", 0.06);
+}
+
 export function sfxHurt() {
   beep(160, 0.22, "sawtooth", 0.1);
   beep(70, 0.3, "square", 0.06);

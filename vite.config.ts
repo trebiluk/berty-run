@@ -146,9 +146,7 @@ function authPopupPlugin(): Plugin {
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
 export default defineConfig(({ command, isPreview }) => ({
-  base:
-    process.env.BERT_CART_BASE ||
-    (process.env.VERCEL_GIT_REPO_SLUG === "berty-run" ? "/berty-run/" : "/"),
+  base: process.env.BERT_CART_BASE || "/",
   server: {
     host: "0.0.0.0",
     port: 8080,

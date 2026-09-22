@@ -2,7 +2,7 @@ import { COURSES } from "./courses";
 import { LESSONS, PARTS, type LessonId } from "./curriculum";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.2.0";
+export const CHIP = "BR 1.3.0";
 export const APP_NAME = "Berty's Run";
 export const PACK_KIND = "bertyrun";
 export const PACK_VERSION = 1;
@@ -76,13 +76,13 @@ export const LESSON_STANDARDS: Record<
 export const HOUR = {
   ask: "How does a computer go from bits to a boot?",
   do: [
-    "Clear Roll Out. Collect every bit. Hit the port.",
+    "Clear First Trace. Collect every bit. Hit the gate.",
     "Open Build Lab. Pass the Bits check (8 bits in a byte).",
     "If you have watts, install Motherboard.",
   ],
   need: "Chromebook. Headphones optional. No names.",
-  lookFor: "Names bit, byte, and port. Leans before the corner.",
-  say: "You are inside the computer. Bits in. Port out.",
+  lookFor: "Names bit, byte, and port. Jump before the crate.",
+  say: "You are inside the computer. Bits in. Gate out.",
   beats: [
     { id: "enter", name: "Enter", body: "Sit. Open Berty's Run from the Tech Room." },
     { id: "listen", name: "Listen", body: "Bits, traces, port. You are inside the machine." },
@@ -101,8 +101,8 @@ export const INDUCTION = [
   {
     id: "run",
     kicker: "The job",
-    title: "Lean. Collect bits. Hit the port",
-    body: "WASD leans the board. On a Chromebook, drag on the floor. Grab every amber bit, then park in the port. Strategy over twitch — lean early.",
+    title: "Jump. Collect bits. Hit the port",
+    body: "Berty auto-runs the copper. Space, click, or tap to jump. Hold for a higher jump. Grab every amber bit, then park in the gate. Timing over twitch.",
   },
   {
     id: "build",

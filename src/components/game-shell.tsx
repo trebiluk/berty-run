@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Pause, Play, RotateCcw, Volume2, VolumeX, Users, User, Heart, Ghost, Star, CircuitBoard, Home, Wrench, ClipboardList } from "lucide-react";
+import { Pause, Play, RotateCcw, Volume2, VolumeX, Heart, Ghost, Star, CircuitBoard, Home, Wrench, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COURSES, fmtTime, starsFromBest } from "@/game/courses";
 import { Engine } from "@/game/engine";
@@ -144,9 +144,7 @@ export function GameShell() {
         <p className="pointer-events-none absolute bottom-36 left-1/2 z-10 w-[min(92vw,28rem)] -translate-x-1/2 rounded-xl bg-navy/80 px-3 py-2 text-center text-sm font-semibold text-fg ring-1 ring-line">
           {hud.is3d
             ? "W rolls · A/D steers · copper bus boosts · stay on the board"
-            : hud.courseId === "oil-pan"
-              ? "Paste slides · arrows shove · lean before the slick"
-              : "WASD leans the board · bits first · then the port"}
+            : "Space or tap to jump · bits first · then the gate"}
         </p>
       ) : null}
 
@@ -260,7 +258,7 @@ export function GameShell() {
               <div className="flex flex-col gap-4">
                 <h2 className="text-2xl font-bold tracking-tight">Paused</h2>
                 <p className="text-muted">
-                  {hud.is3d ? "W rolls forward. A/D steers. Stay on the board." : "Lean stays where you left it. Plan the next trace."}
+                  {hud.is3d ? "W rolls forward. A/D steers. Stay on the board." : "Berty keeps running. Space or tap to jump."}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => e?.togglePause()}>Resume</Button>
@@ -323,7 +321,7 @@ export function GameShell() {
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Board stop</p>
                 <h2 className="text-3xl font-extrabold tracking-tight">Reset</h2>
                 <p className="text-muted">
-                  {hud.is3d ? "Falling off the board costs a heart." : "Sockets and fans cost a heart. Three misses and the run is over."}
+                  {hud.is3d ? "Falling off the board costs a heart." : "Crates, fans, and pits cost a heart. Three misses and the run is over."}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => e?.retry()}>Retry</Button>
@@ -374,7 +372,6 @@ function TitleCard({
   onHow,
   onPlay,
   onCourse,
-  onCrew,
   onMute,
   onGhost,
   onLab,
@@ -393,11 +390,7 @@ function TitleCard({
   onShop: () => void;
   onJob: () => void;
 }) {
-  const [tab, setTab] = useState<"2d" | "3d">(hud.is3d ? "3d" : "2d");
-  useEffect(() => {
-    setTab(hud.is3d ? "3d" : "2d");
-  }, [hud.is3d]);
-  const list = COURSES.filter((c) => (c.mode === "3d") === (tab === "3d"));
+  const list = COURSES;
   return (
     <div className="flex flex-col gap-4">
       <div
@@ -417,7 +410,7 @@ function TitleCard({
         </div>
       </div>
       <p className="text-sm leading-relaxed text-muted">
-        You are in the computer. Run boards. Earn watts. Build a machine. A Tech Room lab — NYS MST 5 · ITEEA STL · CompTIA intro.
+        You are in the computer. Jump the copper. Earn watts. Build a machine. A Tech Room lab — NYS MST 5 · ITEEA STL · CompTIA intro.
       </p>
       <div className="flex flex-wrap items-center gap-1.5">
         {COURSES.map((c) => {
@@ -448,36 +441,12 @@ function TitleCard({
           <li>Play boards to earn watts. Build Lab spends them on a real machine.</li>
           <li>Fifteen lessons: hardware, software, thinking. Pass a check, then install the part.</li>
           <li>Boot needs motherboard, PSU, CPU, RAM, and BertyOS.</li>
-          <li>2D leans. 3D: W rolls, A/D steers. Five of each.</li>
-          <li>Copper bus boosts. Rings are checkpoints after a fall.</li>
-          <li>Thermal Paste: silver tiles slide. Arrows shove. Lean early.</li>
+          <li>One button: Space, click, or tap to jump. Hold for a higher jump.</li>
+          <li>Berty auto-runs. Jump crates, fans, and pits. Rings are checkpoints.</li>
           <li>Ghost is your best run on this Chromebook. G hides it.</li>
-          <li>Crew: P1 WASD, P2 arrows. Both Berties must enter the port.</li>
           <li>Best times stay on this Chromebook. No names. No accounts. Export a .bertyrun.json from Shop.</li>
         </ul>
       ) : null}
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => setTab("2d")}
-          className={cn(
-            "min-h-11 flex-1 rounded-lg text-xs font-bold uppercase tracking-wide ring-1",
-            tab === "2d" ? "bg-orange text-ink ring-crate" : "bg-navy-2 text-fg ring-line",
-          )}
-        >
-          2D boards
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("3d")}
-          className={cn(
-            "min-h-11 flex-1 rounded-lg text-xs font-bold uppercase tracking-wide ring-1",
-            tab === "3d" ? "bg-orange text-ink ring-crate" : "bg-navy-2 text-fg ring-line",
-          )}
-        >
-          3D boards
-        </button>
-      </div>
       <div className="grid max-h-44 grid-cols-1 gap-1.5 overflow-y-auto sm:max-h-none sm:grid-cols-2">
         {list.map((c) => {
           const on = hud.courseId === c.id;
@@ -525,12 +494,6 @@ function TitleCard({
         <Button variant="navy" onClick={onLab}>
           <CircuitBoard className="size-4" /> Build Lab
         </Button>
-        {hud.is3d ? null : (
-          <Button variant={hud.crew ? "primary" : "navy"} onClick={() => onCrew(!hud.crew)}>
-            {hud.crew ? <Users className="size-4" /> : <User className="size-4" />}
-            {hud.crew ? "Crew" : "Solo"}
-          </Button>
-        )}
         <Button variant="ghost" onClick={onShop}>
           <Wrench className="size-4" /> Shop
         </Button>
@@ -541,7 +504,7 @@ function TitleCard({
           <Home className="size-4" /> Home
         </a>
         <Button variant="ghost" onClick={onHow}>
-          {how ? "Hide how" : "How to lean"}
+          {how ? "Hide how" : "How to jump"}
         </Button>
         <Button variant="ghost" onClick={onMute} aria-label={hud.mute ? "Unmute" : "Mute"}>
           {hud.mute ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}

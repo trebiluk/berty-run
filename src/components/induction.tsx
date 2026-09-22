@@ -23,7 +23,7 @@ export function Induction({ onDone }: { onDone: () => void }) {
             else setI((n) => n + 1);
           }}
         >
-          {last ? "Got it — boards" : "Next"}
+          {last ? "Got it — traces" : "Next"}
         </Button>
         <Button variant="ghost" onClick={onDone}>
           Skip

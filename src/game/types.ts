@@ -12,21 +12,23 @@ export type CourseId =
   | "slick-shelf"
   | "shop-exit";
 
-export type SawDef = {
-  x: number;
-  y: number;
-  x2?: number;
-  y2?: number;
-  period?: number;
-};
+export type Seg =
+  | { k: "g"; w: number }
+  | { k: "gap"; w: number }
+  | { k: "crate" }
+  | { k: "saw"; h?: number }
+  | { k: "gems"; n: number; form?: "line" | "arc" | "high" }
+  | { k: "check" }
+  | { k: "boost" }
+  | { k: "gate" };
 
 export type Course = {
   id: CourseId;
   name: string;
   blurb: string;
   par: number;
-  rows: string[];
-  saws?: SawDef[];
+  segs: Seg[];
+  rows?: string[];
   mode?: "2d" | "3d";
 };
 

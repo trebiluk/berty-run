@@ -83,7 +83,7 @@ export const LESSONS: Lesson[] = [
       "Every other part plugs into it: CPU, RAM, storage, power. If a trace is broken, the signal never arrives.",
       "Vias are tiny holes that jump a signal from one layer of copper to another. You ran over them.",
     ],
-    board: "Roll Out is a clean board. Traces, vias, a port at the end.",
+    board: "First Trace is a clean board. Traces, vias, a gate at the end.",
     q: {
       prompt: "What do copper traces on a motherboard carry?",
       choices: ["Water", "Electrical signals", "Cool air", "Sound"],

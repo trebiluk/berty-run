@@ -1,12 +1,17 @@
-# Berty's Run · BR 1.2.0
+# Berty's Run · BR 1.3.0
 
 Solvay MS TechWorks lab. You are inside the computer.
 
-**Door:** https://apps.kulibert.net/berty-run/  
-**Chip:** BR 1.2.0 — site induction + job packet.
+**Door (placeholder until Debugzy proves play):** https://apps.kulibert.net/berty-run/  
+**Chip:** BR 1.3.0 — L1 First Trace one-button timing auto-runner.
 
 Chromebook-first. No names. No accounts. Ed Law 2-d / FERPA.
 
-Teach hang: `https://apps.kulibert.net/berty-run/?job=1&course=roll-out`
+- **Play:** Space / click / tap to jump. Hold for a higher jump.
+- **L1:** First Trace (`?course=roll-out`)
+- Teach hang: `https://apps.kulibert.net/berty-run/?job=1&course=roll-out`
+- Helper: `?help=1` · Lab: `?lab=1`
 
-Helper: `?help=1` · Lab: `?lab=1` · Board: `?course=roll-out`
+School DNS only (`*.kulibert.net`). Never send classroom links to `vercel.app`.
+
+Hub chip stays `list · not built` until Debugzy proves live play (URL + rev + screenshot).

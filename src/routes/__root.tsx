@@ -14,7 +14,7 @@ export const Route = createRootRoute({
       { name: "theme-color", content: "#0B1F3A" },
       {
         name: "description",
-        content: "Berty's Run — Solvay MS TechWorks lab. Run boards inside a computer. Earn watts. Build a machine. No names.",
+        content: "Berty's Run — Solvay MS TechWorks lab. Timing auto-runner on copper traces. Jump, collect bits, hit the gate. No names.",
       },
     ],
     links: [
