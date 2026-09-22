@@ -40,3 +40,7 @@ Placeholder stays **list · not built** until you:
 ## Out of scope
 
 Beatz, hub accounts, multiplayer, gravity heats, Alias Pass, Baboo. This cart does not ship them.
+
+## NEXT (Debugzy · 2026-09-22)
+
+**HOLD further Run work.** First Trace is the GO cut. No new levels until Diego unblocks. Hub path only. Chip stays **list · not built** until Debugzy proves live school play.

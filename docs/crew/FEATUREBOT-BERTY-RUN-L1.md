@@ -54,4 +54,6 @@ Beatz playable · Hub accounts · multiplayer · gravity heats · Alias Pass · 
 
 L1 does not ship any of these. Jump gravity is Pixel Runner feel, not flip heats. No login. No p2p. No Beatz. No alias chrome. No floorist.
 
+**NEXT (Debugzy):** HOLD further Run work. First Trace is the GO cut. No new levels until Diego unblocks. Hub path only.
+
 *FeatureBot · 2026-09-22*
