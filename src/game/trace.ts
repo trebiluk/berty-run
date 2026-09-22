@@ -22,7 +22,7 @@ export const START_X = 200;
 export const COYOTE = 0.12;
 export const STEP = 1 / 60;
 
-export const CHIP = "BR 1.4.0";
+export const CHIP = "BR 1.5.0";
 export const SAVE_KEY = "berty-run-l1-best";
 
 export type Phase = "title" | "play" | "pause" | "fail" | "short" | "win";

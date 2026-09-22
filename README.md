@@ -3,7 +3,7 @@
 Chromebook 2D timing auto-runner. One button. Berty runs the copper. You tap **JUMP**.
 
 **School door (after Debugzy grafts the cart):** https://apps.kulibert.net/berty-run/  
-**Chip:** BR 1.4.0 — L1 First Trace. Hub chip stays `list · not built` until Debugzy proves live play.
+**Chip:** BR 1.5.0 — L1 First Trace with shop-robot sprites. Hub chip stays `list · not built` until Debugzy proves live play.
 
 School DNS only (`*.kulibert.net`). Never send a class to `vercel.app`.
 

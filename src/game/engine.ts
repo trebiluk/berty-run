@@ -36,6 +36,44 @@ const MASK = "#071a14";
 
 type Bit = { x: number; y: number; vx: number; vy: number; life: number; max: number };
 
+type Sprites = {
+  berty: HTMLImageElement[];
+  gem: HTMLImageElement;
+  crate: HTMLImageElement;
+  saw: HTMLImageElement;
+  gate: HTMLImageElement;
+  floor: HTMLImageElement;
+};
+
+function loadImg(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const im = new Image();
+    im.onload = () => resolve(im);
+    im.onerror = () => reject(new Error(src));
+    im.src = src;
+  });
+}
+
+async function loadSprites(): Promise<Sprites | null> {
+  const base = import.meta.env.BASE_URL;
+  try {
+    const [b1, b2, b3, b4, gem, crate, saw, gate, floor] = await Promise.all([
+      loadImg(`${base}sprites/berty-1.png`),
+      loadImg(`${base}sprites/berty-2.png`),
+      loadImg(`${base}sprites/berty-3.png`),
+      loadImg(`${base}sprites/berty-4.png`),
+      loadImg(`${base}sprites/gem-1.png`),
+      loadImg(`${base}sprites/crate.png`),
+      loadImg(`${base}sprites/saw-1.png`),
+      loadImg(`${base}sprites/gate.png`),
+      loadImg(`${base}sprites/floor.png`),
+    ]);
+    return { berty: [b1, b2, b3, b4], gem, crate, saw, gate, floor };
+  } catch {
+    return null;
+  }
+}
+
 export class Engine {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -56,6 +94,8 @@ export class Engine {
   bits: Bit[] = [];
   got = 0;
   spans = floorSpans();
+  sprites: Sprites | null = null;
+  floorPat: CanvasPattern | null = null;
 
   constructor(canvas: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
     this.canvas = canvas;
@@ -71,6 +111,8 @@ export class Engine {
   }
 
   async boot() {
+    this.sprites = await loadSprites();
+    if (this.sprites) this.floorPat = this.ctx.createPattern(this.sprites.floor, "repeat");
     this.run = freshRun(readBest(), this.mute);
     this.emit();
     this.last = performance.now();
@@ -362,6 +404,13 @@ export class Engine {
       ctx.fillRect(s.x, s.y - 8, s.w, 10);
       ctx.fillStyle = "#e2a86b";
       ctx.fillRect(s.x, s.y - 8, s.w, 3);
+      if (this.floorPat) {
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = this.floorPat;
+        ctx.fillRect(s.x, s.y, s.w, 28);
+        ctx.restore();
+      }
       ctx.fillStyle = TEAL;
       ctx.globalAlpha = 0.85;
       ctx.fillRect(s.x, s.y + 6, s.w, 4);
@@ -385,31 +434,39 @@ export class Engine {
         ctx.stroke();
       } else if (b.kind === "spike") {
         const top = GROUND - b.h;
-        ctx.fillStyle = COPPER;
-        ctx.beginPath();
-        ctx.arc(b.x + b.w / 2, top + 16, 16, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = INK;
-        ctx.beginPath();
-        ctx.arc(b.x + b.w / 2, top + 16, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#d7dde6";
-        ctx.fillRect(b.x + b.w / 2 - 3, top + 18, 6, b.h - 10);
+        const saw = this.sprites?.saw;
+        if (saw) ctx.drawImage(saw, b.x - 6, top - 8, 42, 42);
+        else {
+          ctx.fillStyle = COPPER;
+          ctx.beginPath();
+          ctx.arc(b.x + b.w / 2, top + 16, 16, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = INK;
+          ctx.beginPath();
+          ctx.arc(b.x + b.w / 2, top + 16, 7, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#d7dde6";
+          ctx.fillRect(b.x + b.w / 2 - 3, top + 18, 6, b.h - 10);
+        }
         ctx.fillStyle = "rgba(248,250,252,0.7)";
         ctx.font = "600 12px Segoe UI, system-ui, sans-serif";
         ctx.fillText("VIA", b.x - 4, top - 10);
       } else if (b.kind === "overhang") {
         const top = GROUND - b.h;
-        ctx.fillStyle = "#10243f";
-        ctx.fillRect(b.x, top, b.w, b.h);
-        ctx.strokeStyle = CYAN;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(b.x + 1, top + 1, b.w - 2, b.h - 2);
-        ctx.fillStyle = SNOW;
-        ctx.fillRect(b.x + 16, top + 18, b.w - 32, 16);
-        for (let i = 0; i < 4; i++) {
-          ctx.fillStyle = COPPER;
-          ctx.fillRect(b.x + 14 + i * 22, top + b.h - 8, 8, 10);
+        const crate = this.sprites?.crate;
+        if (crate) ctx.drawImage(crate, b.x, top, b.w, b.h);
+        else {
+          ctx.fillStyle = "#10243f";
+          ctx.fillRect(b.x, top, b.w, b.h);
+          ctx.strokeStyle = CYAN;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(b.x + 1, top + 1, b.w - 2, b.h - 2);
+          ctx.fillStyle = SNOW;
+          ctx.fillRect(b.x + 16, top + 18, b.w - 32, 16);
+          for (let i = 0; i < 4; i++) {
+            ctx.fillStyle = COPPER;
+            ctx.fillRect(b.x + 14 + i * 22, top + b.h - 8, 8, 10);
+          }
         }
         ctx.fillStyle = "rgba(248,250,252,0.75)";
         ctx.font = "600 12px Segoe UI, system-ui, sans-serif";
@@ -431,11 +488,14 @@ export class Engine {
   }
 
   private drawGems() {
+    const ctx = this.ctx;
     const gems = BEATS.filter((b) => b.hasGem);
     gems.forEach((b, i) => {
       if (this.run.gems[i]) return;
       const bob = this.reduced ? 0 : Math.sin(this.idle * 3 + i) * 3;
-      this.diamond(b.gemX, b.gemY + bob, 14);
+      const gem = this.sprites?.gem;
+      if (gem) ctx.drawImage(gem, b.gemX - 16, b.gemY + bob - 16, 32, 32);
+      else this.diamond(b.gemX, b.gemY + bob, 14);
     });
   }
 
@@ -462,11 +522,15 @@ export class Engine {
   private drawExit() {
     const ctx = this.ctx;
     const g = EXIT;
-    ctx.fillStyle = "#123528";
-    ctx.fillRect(g.x, g.y, g.w, g.h);
-    ctx.strokeStyle = TEAL;
-    ctx.lineWidth = 4;
-    ctx.strokeRect(g.x + 2, g.y + 2, g.w - 4, g.h - 4);
+    const gate = this.sprites?.gate;
+    if (gate) ctx.drawImage(gate, g.x - 10, g.y - 8, g.w + 20, g.h + 8);
+    else {
+      ctx.fillStyle = "#123528";
+      ctx.fillRect(g.x, g.y, g.w, g.h);
+      ctx.strokeStyle = TEAL;
+      ctx.lineWidth = 4;
+      ctx.strokeRect(g.x + 2, g.y + 2, g.w - 4, g.h - 4);
+    }
     ctx.fillStyle = SNOW;
     ctx.font = "800 16px Segoe UI, system-ui, sans-serif";
     ctx.textAlign = "center";
@@ -499,7 +563,7 @@ export class Engine {
     const ctx = this.ctx;
     const p = this.run.p;
     const bob = this.run.phase === "title" && !this.reduced ? Math.sin(this.idle * 6) * 2 : 0;
-    const frame = Math.floor(this.idle * 8) % 2;
+    const frame = Math.floor(this.idle * 8) % 4;
     const x = p.x;
     const y = p.y + bob;
     const cx = x + PW / 2;
@@ -508,6 +572,12 @@ export class Engine {
     ctx.beginPath();
     ctx.ellipse(cx, feet + 2, 16, 4, 0, 0, Math.PI * 2);
     ctx.fill();
+    const sheet = this.sprites?.berty;
+    if (sheet) {
+      const im = p.onGround ? sheet[frame] : sheet[1];
+      ctx.drawImage(im, cx - 36, feet - 72, 72, 72);
+      return;
+    }
     ctx.fillStyle = COPPER;
     const step = frame === 0 ? 4 : -4;
     const stepping = (this.run.phase === "play" || this.run.phase === "title") && p.onGround;
