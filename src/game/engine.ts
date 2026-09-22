@@ -1109,7 +1109,15 @@ export class Engine {
       inducted: this.save.inducted,
     };
     this.onHud(snap);
-    window.__bertyRun = { phase: snap.phase, gems: snap.gems, time: snap.time };
+    window.__bertyRun = {
+      phase: snap.phase,
+      gems: snap.gems,
+      gemTotal: snap.gemTotal,
+      time: snap.time,
+      hearts: snap.hearts,
+      x: this.p1?.x ?? 0,
+      worldW: this.worldW,
+    };
   }
 
   private wireControlsTest() {
