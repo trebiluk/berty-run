@@ -259,12 +259,14 @@ export function GameShell() {
                   Berty keeps running. Space or tap to jump.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Button onClick={() => e?.togglePause()}>Resume</Button>
+                  <Button className="min-h-14 min-w-[12rem] text-base" onClick={() => e?.togglePause()}>
+                    Resume
+                  </Button>
                   <Button variant="navy" onClick={() => e?.retry()}>
                     Retry
                   </Button>
                   <Button variant="ghost" onClick={() => e?.selectCourse(hud.courseId)}>
-                    Courses
+                    Title
                   </Button>
                   <Button variant="ghost" onClick={() => { e?.selectCourse(hud.courseId); setLab(true); }}>
                     Lab
@@ -363,7 +365,6 @@ function TitleCard({
   how,
   onHow,
   onPlay,
-  onCourse,
   onMute,
   onGhost,
   onLab,
@@ -382,104 +383,43 @@ function TitleCard({
   onShop: () => void;
   onJob: () => void;
 }) {
-  const list = COURSES.filter((c) => c.id === "roll-out");
+  const best = hud.bests["roll-out"];
+  const stars = starsFromBest(best, COURSES[0].par);
   return (
     <div className="flex flex-col gap-4">
-      <div
-        className="relative overflow-hidden rounded-2xl ring-1 ring-line"
-        style={{ aspectRatio: "16 / 4.4" }}
-      >
-        <img
-          src={`${import.meta.env.BASE_URL}art/title.jpg`}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          crossOrigin="anonymous"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/20 to-transparent" />
-        <div className="absolute bottom-3 left-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange">Solvay MS · TechWorks</p>
-          <h2 className="text-3xl font-extrabold tracking-tight">Berty's Run</h2>
-        </div>
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange">L1 · First Trace</p>
+        <h2 className="text-3xl font-extrabold tracking-tight">Berty Run</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          Space or tap to jump. Berty runs the copper. Grab bits. Hit the gate.
+        </p>
       </div>
-      <p className="text-sm leading-relaxed text-muted">
-        You are in the computer. Jump the copper. Earn watts. Build a machine. A Tech Room lab — NYS MST 5 · ITEEA STL · CompTIA intro.
-      </p>
-      <div className="flex flex-wrap items-center gap-1.5">
-        {COURSES.map((c) => {
-          const stars = starsFromBest(hud.bests[c.id], c.par);
-          return (
-            <span
-              key={c.id}
-              title={c.name}
-              className={cn(
-                "grid size-5 place-items-center rounded-md ring-1",
-                stars >= 3
-                  ? "bg-orange text-ink ring-crate"
-                  : stars > 0
-                    ? "bg-navy-2 text-orange ring-line"
-                    : "bg-ink text-muted ring-line",
-              )}
-            >
-              {stars > 0 ? stars : ""}
-            </span>
-          );
-        })}
-        <span className="ml-1 text-[10px] font-semibold uppercase tracking-wider text-muted">
-          {hud.stamps}/1 stamped
-        </span>
-      </div>
+      {stars > 0 || best != null ? (
+        <p className="text-xs font-semibold uppercase tracking-wide text-orange">
+          {[1, 2, 3].map((n) => (n <= stars ? "★" : "☆")).join("")}
+          {best != null ? ` · best ${fmtTime(best)}` : ""}
+        </p>
+      ) : null}
       {how ? (
         <ul className="grid gap-1 text-sm text-fg">
-          <li>Play traces to earn watts. Build Lab spends them on a real machine.</li>
-          <li>Fifteen lessons: hardware, software, thinking. Pass a check, then install the part.</li>
-          <li>Boot needs motherboard, PSU, CPU, RAM, and BertyOS.</li>
-          <li>One button: Space, click, or tap to jump. Hold for a higher jump.</li>
-          <li>Berty auto-runs. Jump crates, fans, and pits. Rings are checkpoints.</li>
-          <li>Ghost is your best run on this Chromebook. G hides it.</li>
-          <li>Best times stay on this Chromebook. No names. No accounts. Export a .bertyrun.json from Shop.</li>
+          <li>One button: Space, click, or tap. Hold for a higher jump.</li>
+          <li>Crates, fans, and pits cost a heart. Rings save a checkpoint.</li>
+          <li>Clear the gate to earn watts. Build Lab spends them.</li>
+          <li>Best time stays on this Chromebook. No names. No accounts.</li>
         </ul>
       ) : null}
-      <div className="grid max-h-44 grid-cols-1 gap-1.5 overflow-y-auto sm:max-h-none sm:grid-cols-2">
-        {list.map((c) => {
-          const on = hud.courseId === c.id;
-          const stars = starsFromBest(hud.bests[c.id], c.par);
-          const best = hud.bests[c.id];
-          return (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => onCourse(c.id)}
-              className={cn(
-                "flex min-h-11 flex-col items-start rounded-lg px-3 py-2 text-left ring-1",
-                on ? "bg-orange text-ink ring-crate" : "bg-navy-2 text-fg ring-line",
-              )}
-            >
-              <span className="text-xs font-bold uppercase tracking-wide">
-                {c.name}
-                {c.mode === "3d" ? " · 3D" : ""}
-              </span>
-              <span className={cn("inline-flex items-center gap-0.5 text-[10px] font-semibold", on ? "text-ink/70" : "text-muted")}>
-                {[1, 2, 3].map((n) => (
-                  <Star
-                    key={n}
-                    className={cn("size-2.5", n <= stars ? "fill-current text-current" : "opacity-30")}
-                  />
-                ))}
-                <span>
-                  {" · par "}
-                  {fmtTime(c.par)}
-                  {best != null ? ` · ${fmtTime(best)}` : ""}
-                </span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      <p className="text-xs text-muted">{COURSES.find((c) => c.id === hud.courseId)?.blurb}</p>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={onPlay}>
-          <Play className="size-4" /> Play
+        <Button className="min-h-14 min-w-[12rem] text-base" onClick={onPlay}>
+          <Play className="size-5" /> Play
         </Button>
+        <Button variant="ghost" onClick={onHow}>
+          {how ? "Hide how" : "How"}
+        </Button>
+        <Button variant="ghost" onClick={onMute} aria-label={hud.mute ? "Unmute" : "Mute"}>
+          {hud.mute ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
+        </Button>
+      </div>
+      <div className="flex flex-wrap gap-2">
         <Button variant="navy" onClick={onJob}>
           <ClipboardList className="size-4" /> Job
         </Button>
@@ -495,12 +435,6 @@ function TitleCard({
         >
           <Home className="size-4" /> Home
         </a>
-        <Button variant="ghost" onClick={onHow}>
-          {how ? "Hide how" : "How to jump"}
-        </Button>
-        <Button variant="ghost" onClick={onMute} aria-label={hud.mute ? "Unmute" : "Mute"}>
-          {hud.mute ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
-        </Button>
         <Button variant="ghost" onClick={onGhost} aria-label={hud.ghost ? "Hide ghost" : "Show ghost"}>
           <Ghost className="size-4" />
           {hud.ghost ? "Ghost" : "No ghost"}

@@ -1,0 +1,25 @@
+# FeatureBot · Berty Run · L1 First Trace
+
+Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
+
+## Lock
+One playable heat: **First Trace** (`roll-out`). Do not invent later heats as playable.
+
+## Play
+- Chromebook 2D one-button timing auto-runner
+- Berty auto-runs the copper
+- Space / click / tap = JUMP (hold 200ms = higher)
+- Crates, fans, pits · bits · checkpoints · gate
+- Three hearts · fat retry
+- Official shop-robot sprites
+- Steal: Pixel Runner feel only — see `FEATUREBOT-BERTY-RUN-STEAL-MAP.md`
+
+## Start
+UX from `FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md` — **patterns only, not a Curveball clone.**
+
+## Doors
+- Code: https://github.com/trebiluk/berty-run
+- School: https://apps.kulibert.net/berty-run/ — chip stays **list · not built** until Debugzy proves live play
+- Never classroom `vercel.app`
+
+*FeatureBot · 2026-09-22*

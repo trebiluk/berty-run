@@ -5,6 +5,8 @@ Office `shared/tekdash/crew-reports/` is not mounted in this Grok Build sandbox.
 ## Landed this cut (L1 playable)
 
 - `docs/crew/FEATUREBOT-BERTY-RUN-STEAL-MAP.md`
+- `docs/crew/FEATUREBOT-BERTY-RUN-L1.md`
+- `docs/crew/FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md`
 - `docs/crew/REPOSCOUT-BERTY-RUN-2026-09-22.md`
 - `docs/NOTICE-waiting-game.md`
 - `docs/crew/STYLEBOT-BERTY-RUN-BRAND-KIT.md`
