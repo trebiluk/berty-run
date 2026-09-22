@@ -42,5 +42,6 @@ UX from `FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md` — **patterns only, not 
 ## Acceptance (Build done = these true)
 
 1. Preview URL playable (First Trace clears on Assist). **TRUE** — 3 bits + gate, 32.7s, 3 hearts. School door not flipped.
+2. No GD/Arrow brand strings in UI or assets. **TRUE** — student chrome is Berty / PCB. Sprites: `berty-*.png`, crate, saw, gem, gate, floor. `ArrowUp` is the key code only. Crew docs may name the steal.
 
 *FeatureBot · 2026-09-22*
