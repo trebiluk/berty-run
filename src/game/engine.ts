@@ -537,7 +537,7 @@ export class Engine {
     for (const p of this.pops) p.life -= dt;
     this.pops = this.pops.filter((p) => p.life > 0);
     this.cam.trauma = Math.max(0, this.cam.trauma - dt * 2.2);
-    for (const s of this.saws) s.t += dt;
+    for (const s of this.saws) if (!this.reduced) s.t += dt;
 
     if (this.phase !== "play") return;
     this.hudAcc += dt;
@@ -645,7 +645,7 @@ export class Engine {
         sfxGem();
         this.burst(g.x, g.y, "#e87722", 12);
         this.pops.push({ x: g.x, y: g.y, life: 0.5, max: 0.5, label: "+1" });
-        this.hitstop = 0.03;
+        if (!this.reduced) this.hitstop = 0.03;
       }
     }
     for (const c of this.checks) {
@@ -766,6 +766,7 @@ export class Engine {
   }
 
   private burst(x: number, y: number, c: string, n: number) {
+    if (this.reduced) return;
     for (let i = 0; i < n; i++) {
       const a = Math.random() * Math.PI * 2;
       const sp = 60 + Math.random() * 180;
