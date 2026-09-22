@@ -7,6 +7,7 @@ Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
 | Lock | Spec |
 |------|------|
 | Genre | GD × Geometry Arrow **feel** only — reflex timing auto-runner. **Not** Mario. **Not** marble-tunnel strategy. |
+| Depth | Flat **2D canvas** (drawn depth ok). **No** WebGL / real 3D. |
 
 ## Play
 - Chromebook 2D one-button timing auto-runner

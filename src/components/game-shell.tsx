@@ -44,7 +44,6 @@ const idle: HudSnap = {
 
 export function GameShell() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvas3dRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const [hud, setHud] = useState<HudSnap>(idle);
   const [how, setHow] = useState(false);
@@ -56,9 +55,8 @@ export function GameShell() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const canvas3d = canvas3dRef.current;
-    if (!canvas || !canvas3d) return;
-    const engine = new Engine(canvas, canvas3d, setHud);
+    if (!canvas) return;
+    const engine = new Engine(canvas, setHud);
     engineRef.current = engine;
     const launch = readLaunch();
     void engine.boot().then(() => {
@@ -89,11 +87,6 @@ export function GameShell() {
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-ink text-fg">
       <canvas
-        ref={canvas3dRef}
-        className="absolute inset-0 h-full w-full touch-none"
-        style={{ touchAction: "none", opacity: hud.is3d ? 1 : 0 }}
-      />
-      <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
         style={{ touchAction: "none" }}
@@ -104,7 +97,6 @@ export function GameShell() {
           <p className="text-[10px] font-bold tracking-[0.18em] text-orange uppercase">{CHIP}</p>
           <h1 className="text-lg font-extrabold leading-tight tracking-tight">
             {hud.courseName}
-            {hud.is3d ? <span className="ml-2 text-[10px] font-bold tracking-[0.16em] text-orange"> 3D</span> : null}
           </h1>
         </div>
         {hud.phase === "play" || hud.phase === "pause" ? (

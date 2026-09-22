@@ -227,7 +227,6 @@ type Player = {
 
 export class Engine {
   canvas: HTMLCanvasElement;
-  canvas3d: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   onHud: (h: HudSnap) => void;
   sprites: Sprites | null = null;
@@ -271,9 +270,8 @@ export class Engine {
   closeArmed = new Set<string>();
   reduced = false;
 
-  constructor(canvas: HTMLCanvasElement, canvas3d: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
+  constructor(canvas: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
     this.canvas = canvas;
-    this.canvas3d = canvas3d;
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("No 2D context");
     this.ctx = ctx;
