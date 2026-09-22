@@ -1,23 +1,12 @@
-# berty-run
+# Berty's Run · BR 1.2.0
 
-**Product (working):** Pipe Draft · **Mascot:** Berty  
-Solvay Middle School Technology Education — **idea list / repo placeholder only.**
+Solvay MS TechWorks lab. You are inside the computer.
 
-## HOLD BUILD
+**Door:** https://apps.kulibert.net/berty-run/  
+**Chip:** BR 1.2.0 — site induction + job packet.
 
-Diego: list item only — **do not build** (no MVP, no engine, no deploy of a game) until he says GO.
+Chromebook-first. No names. No accounts. Ed Law 2-d / FERPA.
 
-Tech Room tile (planned): `https://apps.kulibert.net/berty-run/`  
-School DNS: `*.kulibert.net` only (never `vercel.app` for classroom links).
+Teach hang: `https://apps.kulibert.net/berty-run/?job=1&course=roll-out`
 
-## Briefs (shared box)
-
-- Feature: `shared/tekdash/crew-reports/FEATUREBOT-PIPE-DRAFT.md`
-- Mock: `shared/tekdash/visual-eval/featurebot-pipe-draft-mock.png`
-- Brochure: `shared/tekdash/brochure/PIPE-DRAFT-SALES-BROCHURE.pdf`
-
-## Idea list (not scheduled)
-
-- Chromebook 2D marble-tunnel: steer · grab gems · exit (strategy over twitch)
-- **2-player team mode** so kids can team
-- No student accounts / no names in saves (Ed Law 2-d / FERPA)
+Helper: `?help=1` · Lab: `?lab=1` · Board: `?course=roll-out`

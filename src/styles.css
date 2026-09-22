@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #071526;
+  --color-navy: #0b1f3a;
+  --color-navy-2: #16304c;
+  --color-paper: #f4efe6;
+  --color-orange: #e87722;
+  --color-crate: #c45c26;
+  --color-ok: #2f6f4e;
+  --color-line: #2a4d70;
+  --color-muted: #9db0c4;
+  --color-fg: #e8eef6;
+  --color-gold: #f4b942;
+  --font-sans: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-scale-modal: 0.96;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    height: 100%;
+    margin: 0;
+    background: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.overlay-panel {
+  animation: overlay-in var(--motion-fast) var(--ease-smooth-out) both;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(var(--motion-scale-modal)) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
