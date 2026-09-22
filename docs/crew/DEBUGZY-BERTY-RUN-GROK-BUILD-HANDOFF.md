@@ -1,20 +1,21 @@
 # Debugzy handoff — Berty Run L1 First Trace
 
-**From:** Grok Build (this chat) · 2026-09-22  
+**From:** Grok Build · 2026-09-22  
 **Do not flip the hub chip** until you prove live play (URL + rev + screenshot).
 
 ## Preview
 
-Playable in the Grok Build live preview (this session). First Trace clears on Assist: 3 bits + gate, ~33s, 3 hearts. Mute still shows **Trace complete**. Reduced-motion: no shake/flash.
+Playable First Trace. Assist is the default: tap JUMP when the trace glows (the JUMP button lights). A clean tap takes the gem. The edge of the glow still clears and can miss a gem.
 
-This preview is **not** a classroom link. Do not send students `vercel.app`.
+Win reads **LEVEL UP / Trace complete / 3 gems + EXIT** with three gem tiles. Mute does not hide that. Reduced motion: no camera shake, no particle burst, glow stays steady.
+
+This preview is not a classroom link. Do not send students `vercel.app`.
 
 ## Code
 
 - Repo: https://github.com/trebiluk/berty-run
-- Branch: `main`
-- Chip: `BR 1.3.0`
-- Heat: First Trace only (`roll-out`)
+- Chip: `BR 1.4.0`
+- Heat: `src/game/trace.ts` (fixed PCB lane). Canvas draw: `src/game/engine.ts`. No sprite PNGs. No WebGL.
 
 ## Graft → `apps.kulibert.net/berty-run/`
 
@@ -24,23 +25,18 @@ Host: `trebiluk/apps-kulibert` → `public/berty-run/`
 cd berty-run
 npm ci
 npm run build:cart
-# dist/ is Vite base /berty-run/
 rsync -a --delete dist/ ../apps-kulibert/public/berty-run/
 ```
 
-`vite.config.ts` already uses `BERT_CART_BASE=/berty-run/` on `build:cart`.
+`dist/` is a static Vite build with `base: /berty-run/`. Copy the whole folder. Do not point the hub at a `vercel.app` URL.
 
-Placeholder at https://apps.kulibert.net/berty-run/ stays **list · not built** until you:
+Placeholder stays **list · not built** until you:
 
 1. Graft the cart
 2. Play First Trace on school DNS
 3. File URL + rev + screenshot
-4. Then bump the hub chip (see `apps-kulibert` `docs/crew/HUB-CHIP-BUMP.md`)
+4. Then bump the hub chip
 
-## Locks (already in the cart)
+## Out of scope
 
-Genre GD×Arrow **feel** only · 2D canvas · fat JUMP · 30–40s spine · 3 gems on path · Trace broke / Trace complete · PLAY+HELP · Berty/PCB IP · no WebGL.
-
-## Leave
-
-Hub chip. Classroom `vercel.app`. Gravity heats. Later courses as playable.
+Beatz, hub accounts, multiplayer, gravity heats, Alias Pass, Baboo. This cart does not ship them.

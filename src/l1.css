@@ -1,0 +1,221 @@
+.l1 {
+  position: relative;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  background: #050814;
+  color: #f8fafc;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.l1-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.l1-top {
+  pointer-events: none;
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 12px 0;
+}
+
+.l1-card,
+.l1-hud {
+  background: rgba(5, 8, 20, 0.82);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 16px;
+  padding: 8px 12px;
+}
+
+.l1-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #22d3ee;
+}
+
+.l1-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.l1-hud {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.l1-gems {
+  color: #fbbf24;
+}
+
+.l1-assist {
+  color: #14b8a6;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.l1-jump {
+  position: absolute;
+  z-index: 3;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  min-width: 128px;
+  min-height: 64px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 18px;
+  background: #22d3ee;
+  color: #050814;
+  font: 800 22px/1 "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  touch-action: none;
+}
+
+.l1-jump.is-hot {
+  outline: 4px solid #fbbf24;
+  outline-offset: 3px;
+}
+
+.l1-hint {
+  position: absolute;
+  z-index: 3;
+  left: 16px;
+  right: 160px;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  margin: 0;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.l1-shade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 8, 20, 0.72);
+}
+
+.l1-panel {
+  pointer-events: auto;
+  width: min(100%, 28rem);
+  max-height: min(92dvh, 40rem);
+  overflow: auto;
+  padding: 22px 22px 18px;
+  border-radius: 24px;
+  background: #0b1f3a;
+  border: 1px solid rgba(248, 250, 252, 0.16);
+}
+
+.l1-word {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.l1-promise,
+.l1-copy {
+  margin: 10px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.l1-help {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.l1-best {
+  margin: 12px 0 0;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.l1-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.l1-btn {
+  min-height: 56px;
+  min-width: 8rem;
+  padding: 0 22px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font: 800 18px/1 "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.l1-btn-play {
+  background: #22d3ee;
+  color: #050814;
+  min-width: 12rem;
+}
+
+.l1-btn-help,
+.l1-btn-ghost {
+  background: transparent;
+  color: #f8fafc;
+  border-color: rgba(248, 250, 252, 0.28);
+}
+
+.l1-gemrow {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.l1-gem {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #10243f;
+  color: #9db0c4;
+  font-size: 22px;
+}
+
+.l1-gem.is-got {
+  background: #fbbf24;
+  color: #050814;
+}
+
+.l1-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .l1-jump.is-hot {
+    outline-style: solid;
+  }
+}

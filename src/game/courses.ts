@@ -1,3 +1,4 @@
+// Playable L1 heat is src/game/trace.ts. These rows are not on the cart.
 import type { Course, CourseId, Seg } from "./types";
 
 export const TILE = 48;

@@ -3,7 +3,7 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Berty's Run";
+const APP_NAME = "Berty Run";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -14,7 +14,7 @@ export const Route = createRootRoute({
       { name: "theme-color", content: "#0B1F3A" },
       {
         name: "description",
-        content: "Berty's Run — Solvay MS TechWorks lab. Timing auto-runner on copper traces. Jump, collect bits, hit the gate. No names.",
+        content: "Berty Run. Tap JUMP. Collect all 3 gems. Then the EXIT.",
       },
     ],
     links: [

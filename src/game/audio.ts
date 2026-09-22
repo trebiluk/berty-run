@@ -18,9 +18,13 @@ function makeBus(): Bus {
   return { ctx, master, sfx, music };
 }
 
-export function unlockAudio() {
+export function primeSfx() {
   if (!bus) bus = makeBus();
   if (bus.ctx.state === "suspended") void bus.ctx.resume();
+}
+
+export function unlockAudio() {
+  primeSfx();
   startMusic();
 }
 
