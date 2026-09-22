@@ -394,7 +394,7 @@ function TitleCard({
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange">L1 · First Trace</p>
         <h2 className="text-3xl font-extrabold tracking-tight">Berty Run</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted">
-          Space or tap to jump. Berty runs the copper. Grab bits. Hit the gate.
+          Space or tap to jump. Berty runs the copper. Three bits on the path. Hit the gate.
         </p>
       </div>
       {stars > 0 || best != null ? (
