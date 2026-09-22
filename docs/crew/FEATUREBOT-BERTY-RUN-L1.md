@@ -45,5 +45,6 @@ UX from `FEATUREBOT-BERTY-RUN-START-FROM-CURVEBALL.md` — **patterns only, not 
 2. No GD/Arrow brand strings in UI or assets. **TRUE** — student chrome is Berty / PCB. Sprites: `berty-*.png`, crate, saw, gem, gate, floor. `ArrowUp` is the key code only. Crew docs may name the steal.
 3. Success readable without audio. **TRUE** — muted clear still shows Trace complete, 3 bits + gate, three gem tiles.
 4. Reduced-motion: no shake/flash spam. **TRUE** — `prefers-reduced-motion: reduce` kills camera shake, hitstop, particle bursts, jump spin, saw spin. CSS zeros overlay animation.
+5. Hand Debugzy: preview URL + graft note for `apps.kulibert.net/berty-run/`. **TRUE** — `docs/crew/DEBUGZY-BERTY-RUN-GROK-BUILD-HANDOFF.md`
 
 *FeatureBot · 2026-09-22*
