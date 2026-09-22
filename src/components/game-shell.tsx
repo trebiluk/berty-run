@@ -299,7 +299,9 @@ export function GameShell() {
                   {hud.earned > 0 ? ` · +${hud.earned} W` : ""}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Button onClick={() => e?.retry()}>Run again</Button>
+                  <Button className="min-h-14 min-w-[12rem] text-base" onClick={() => e?.retry()}>
+                    Run again
+                  </Button>
                   <Button variant="navy" onClick={() => nextCourse(hud.courseId, e)}>
                     Next board
                   </Button>
@@ -318,13 +320,15 @@ export function GameShell() {
 
             {hud.phase === "fail" ? (
               <div className="flex flex-col gap-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Board stop</p>
-                <h2 className="text-3xl font-extrabold tracking-tight">Reset</h2>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Wiped out</p>
+                <h2 className="text-3xl font-extrabold tracking-tight">Try again</h2>
                 <p className="text-muted">
-                  {hud.is3d ? "Falling off the board costs a heart." : "Crates, fans, and pits cost a heart. Three misses and the run is over."}
+                  Tap or Space to retry. Crates, fans, and pits cost a heart. Three misses and the run is over.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Button onClick={() => e?.retry()}>Retry</Button>
+                  <Button className="min-h-14 min-w-[12rem] text-base" onClick={() => e?.retry()}>
+                    Retry
+                  </Button>
                   <Button variant="ghost" onClick={() => e?.selectCourse(hud.courseId)}>
                     Courses
                   </Button>

@@ -15,6 +15,10 @@ import {
 import { makePack, parsePack, type BertyPack } from "./techworks";
 import type { Course, CourseId, HudSnap, Seg } from "./types";
 
+// Lifted from ftaip/waiting-game Pixel Runner (MIT): auto-scroll, one JUMP,
+// tap-vs-hold (200ms boost window), obstacle timing, fat Space retry.
+// See docs/NOTICE-waiting-game.md. Tick + draw share this class.
+
 const STEP = 1 / 60;
 const GRAVITY = 2400;
 const JUMP = -780;
