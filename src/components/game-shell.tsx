@@ -65,13 +65,15 @@ export function GameShell() {
       if (launch.lab) {
         setLab(true);
       } else if (launch.help) {
-        setHelp(true);
+        setHow(true);
       } else if (launch.job) {
         setJob(true);
       } else if (launch.plan) {
         setShop(true);
-      } else if (launch.induct || fresh) {
+      } else if (launch.induct) {
         setInduct(true);
+      } else if (fresh) {
+        engine.finishInduction();
       }
     });
     return () => {
@@ -386,60 +388,32 @@ function TitleCard({
   onJob: () => void;
 }) {
   const best = hud.bests["roll-out"];
-  const stars = starsFromBest(best, COURSES[0].par);
   return (
     <div className="flex flex-col gap-4">
       <div>
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange">L1 · First Trace</p>
         <h2 className="text-3xl font-extrabold tracking-tight">Berty Run</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Space or tap to jump. Berty runs the copper. Three bits on the path. Hit the gate.
-        </p>
+        <p className="mt-2 text-sm font-semibold text-fg">Tap JUMP · collect all 3 gems.</p>
       </div>
-      {stars > 0 || best != null ? (
-        <p className="text-xs font-semibold uppercase tracking-wide text-orange">
-          {[1, 2, 3].map((n) => (n <= stars ? "★" : "☆")).join("")}
-          {best != null ? ` · best ${fmtTime(best)}` : ""}
-        </p>
+      {best != null ? (
+        <p className="text-xs font-semibold uppercase tracking-wide text-orange">best {fmtTime(best)}</p>
       ) : null}
       {how ? (
         <ul className="grid gap-1 text-sm text-fg">
-          <li>One button: Space, click, or tap. Hold for a higher jump.</li>
-          <li>Crates, fans, and pits cost a heart. Rings save a checkpoint.</li>
-          <li>Clear the gate to earn watts. Build Lab spends them.</li>
-          <li>Best time stays on this Chromebook. No names. No accounts.</li>
+          <li>Space, Up, or the JUMP button. Hold for a higher jump.</li>
+          <li>Three bits sit on the copper. Then the gate.</li>
+          <li>Best time stays on this Chromebook. No names.</li>
         </ul>
       ) : null}
       <div className="flex flex-wrap gap-2">
         <Button className="min-h-14 min-w-[12rem] text-base" onClick={onPlay}>
           <Play className="size-5" /> Play
         </Button>
-        <Button variant="ghost" onClick={onHow}>
-          {how ? "Hide how" : "How"}
+        <Button variant="navy" className="min-h-14 min-w-[7rem] text-base" onClick={onHow}>
+          {how ? "Hide" : "Help"}
         </Button>
         <Button variant="ghost" onClick={onMute} aria-label={hud.mute ? "Unmute" : "Mute"}>
           {hud.mute ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
-        </Button>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        <Button variant="navy" onClick={onJob}>
-          <ClipboardList className="size-4" /> Job
-        </Button>
-        <Button variant="navy" onClick={onLab}>
-          <CircuitBoard className="size-4" /> Build Lab
-        </Button>
-        <Button variant="ghost" onClick={onShop}>
-          <Wrench className="size-4" /> Shop
-        </Button>
-        <a
-          href={ROOM}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-sm)] bg-transparent px-4 text-sm font-semibold uppercase tracking-wide text-fg ring-1 ring-line"
-        >
-          <Home className="size-4" /> Home
-        </a>
-        <Button variant="ghost" onClick={onGhost} aria-label={hud.ghost ? "Hide ghost" : "Show ghost"}>
-          <Ghost className="size-4" />
-          {hud.ghost ? "Ghost" : "No ghost"}
         </Button>
       </div>
     </div>

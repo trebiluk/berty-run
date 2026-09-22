@@ -13,6 +13,7 @@ Office: `shared/tekdash/crew-reports/FEATUREBOT-BERTY-RUN-L1.md`
 | Gems | **3** on the auto-path |
 | Fail | Calm “Trace broke · try again” + fat RETRY |
 | Win | 3 gems + exit · text + gems (**never sound-only success**) |
+| Start | PLAY + HELP · “Tap JUMP · collect all 3 gems.” Zero lecture overlay. |
 
 ## Play
 - Chromebook 2D one-button timing auto-runner
