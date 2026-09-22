@@ -16,6 +16,8 @@ export type Seg =
   | { k: "g"; w: number }
   | { k: "gap"; w: number }
   | { k: "crate" }
+  | { k: "overhang" }
+  | { k: "window"; w?: number }
   | { k: "saw"; h?: number }
   | { k: "gems"; n: number; form?: "line" | "arc" | "high" }
   | { k: "check" }

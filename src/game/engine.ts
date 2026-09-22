@@ -176,6 +176,17 @@ function compile(segs: Seg[]) {
       crates.push({ x: x + 8, y: GROUND - h, w, h });
       run += w + 16;
       x += w + 16;
+    } else if (s.k === "overhang") {
+      const w = 96;
+      const h = 78;
+      crates.push({ x: x + 10, y: GROUND - h, w, h });
+      run += w + 20;
+      x += w + 20;
+    } else if (s.k === "window") {
+      flushGround();
+      const w = s.w ?? 158;
+      saws.push({ x: x + w / 2, y: GROUND - 108, r: 24, t: 0 });
+      x += w;
     } else if (s.k === "saw") {
       const h = s.h ?? 58;
       saws.push({ x: x + 28, y: GROUND - h, r: 26, t: 0 });
