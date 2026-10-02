@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { applyPrefs, CABS, SKINS, STICKERS, initials, loadPrefs, reducedMotion, savePrefs, skinColor, watchPrefs, type Prefs, type Skin, type Sticker } from "@/arcade/cabinet";
 import { face } from "@/game/face";
+import { WHATS_NEW } from "@/game/techworks";
 import { useLang } from "@/game/use-lang";
 import { arcadeBlip, arcadeMood } from "@/arcade/sound";
 
 export function useCabinet() {
-  const [prefs, setPrefs] = useState<Prefs>(() => {
+  const [prefs, setPrefs] = useState<Prefs>(() => ({ look: "arcade", cab: "neon", skin: "lime", sticker: "bolt", crt: true, music: true, sound: true, volume: 0.7 }));
+  useEffect(() => {
     const first = loadPrefs();
     applyPrefs(first);
-    return first;
-  });
-  useEffect(() => watchPrefs(setPrefs), []);
+    setPrefs(first);
+    return watchPrefs(setPrefs);
+  }, []);
   return prefs;
 }
 
@@ -97,6 +99,7 @@ export function Attract({ skin }: { skin: string }) {
       >
         {ui.coin}
       </p>
+      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{WHATS_NEW}</p>
     </div>
   );
 }

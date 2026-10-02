@@ -4,9 +4,9 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.8";
+export const CHIP = "BR 1.12.12";
 export const WHATS_NEW =
-  "BR 1.12.8: Sideways results now fit on one screen, with practice tiles and Levels on the right and no scrolling (1.12.7 still hid them on small phones). Esports heat Close goes back to your results.";
+  "BR 1.12.12: Settings has a name, and the game starts without errors.";
 export const APP_NAME = "Berty's Run";
 export const PACK_KIND = "bertyrun";
 export const PACK_VERSION = 1;

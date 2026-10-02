@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.12 — 2026-10-02
+
+- What's new: Settings has a name, and the game starts without errors.
+
 ## BR 1.12.8 — 2026-10-02
 
 - What's new: Sideways results now fit on one screen, with practice tiles and Levels on the right and no scrolling (1.12.7 still hid them on small phones). Esports heat Close goes back to your results.

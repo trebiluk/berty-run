@@ -172,10 +172,14 @@ export default defineConfig(({ command, isPreview }) => ({
     tanstackStart(
       process.env.BERT_CART_BASE
         ? {
-            spa: {
+            // Full prerender, not the SPA shell. The shell's empty suspense
+            // markers do not match the first client render (React #418).
+            prerender: {
               enabled: true,
-              prerender: { outputPath: "/index.html" },
+              crawlLinks: false,
+              failOnError: true,
             },
+            pages: [{ path: "/", prerender: { enabled: true, crawlLinks: false } }],
           }
         : {},
     ),

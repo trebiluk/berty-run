@@ -260,7 +260,7 @@ for (const [w, h] of [[800, 360], [915, 412], [360, 800], [412, 915]]) {
     rev: document.querySelector('meta[name="berty-run-rev"]')?.content,
     vp: document.querySelector('meta[name="viewport"]')?.content,
   }));
-  ok(theme.theme === "classic" && theme.rev === "BR 1.12.8" && !theme.vp.includes("maximum-scale"), `classic ${JSON.stringify(theme)}`);
+  ok(theme.theme === "classic" && theme.rev === "BR 1.12.12" && !theme.vp.includes("maximum-scale"), `classic ${JSON.stringify(theme)}`);
   await ctx.close();
 }
 

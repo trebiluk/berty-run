@@ -58,7 +58,7 @@ for (const lang of Object.keys(PLAY)) {
   ok(text.includes(PLAY[lang]), `${lang} play in door: ${text.split("\n").slice(-3).join(" | ")}`);
   ok(text.includes(LEVELS[lang]), `${lang} levels in door`);
   const meta = await page.locator('meta[name="berty-run-rev"]').getAttribute("content");
-  ok(meta === "BR 1.12.8", `${lang} rev ${meta}`);
+  ok(meta === "BR 1.12.12", `${lang} rev ${meta}`);
   const dir = await page.evaluate(() => document.documentElement.dir);
   const want = lang === "ar" || lang === "fa-AF" ? "rtl" : "ltr";
   ok(dir === want, `${lang} dir ${dir}`);

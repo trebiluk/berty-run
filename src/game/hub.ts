@@ -111,13 +111,14 @@ export function pickLang(storedApp?: Lang | ""): Lang {
   if (classicTheme()) return "en";
   const fromFrame = frameLang();
   if (fromFrame) return fromFrame;
-  const w = root();
-  const fromPrefs = normLang(w?.KulibertPrefs?.lang);
-  if (fromPrefs) return fromPrefs;
+  // The prefs script reports "en" even when nothing was saved. That default
+  // must not wipe a language the app already stored (br-access-v1).
   try {
     const raw = JSON.parse(localStorage.getItem("kulibert-prefs-v1") || "null") as { lang?: string } | null;
-    const stored = normLang(raw?.lang);
-    if (stored) return stored;
+    if (raw && typeof raw === "object") {
+      const stored = normLang(raw.lang);
+      if (stored) return stored;
+    }
   } catch {
     /* ignore */
   }

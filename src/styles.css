@@ -264,6 +264,9 @@ html[dir="rtl"] body {
   .berty-card,
   .clear-line,
   .win-more { order: 3 !important; }
+  .win-actions button {
+    min-height: 45px !important;
+  }
 }
 
 @media (min-width: 960px) {
@@ -408,6 +411,226 @@ html[dir="rtl"] body {
   .win-gift-line {
     display: block !important;
   }
+}
+
+/* Short but wide, and the rotated phone (data-sideways): keep the 1.12.9–1.12.11 tile column. */
+@media (orientation: landscape) and (height <= 500px) and (width >= 960px) {
+  .menu-layer .overlay-panel:has(.win-board) {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .menu-layer .panel-body:has(.win-board) {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .win-board {
+    display: grid !important;
+    flex: auto;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+  .win-col { display: contents !important; }
+  .win-actions {
+    grid-area: 1 / 1 !important;
+    align-self: start;
+    position: static;
+    order: 0 !important;
+  }
+  .win-stage {
+    grid-area: 2 / 1 !important;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    order: 0 !important;
+  }
+  .win-rest {
+    display: flex !important;
+    flex-direction: column;
+    grid-area: 1 / 2 / span 2 !important;
+    min-width: 0;
+    min-height: 168px !important;
+    overflow: hidden !important;
+    order: 0 !important;
+  }
+  .win-more { order: -1 !important; flex: 0 0 auto !important; }
+  .win-more button {
+    min-height: 48px !important;
+    flex-shrink: 0;
+    touch-action: manipulation;
+  }
+  .win-more .grid > button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .berty-card,
+  .clear-line {
+    order: 1 !important;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+html[data-sideways="1"] .menu-layer .overlay-panel:has(.win-board) {
+  min-height: 0;
+  overflow: hidden;
+}
+html[data-sideways="1"] .menu-layer .panel-body:has(.win-board) {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+html[data-sideways="1"] .win-board {
+  display: grid !important;
+  flex: auto;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+html[data-sideways="1"] .win-col { display: contents !important; }
+html[data-sideways="1"] .win-actions {
+  grid-area: 1 / 1 !important;
+  align-self: start;
+  position: static;
+  order: 0 !important;
+}
+html[data-sideways="1"] .win-stage {
+  grid-area: 2 / 1 !important;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  order: 0 !important;
+}
+html[data-sideways="1"] .win-rest {
+  display: flex !important;
+  flex-direction: column;
+  grid-area: 1 / 2 / span 2 !important;
+  min-width: 0;
+  min-height: 168px !important;
+  overflow: hidden !important;
+  order: 0 !important;
+}
+html[data-sideways="1"] .win-more { order: -1 !important; flex: 0 0 auto !important; }
+html[data-sideways="1"] .win-more button {
+  min-height: 48px !important;
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+html[data-sideways="1"] .win-more .grid > button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+html[data-sideways="1"] .berty-card,
+html[data-sideways="1"] .clear-line {
+  order: 1 !important;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .win-actions {
+    grid-area: 1 / 1 !important;
+    align-self: start;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 3;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.25rem;
+    order: 0 !important;
+  }
+  .win-action-pair { display: contents !important; }
+  .win-actions > button:first-of-type {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 44px !important;
+  }
+  .win-action-pair > button:last-child {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 44px !important;
+  }
+  .win-action-pair > button:first-child:not(:last-child) {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 44px !important;
+  }
+  .win-actions > button:last-of-type {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 44px !important;
+  }
+  .win-actions button {
+    box-sizing: border-box;
+    min-height: 48px !important;
+    height: 48px !important;
+    max-height: none !important;
+    touch-action: manipulation;
+  }
+}
+html[data-sideways="1"] .win-actions button {
+  box-sizing: border-box;
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: none !important;
+  touch-action: manipulation;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .win-rest:has([aria-expanded="true"]) {
+    overflow-y: auto !important;
+    touch-action: pan-y;
+  }
+  .win-rest:has([aria-expanded="true"]) .win-more button {
+    touch-action: pan-y;
+  }
+}
+html[data-sideways="1"] .win-rest:has([aria-expanded="true"]) {
+  overflow-y: auto !important;
+  touch-action: pan-y;
+}
+html[data-sideways="1"] .win-rest:has([aria-expanded="true"]) .win-more button {
+  touch-action: pan-y;
+}
+html[data-sideways="1"] .win-actions {
+  grid-area: 1 / 1 !important;
+  align-self: start;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.25rem;
+  order: 0 !important;
+}
+html[data-sideways="1"] .win-action-pair { display: contents !important; }
+html[data-sideways="1"] .win-actions > button:first-of-type {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 44px !important;
+}
+html[data-sideways="1"] .win-action-pair > button:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 44px !important;
+}
+html[data-sideways="1"] .win-action-pair > button:first-child:not(:last-child) {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 44px !important;
+}
+html[data-sideways="1"] .win-actions > button:last-of-type {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 44px !important;
 }
 
 .play-canvas {

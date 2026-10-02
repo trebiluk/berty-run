@@ -1131,7 +1131,8 @@ export function face(lang: Lang): Face {
   ui.whatsNew = shared("whatsNew") || "What's new";
   ui.closeWord = shared("close") || "Close";
   ui.noVoice = shared("noVoice") || "No voice yet. Read the words.";
-  bag.menu = shared("menu") || ui.menu;
+  const menu = shared("menu");
+  if (menu && (lang === "en" || lang === "simple" || menu !== "Menu")) bag.menu = menu;
   return ui;
 }
 

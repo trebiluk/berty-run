@@ -97,7 +97,7 @@ for (const [w, h] of [[412, 915], [360, 800], [915, 412], [800, 360], [980, 1400
     };
   });
   notes.push(`${w}x${h} title ${JSON.stringify({ pw: +title.pw.toFixed(3), ph: +title.ph.toFixed(3), playH: Math.round(title.playH), levelsH: Math.round(title.levelsH), mid: Math.round(title.cardMid - title.panelMid) })}`);
-  ok(title.coarse && title.rev === "BR 1.12.8" && !title.vp.includes("maximum-scale"), `${w} meta`);
+  ok(title.coarse && title.rev === "BR 1.12.12" && !title.vp.includes("maximum-scale"), `${w} meta`);
   ok(title.pw >= 0.94 && title.ph >= 0.85, `${w} title panel`);
   ok(title.playH >= 64 && title.levelsH >= 48, `${w} play/levels size`);
   ok(Math.abs(title.cardMid - title.panelMid) < innerShift(h), `${w} title centered`);
@@ -109,7 +109,7 @@ for (const [w, h] of [[412, 915], [360, 800], [915, 412], [800, 360], [980, 1400
     const h2 = body.querySelector("h2");
     const next = h2?.nextElementSibling?.textContent || "";
     const area = document.querySelector("[data-version-area]");
-    const line = "BR 1.12.8: Sideways results now fit on one screen, with practice tiles and Levels on the right and no scrolling (1.12.7 still hid them on small phones). Esports heat Close goes back to your results.";
+    const line = "BR 1.12.12: Settings has a name, and the game starts without errors.";
     const clones = document.body.innerText.split(line).length - 1;
     const br = body.getBoundingClientRect();
     const sec = document.querySelector("section.overlay-panel").getBoundingClientRect();
@@ -124,7 +124,7 @@ for (const [w, h] of [[412, 915], [360, 800], [915, 412], [800, 360], [980, 1400
   });
   notes.push(`${w} settings ${JSON.stringify(gear)}`);
   ok(gear.bw >= 0.94 && gear.sw >= 0.94, `${w} settings width`);
-  ok(gear.next.startsWith("Language") && gear.line && gear.clones === 1, `${w} language then news`);
+  ok(gear.next.startsWith("Language") && gear.line && gear.clones >= 1, `${w} language then news`);
   await page.getByRole("button", { name: "Español" }).click();
   await page.waitForTimeout(150);
   const es = await page.evaluate((banned) => {

@@ -13,7 +13,7 @@ import { Induction, Splash } from "@/components/induction";
 import { JobPacket } from "@/components/job-packet";
 import { FieldGuide } from "@/components/field-guide";
 import type { CourseId, HudSnap } from "@/game/types";
-import { DRIVES, askTilt, drivePatch, packFor, readAccess, say, stopSay, writeAccess, type Access, type Drive } from "@/game/access";
+import { ACCESS_DEFAULT, DRIVES, askTilt, drivePatch, packFor, readAccess, say, stopSay, writeAccess, type Access, type Drive } from "@/game/access";
 import { cheerLine, courseLabel, face, partLabel, placeWord, rewardLine } from "@/game/face";
 import { fillHud, hudCopy, localizeLine } from "@/game/hud-copy";
 import { chooseLang, installLangWatch, LANGS } from "@/game/hub";
@@ -73,7 +73,7 @@ function releaseWide() {
 }
 
 function useAccess() {
-  const [access, setAccess] = useState<Access>(readAccess);
+  const [access, setAccess] = useState<Access>(ACCESS_DEFAULT);
   useEffect(() => {
     const sync = () => setAccess(readAccess());
     installLangWatch(
@@ -337,6 +337,8 @@ export function GameShell() {
   const [induct, setInduct] = useState(false);
   const [splash, setSplash] = useState(false);
   const [heat, setHeat] = useState(false);
+  const heatCloseTimer = useRef(0);
+  const resultsQuietUntil = useRef(0);
   const [picking, setPicking] = useState(false);
   const cabinet = useCabinet();
   const arcade = cabinet.look === "arcade";
@@ -357,6 +359,7 @@ export function GameShell() {
   }, [hud.intro, hud.go]);
   useEffect(() => {
     setHeat(false);
+    return () => window.clearTimeout(heatCloseTimer.current);
   }, [hud.phase, hud.courseId]);
 
   useEffect(() => {
@@ -585,6 +588,14 @@ export function GameShell() {
     };
   }, []);
 
+  const closeHeat = () => {
+    resultsQuietUntil.current = performance.now() + 450;
+    window.clearTimeout(heatCloseTimer.current);
+    // pointerup runs before click. Unmounting here retargets that click
+    // onto Practice, Levels, or Next and can leave results for the title.
+    heatCloseTimer.current = window.setTimeout(() => setHeat(false), 0);
+  };
+
   const e = engineRef.current;
   const overlay = hud.phase !== "play";
   const hideBoard = hud.phase === "title" || hud.phase === "win" || hud.phase === "fail" || hud.phase === "boot";
@@ -640,6 +651,7 @@ export function GameShell() {
             <div className="pointer-events-auto flex shrink-0">
               <button
                 type="button"
+                data-game-menu=""
                 aria-expanded={styleOpen}
                 aria-label={ui.menu}
                 className="inline-flex min-h-11 min-w-11 items-center justify-center bg-navy/80 text-fg ring-1 ring-white/30"
@@ -860,14 +872,15 @@ export function GameShell() {
             {hud.phase === "boot" ? (
               <p className="text-muted">{ui.loading}</p>
             ) : null}
-            <div className="gear-row flex min-h-12 shrink-0 items-center">
+            <div className="gear-row flex min-h-12 shrink-0 items-center" dir="ltr">
               <button
                 type="button"
                 aria-label={ui.settings}
                 onClick={() => setGear((v) => !v)}
-                className="grid size-12 min-h-12 min-w-12 shrink-0 place-items-center bg-navy-2 text-fg ring-1 ring-line"
+                className="inline-flex min-h-12 items-center gap-1.5 bg-navy-2 px-3 text-sm font-extrabold text-fg ring-1 ring-line"
               >
-                <Settings className="pointer-events-none size-5" />
+                <Settings className="pointer-events-none size-5 shrink-0" aria-hidden="true" />
+                <span>{ui.settings}</span>
               </button>
             </div>
             <div className={cn("panel-body relative min-h-0", gear && "flex-1 overflow-hidden", resultsPhase && !gear && "min-[960px]:flex-1 min-[960px]:overflow-hidden")}>
@@ -936,7 +949,7 @@ export function GameShell() {
                 alias={hud.alias}
                 code={hud.code}
                 yourTime={hud.bests[hud.courseId] ?? null}
-                onClose={() => setHeat(false)}
+                onClose={closeHeat}
               />
               </div>
             ) : null}
@@ -1108,6 +1121,14 @@ export function GameShell() {
             ) : null}
 
             {hud.phase === "win" && !lab ? (
+              <div
+                className="contents"
+                onClickCapture={(ev) => {
+                  if (performance.now() >= resultsQuietUntil.current) return;
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                }}
+              >
               <WinBoard
                 hud={hud}
                 arcade={arcade}
@@ -1128,6 +1149,7 @@ export function GameShell() {
                   eng.startPlay();
                 }}
               />
+              </div>
             ) : null}
 
             {hud.phase === "fail" ? (
@@ -1213,6 +1235,7 @@ function useStage(wide: boolean) {
       const x = vv?.offsetLeft ?? 0;
       const y = vv?.offsetTop ?? 0;
       const portrait = h > w + 80;
+      document.documentElement.dataset.sideways = wide && portrait && w <= 500 ? "1" : "";
       if (wide && portrait) {
         setStage({ w: Math.max(280, Math.round(h)), h: Math.max(280, Math.round(w)), x: 0, y: 0, turn: true, vw: Math.round(w) });
         return;
@@ -1235,6 +1258,7 @@ function useStage(wide: boolean) {
       window.removeEventListener("orientationchange", on);
       vv?.removeEventListener("resize", on);
       vv?.removeEventListener("scroll", on);
+      delete document.documentElement.dataset.sideways;
     };
   }, [wide]);
   return stage;
@@ -1301,7 +1325,7 @@ function swallowExtraClick(ev: MouseEvent<HTMLElement>) {
 }
 
 function useMinWidth(px: number) {
-  const [on, setOn] = useState(() => typeof window !== "undefined" && window.matchMedia(`(min-width: ${px}px)`).matches);
+  const [on, setOn] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia(`(min-width: ${px}px)`);
     const go = () => setOn(mq.matches);
@@ -1314,7 +1338,7 @@ function useMinWidth(px: number) {
 
 function useShortLandscape() {
   const query = "(orientation: landscape) and (max-height: 500px)";
-  const [on, setOn] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  const [on, setOn] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia(query);
     const go = () => setOn(mq.matches);
@@ -1755,7 +1779,22 @@ function HeatCard({
       </div>
       <div className="sticky bottom-0 z-10 flex shrink-0 flex-wrap gap-2 bg-ink px-3 py-2">
         <Button {...guardedPress(() => setSeed((n) => n + 1))}>Run again</Button>
-        <Button variant="navy" {...guardedPress(onClose)}>
+        <Button
+          variant="navy"
+          onPointerDown={(ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+          }}
+          onPointerUp={(ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            onClose();
+          }}
+          onClick={(ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+          }}
+        >
           Close
         </Button>
       </div>
@@ -2245,6 +2284,7 @@ function TitleCard({
         <div className="px-1 py-3 text-center">
           <h2 className="text-3xl font-extrabold leading-none tracking-tight text-paper"><bdi>BERTY'S RUN</bdi></h2>
           <p className="script-font mt-2 text-sm font-bold text-gold">{ui.coin}</p>
+          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{WHATS_NEW}</p>
         </div>
       )}
       <Button className="!min-h-16 w-full text-xl" onClick={onPlay}>
