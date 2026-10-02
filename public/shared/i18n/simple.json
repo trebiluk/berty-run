@@ -1,0 +1,20 @@
+{
+  "home": "Home",
+  "signIn": "Sign in",
+  "settings": "Settings",
+  "play": "Play",
+  "pause": "Pause",
+  "resume": "Go on",
+  "retry": "Try again",
+  "exit": "Exit",
+  "sound": "Sound",
+  "music": "Music",
+  "volume": "Loudness",
+  "next": "Next",
+  "back": "Back",
+  "help": "Help",
+  "whatsNew": "What's new",
+  "scores": "Scores",
+  "levels": "Levels",
+  "noVoice": "No voice yet"
+}

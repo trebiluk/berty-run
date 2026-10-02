@@ -4,13 +4,16 @@ let bus: Bus | null = null;
 let muted = false;
 let musicTimer: number | null = null;
 
+let musicLevel = 0.18;
+let sfxLevel = 0.7;
+
 function makeBus(): Bus {
   const ctx = new AudioContext({ latencyHint: "interactive" });
   const master = ctx.createGain();
   const sfx = ctx.createGain();
   const music = ctx.createGain();
-  sfx.gain.value = 0.7;
-  music.gain.value = 0.18;
+  sfx.gain.value = sfxLevel;
+  music.gain.value = musicLevel;
   master.gain.value = muted ? 0 : 0.85;
   sfx.connect(master);
   music.connect(master);
@@ -18,13 +21,9 @@ function makeBus(): Bus {
   return { ctx, master, sfx, music };
 }
 
-export function primeSfx() {
+export function unlockAudio() {
   if (!bus) bus = makeBus();
   if (bus.ctx.state === "suspended") void bus.ctx.resume();
-}
-
-export function unlockAudio() {
-  primeSfx();
   startMusic();
 }
 
@@ -63,11 +62,6 @@ export function sfxBump() {
   beep(90, 0.08, "square", 0.08);
 }
 
-export function sfxJump() {
-  beep(310, 0.07, "square", 0.05);
-  beep(470, 0.1, "triangle", 0.06);
-}
-
 export function sfxHurt() {
   beep(160, 0.22, "sawtooth", 0.1);
   beep(70, 0.3, "square", 0.06);
@@ -89,6 +83,30 @@ export function sfxWin() {
   setTimeout(() => beep(659, 0.16, "triangle", 0.1), 80);
   setTimeout(() => beep(784, 0.22, "triangle", 0.11), 160);
   setTimeout(() => beep(1046, 0.32, "sine", 0.08), 260);
+}
+
+function tone(freq: number, dur: number, type: OscillatorType, gain = 0.12) {
+  if (!bus || muted) return;
+  const { ctx } = bus;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type;
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(gain, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+  o.connect(g);
+  g.connect(bus.sfx);
+  o.start();
+  o.stop(ctx.currentTime + dur);
+}
+
+export function sfxCount() {
+  tone(880, 0.12, "sine", 0.12);
+}
+
+export function sfxGo() {
+  tone(660, 0.08, "triangle", 0.12);
+  tone(990, 0.18, "triangle", 0.1);
 }
 
 export function sfxGate() {
@@ -122,6 +140,18 @@ function startMusic() {
   };
   pulse();
   musicTimer = window.setInterval(pulse, 1600);
+}
+
+export function setMix(music: number, sfx: number) {
+  musicLevel = music;
+  sfxLevel = sfx;
+  if (!bus) return;
+  bus.music.gain.value = music;
+  bus.sfx.gain.value = sfx;
+}
+
+export function resumeBed() {
+  startMusic();
 }
 
 export function stopMusic() {

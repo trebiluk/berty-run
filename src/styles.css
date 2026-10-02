@@ -1,23 +1,25 @@
 @import "tailwindcss";
+@import "./arcade/arcade.css";
 
 @theme {
-  --color-ink: #071526;
-  --color-navy: #0b1f3a;
-  --color-navy-2: #16304c;
-  --color-paper: #f4efe6;
-  --color-orange: #e87722;
-  --color-crate: #c45c26;
-  --color-ok: #2f6f4e;
-  --color-line: #2a4d70;
-  --color-muted: #9db0c4;
-  --color-fg: #e8eef6;
-  --color-gold: #f4b942;
-  --font-sans: "Outfit", "Segoe UI", system-ui, sans-serif;
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --color-ink: #0b1220;
+  --color-navy: #132033;
+  --color-navy-2: #1c2c44;
+  --color-paper: #f6efe2;
+  --color-orange: #d6ff4a;
+  --color-crate: #e07a2f;
+  --color-cyan: #7af0ff;
+  --color-gold: #ffc857;
+  --color-ok: #d6ff4a;
+  --color-line: #8a5a32;
+  --color-muted: #e7d7c4;
+  --color-fg: #f6efe2;
+  --font-sans: var(--kp-font), Outfit, "Noto Sans", "Noto Sans Arabic", "Noto Sans Ethiopic", system-ui, sans-serif;
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -33,11 +35,33 @@
 
 @layer base {
   html,
-  body,
-  #app {
+  body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
     height: 100%;
+    max-height: none;
     margin: 0;
-    background: var(--color-ink);
+    overflow: hidden;
+    overscroll-behavior: none;
+    background: #0b1220;
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  #app,
+  body > div {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(720px 420px at 0% 110%, rgba(224, 122, 47, 0.28), transparent 55%),
+      radial-gradient(680px 380px at 100% -10%, rgba(214, 255, 74, 0.12), transparent 50%),
+      #0b1220;
     color: var(--color-fg);
     font-family: var(--font-sans);
   }
@@ -60,6 +84,343 @@
 
 .overlay-panel {
   animation: overlay-in var(--motion-fast) var(--ease-smooth-out) both;
+  border-radius: 22px;
+  background:
+    linear-gradient(165deg, rgba(28, 44, 68, 0.97), rgba(10, 16, 28, 0.98));
+  box-shadow:
+    0 0 0 1px #e07a2f,
+    0 0 0 5px #0b1220,
+    0 0 0 6px rgba(214, 255, 74, 0.85),
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(246, 239, 226, 0.2);
+  font-family: var(--kp-font), Outfit, "Noto Sans", "Noto Sans Arabic", "Noto Sans Ethiopic", system-ui, sans-serif;
+  line-height: 1.45;
+  color: #f6efe2;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+  max-height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 960px) {
+  .overlay-panel.stage-fit {
+    overflow: hidden;
+  }
+}
+
+.overlay-panel :where(p, li, h2, h3) {
+  line-height: 1.45;
+}
+
+html[lang="ar"] .overlay-panel,
+html[lang="fa-AF"] .overlay-panel,
+html[lang="ti"] .overlay-panel,
+html[lang="ar"] .overlay-panel :where(p, li, h2, h3, button, span),
+html[lang="fa-AF"] .overlay-panel :where(p, li, h2, h3, button, span),
+html[lang="ti"] .overlay-panel :where(p, li, h2, h3, button, span),
+html[lang="ar"] .settings-body,
+html[lang="fa-AF"] .settings-body,
+html[lang="ti"] .settings-body {
+  line-height: 1.55;
+}
+
+html[dir="rtl"] .overlay-panel .text-left,
+html[dir="rtl"] .settings-body .text-left,
+html[dir="rtl"] .menu-drawer .text-left,
+html[dir="rtl"] .title-card .text-left {
+  text-align: start;
+}
+
+/* Left menu and the Hub dock stay on the left in Arabic and Dari. Flagged for Diego. */
+html[dir="rtl"] .menu-drawer {
+  left: 0;
+  right: auto;
+}
+
+html[dir="rtl"] .kb-bar,
+html[dir="rtl"] .hud-stack,
+html[dir="rtl"] .gear-row,
+html[dir="rtl"] [data-hud="bar"],
+html[dir="rtl"] [data-hud="rev"] {
+  direction: ltr;
+}
+
+html[dir="rtl"] .play-canvas,
+html[dir="rtl"] .arcade-attract,
+html[dir="rtl"] [data-hud="score"],
+html[dir="rtl"] .arcade-digits {
+  direction: ltr;
+}
+
+html[dir="rtl"],
+html[dir="rtl"] body {
+  overflow-x: hidden;
+}
+
+.overlay-panel :where(p, span, button, a, li)[class*="text-[10px]"] {
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.overlay-panel h2 {
+  letter-spacing: -0.03em;
+}
+
+.overlay-panel button,
+.overlay-panel a {
+  border-radius: 14px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  touch-action: manipulation;
+  min-height: 48px;
+}
+
+.overlay-panel button:active {
+  transform: scale(0.98);
+}
+
+@media (pointer: coarse) {
+  .menu-layer {
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+  }
+  .menu-layer .overlay-panel {
+    align-self: stretch !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .menu-layer .panel-body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .menu-layer .panel-body:has(.title-card) {
+    justify-content: center;
+  }
+  .menu-layer .settings-body {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .menu-layer .title-card {
+    width: 100%;
+    margin-block: auto;
+  }
+  .menu-layer .title-card > button:first-of-type {
+    min-height: 64px !important;
+  }
+  .menu-layer .title-card > button:last-of-type {
+    min-height: 48px !important;
+  }
+  .menu-layer .arcade-attract {
+    height: 9rem;
+  }
+  .menu-layer .arcade-logo {
+    font-size: 2.25rem;
+  }
+  .menu-layer .title-card h2 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (pointer: coarse) and (max-height: 500px) {
+  .menu-layer .arcade-attract {
+    height: 5.5rem;
+  }
+  .menu-layer .arcade-logo {
+    font-size: 1.75rem;
+  }
+}
+
+.hands-controls {
+  bottom: max(9.75rem, calc(env(safe-area-inset-bottom) + 9.2rem));
+}
+
+.win-col,
+.win-rest {
+  display: contents;
+}
+
+.win-stage { order: 1; }
+.berty-card { order: 2; }
+.clear-line { order: 3; }
+.win-actions { order: 4; }
+.win-more { order: 5; }
+
+@media (orientation: portrait) and (max-width: 959px) {
+  .win-stage { order: 1 !important; }
+  .win-actions { order: 2 !important; }
+  .berty-card,
+  .clear-line,
+  .win-more { order: 3 !important; }
+}
+
+@media (min-width: 960px) {
+  .win-stage { grid-column: 2; grid-row: 1 / span 5; }
+  .berty-card { grid-column: 1; grid-row: 1; }
+  .clear-line { grid-column: 1; grid-row: 2; }
+  .win-actions { grid-column: 1; grid-row: 3; }
+  .win-more { grid-column: 1; grid-row: 4; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .play-controls {
+    flex-direction: row-reverse;
+    top: calc(env(safe-area-inset-top) + 7.25rem);
+    bottom: auto;
+  }
+  .play-controls.hands-controls {
+    top: calc(env(safe-area-inset-top) + 7.25rem);
+    bottom: auto;
+  }
+  .play-controls [data-hud="jump"] {
+    order: 1;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .play-controls [data-hud="zap"] {
+    order: 2;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  header .hud-stack {
+    margin-right: 8.75rem;
+  }
+}
+
+/* Phone sideways results: actions + one-line reward on the left, tiles on the right. ≥960 stays on the desktop grid. */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 959px) {
+  .menu-layer .overlay-panel:has(.win-board) {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .menu-layer .panel-body:has(.win-board) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .win-board {
+    display: grid !important;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+  .win-col {
+    display: contents !important;
+  }
+  .win-actions {
+    grid-area: 1 / 1;
+    position: static;
+    align-self: start;
+    min-width: 0;
+    order: 0 !important;
+    gap: 0.25rem;
+  }
+  .win-action-pair {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .win-action-pair > :only-child {
+    grid-column: 1 / -1;
+  }
+  .win-actions button {
+    min-width: 0;
+    min-height: 44px;
+    height: 44px;
+    max-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.15;
+  }
+  .win-stage {
+    grid-area: 2 / 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    order: 0 !important;
+  }
+  .win-rest {
+    display: flex !important;
+    flex-direction: column;
+    grid-area: 1 / 2 / span 2;
+    gap: 0.35rem;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    order: 0 !important;
+  }
+  .win-more {
+    order: -1 !important;
+    min-width: 0;
+  }
+  .win-more button {
+    min-width: 0;
+  }
+  .berty-card,
+  .clear-line {
+    order: 1 !important;
+    min-width: 0;
+  }
+  .clear-line {
+    overflow-wrap: anywhere;
+  }
+  .win-stage-inner {
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.2rem;
+  }
+  .win-stage .arcade-banner,
+  .win-stage .reward-card,
+  .win-stage .win-gift-card,
+  .win-stage .win-kicker,
+  .win-stage .arcade-pop {
+    display: none !important;
+  }
+  .win-compact,
+  .win-gift-line {
+    display: block !important;
+  }
+}
+
+.play-canvas {
+  position: absolute;
+  z-index: 0;
+}
+
+.menu-layer {
+  position: absolute;
+  z-index: 20;
+  isolation: isolate;
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 @keyframes overlay-in {
@@ -70,5 +431,89 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes part-snap {
+  0% {
+    transform: translateY(-28px) scale(1.35);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(4px) scale(0.96);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+html[data-big="1"] .overlay-panel {
+  font-size: 1.2rem;
+}
+html[data-big="1"] .overlay-panel h2 {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+.part-snap {
+  animation: part-snap 0.7s var(--ease-smooth-out) both;
+}
+
+html[data-lights="lime"] {
+  --color-orange: #c8f542;
+  --color-crate: #8fbf22;
+}
+html[data-lights="cyan"] {
+  --color-orange: #3ee0ff;
+  --color-crate: #1498b8;
+}
+html[data-lights="gold"] {
+  --color-orange: #f5c542;
+  --color-crate: #c49a1a;
+}
+.pc-swatch-rgb {
+  background: linear-gradient(90deg, #c8f542, #3ee0ff, #f5c542);
+}
+.pc-tower {
+  color: #c8f542;
+}
+.pc-tower[data-rgb="cyan"] {
+  color: #3ee0ff;
+}
+.pc-tower[data-rgb="gold"] {
+  color: #f5c542;
+}
+.pc-tower[data-rgb="rgb"] {
+  animation: rgb-hue 2.4s linear infinite;
+}
+@keyframes rgb-hue {
+  0% { color: #c8f542; }
+  20% { color: #3ee0ff; }
+  40% { color: #f5c542; }
+  60% { color: #ff4fd8; }
+  80% { color: #9b7bff; }
+  100% { color: #c8f542; }
+}
+.pc-fan {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fan-spin 0.9s linear infinite;
+}
+@keyframes fan-spin {
+  to { transform: rotate(360deg); }
+}
+.pc-led {
+  animation: led-glow 2.8s ease-in-out infinite;
+}
+@keyframes led-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-tower[data-rgb="rgb"],
+  .pc-fan,
+  .pc-led {
+    animation: none;
   }
 }

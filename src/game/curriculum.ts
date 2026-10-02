@@ -53,6 +53,142 @@ export const PARTS: Part[] = [
   { id: "os", name: "BertyOS", cost: 44, lesson: "os", blurb: "The program that runs the rest." },
 ];
 
+/** Clear this board and the matching part snaps on the PC. shop-exit boots, it does not add a second OS. */
+export const BOARD_SLOT: Partial<Record<CourseId, PartId>> = {
+  "roll-out": "mobo",
+  "mind-the-pit": "psu",
+  "saw-line": "cpu",
+  "oil-pan": "ram",
+  "crew-gate": "fan",
+  "around-the-bend": "ssd",
+  "pit-drop": "gpu",
+  "blade-walk": "nic",
+  "slick-shelf": "os",
+};
+
+export function slotPart(courseId: string) {
+  const id = BOARD_SLOT[courseId as CourseId];
+  return id ? partById(id) ?? null : null;
+}
+
+export type PcGoal = "gaming" | "creator" | "laptop";
+
+export const GOALS: { id: PcGoal; name: string; line: string }[] = [
+  { id: "gaming", name: "Gaming PC", line: "Fast games. Watch the GPU and the heat." },
+  { id: "creator", name: "Creator PC", line: "Pictures, music, and video. Watch storage and the GPU." },
+  { id: "laptop", name: "Laptop", line: "Same parts. Small, light, and cool enough to hold." },
+];
+
+export function asGoal(v: unknown): "" | PcGoal {
+  if (v === "beauty" || v === "creator") return "creator";
+  if (v === "gaming" || v === "laptop") return v;
+  return "";
+}
+
+export function goalName(goal: string) {
+  return GOALS.find((g) => g.id === goal)?.name ?? "";
+}
+
+function oneLine(s: string) {
+  const cut = s.split(". ")[0] ?? s;
+  return cut.endsWith(".") ? cut : `${cut}.`;
+}
+
+function flavorFor(goal: PcGoal) {
+  if (goal === "gaming") return "Watch this part like it has to run a game.";
+  if (goal === "creator") return "Watch this part like it has to make pictures, music, or video.";
+  return "Watch this part like it has to fit and stay cool.";
+}
+
+const EXTRA_BRIEFS: Record<string, { part: string; title: string; line: string; prompt: string; choices: string[]; answer: number }> = {
+  "cable-loom": {
+    part: "Cable",
+    title: "Cable test",
+    line: "A cable carries a signal from one part to another. The walls are the loom. Stay in the open lane.",
+    prompt: "What does a cable carry?",
+    choices: ["A signal", "Cool air", "Paint", "Photos"],
+    answer: 0,
+  },
+  "case-fan": {
+    part: "Case fan",
+    title: "Fan test",
+    line: "A case fan moves heat out. Cross when the blade is clear.",
+    prompt: "What does a case fan move?",
+    choices: ["Heat", "Files", "The mouse", "The wallpaper"],
+    answer: 0,
+  },
+  "signal-hop": {
+    part: "Signal",
+    title: "Signal test",
+    line: "A signal is a message on a wire. This hop is one corner, then the port.",
+    prompt: "A signal on a wire is mostly?",
+    choices: ["Electricity", "Wind", "Glue", "Sand"],
+    answer: 0,
+  },
+  "case-drop": {
+    part: "Case",
+    title: "Case test",
+    line: "The case holds the parts and keeps them safe. The shelf gets narrow, then wide.",
+    prompt: "Why do parts sit in a case?",
+    choices: ["To hold and protect them", "To erase files", "To slow the CPU", "To hide the power button"],
+    answer: 0,
+  },
+  "heat-sink": {
+    part: "Heat sink",
+    title: "Heat test",
+    line: "A heat sink pulls heat off a hot chip. The silver lane is slick. The fan is in the way.",
+    prompt: "What does a heat sink take off a chip?",
+    choices: ["Heat", "Files", "The mouse", "The wallpaper"],
+    answer: 0,
+  },
+  "packet-lane": {
+    part: "Packet",
+    title: "Packet test",
+    line: "A packet is a labeled bundle of bits. The arrows push it along the lane.",
+    prompt: "What is a packet?",
+    choices: ["A labeled bundle of bits", "A fan blade", "A kind of RAM", "The power button"],
+    answer: 0,
+  },
+  "dark-bay": {
+    part: "Firewall",
+    title: "Firewall test",
+    line: "A firewall decides which packets get in. Zap the virus. Jump the lock.",
+    prompt: "What does a firewall check?",
+    choices: ["Which packets may come in", "The color of the case", "How loud the fans are", "The size of the mouse"],
+    answer: 0,
+  },
+};
+
+export function briefFor(courseId: string, goal: PcGoal) {
+  const extra = EXTRA_BRIEFS[courseId];
+  if (extra) return { lessonId: null as LessonId | null, ...extra, flavor: flavorFor(goal) };
+  const part = slotPart(courseId);
+  const lesson = part ? LESSONS.find((l) => l.id === part.lesson) ?? null : null;
+  const flavor = flavorFor(goal);
+  if (!lesson) {
+    return {
+      lessonId: null as LessonId | null,
+      part: "Boot",
+      title: "Boot test",
+      line: "The last test turns the computer on. Every part has to answer.",
+      flavor,
+      prompt: "What is a boot?",
+      choices: ["Starting the computer", "Painting the case", "Erasing the files", "Stopping the fan forever"],
+      answer: 0,
+    };
+  }
+  return {
+    lessonId: lesson.id,
+    part: part?.name ?? lesson.title,
+    title: lesson.title,
+    line: oneLine(lesson.body[0]),
+    flavor,
+    prompt: lesson.q.prompt,
+    choices: lesson.q.choices,
+    answer: lesson.q.answer,
+  };
+}
+
 export const LESSONS: Lesson[] = [
   {
     id: "binary",
@@ -64,7 +200,7 @@ export const LESSONS: Lesson[] = [
       "Eight bits make a byte. A byte can hold a letter, a small number, or a tiny piece of a picture.",
       "On the board you collect bits. That is not a metaphor. Every gem is a 1 you picked up.",
     ],
-    board: "Every amber gem is one bit. Clear a floor, you have proved you can gather data.",
+    board: "Every gold bit is one bit. Clear a floor, you have proved you can gather data.",
     q: {
       prompt: "How many bits are in a byte?",
       choices: ["2", "8", "10", "100"],
@@ -83,7 +219,7 @@ export const LESSONS: Lesson[] = [
       "Every other part plugs into it: CPU, RAM, storage, power. If a trace is broken, the signal never arrives.",
       "Vias are tiny holes that jump a signal from one layer of copper to another. You ran over them.",
     ],
-    board: "First Trace is a clean board. Traces, vias, a gate at the end.",
+    board: "Roll Out is a clean board. Traces, vias, a port at the end.",
     q: {
       prompt: "What do copper traces on a motherboard carry?",
       choices: ["Water", "Electrical signals", "Cool air", "Sound"],
@@ -95,6 +231,7 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "Power",
     stamps: 1,
+    course: "mind-the-pit",
     part: "psu",
     body: [
       "The wall is high-voltage AC. Chips want low-voltage DC. The power supply (PSU) converts one into the other.",
@@ -118,13 +255,14 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "CPU",
     stamps: 2,
+    course: "saw-line",
     part: "cpu",
     body: [
       "The CPU is the brain. It runs a tight loop: fetch an instruction, decode it, execute it, repeat.",
       "Clock speed is how many of those loops it can attempt per second. More cores means more loops in parallel.",
       "A CPU without instructions is a heater. Programs tell it what to do.",
     ],
-    board: "You are the CPU when you plan a jump. Sequence first, then act.",
+    board: "You are the CPU when you plan a lean. Sequence first, then act.",
     q: {
       prompt: "The CPU loop is best described as:",
       choices: ["Heat, cool, sleep", "Fetch, decode, execute", "Click, drag, save", "Ping, pong, pause"],
@@ -136,12 +274,12 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "RAM",
     stamps: 2,
-    course: "mind-the-pit",
+    course: "oil-pan",
     part: "ram",
     body: [
       "RAM is working memory. Fast. The CPU can read it in nanoseconds.",
       "It is volatile: power off, the contents vanish. That is why unsaved work disappears.",
-      "Empty slots on Mind the Pit are RAM sockets with nothing in them. A missing stick is a hole in the machine.",
+      "Empty sockets on Mind the Pit are RAM slots with nothing in them. A missing stick is a hole in the machine.",
     ],
     board: "Fall in a socket and you feel what a machine feels with no memory mapped there.",
     q: {
@@ -160,20 +298,21 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "Heat and cooling",
     stamps: 2,
+    course: "crew-gate",
     part: "fan",
     body: [
       "Electricity through resistance makes heat. Chips throttle or die if they stay hot.",
       "Fans move air. Heat sinks spread heat. Thermal paste fills microscopic gaps between CPU and cooler.",
       "You already dodged fans and slid on paste. That was not decoration. That is the thermal path.",
     ],
-    board: "Fan Line and Thermal Paste are the cooling chapter, written as a copper run.",
+    board: "Fan Line and Thermal Paste are the cooling chapter, written as a marble run.",
     q: {
       prompt: "Thermal paste is used to:",
       choices: [
         "Glue the GPU to the case",
         "Help heat move from the chip into the cooler",
         "Store extra files",
-        "Paint traces orange",
+        "Paint the traces lime",
       ],
       answer: 1,
     },
@@ -183,6 +322,7 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "Storage",
     stamps: 3,
+    course: "around-the-bend",
     part: "ssd",
     body: [
       "Storage keeps bits when power is gone. SSDs use flash memory. Older drives used spinning platters.",
@@ -224,6 +364,7 @@ export const LESSONS: Lesson[] = [
     unit: "Hardware",
     title: "GPU",
     stamps: 4,
+    course: "pit-drop",
     any3d: true,
     part: "gpu",
     body: [
@@ -250,7 +391,7 @@ export const LESSONS: Lesson[] = [
     stamps: 3,
     body: [
       "A program is a list of instructions a CPU can run. Languages like Python or JavaScript compile or interpret down toward those instructions.",
-      "This game is a program. Your jump is input. Physics is the process. The canvas is output.",
+      "This game is a program. Your lean is input. Physics is the process. The canvas is output.",
       "Code is not magic. It is precise writing that a machine will follow even when you are wrong.",
     ],
     board: "When Berty slides too far, that is not Berty being wild. That is the program doing exactly what we wrote.",
@@ -270,6 +411,7 @@ export const LESSONS: Lesson[] = [
     unit: "Software",
     title: "Operating system",
     stamps: 4,
+    course: "slick-shelf",
     part: "os",
     body: [
       "The operating system is the first big program. It shares the CPU, memory, and devices among apps.",
@@ -310,6 +452,7 @@ export const LESSONS: Lesson[] = [
     unit: "Software",
     title: "Networks",
     stamps: 6,
+    course: "blade-walk",
     part: "nic",
     body: [
       "Networks move packets. A packet is a labeled chunk of bits: where from, where to, the payload.",
@@ -336,7 +479,7 @@ export const LESSONS: Lesson[] = [
     body: [
       "A bug is a mismatch between what you meant and what the machine did. The machine is not guessing.",
       "Debug like a scientist: reproduce, isolate, change one thing, test again.",
-      "Retry after a fall is a debug loop. You form a hypothesis (jumped too late), then test it.",
+      "Retry after a fall is a debug loop. You form a hypothesis (too much lean), then test it.",
     ],
     board: "Three hearts are three experiments. The board did not cheat.",
     q: {
@@ -383,7 +526,7 @@ export function partById(id: string) {
 }
 
 export function stampsOf(bests: Record<string, number>) {
-  return COURSES.filter((c) => bests[c.id] != null).length;
+  return COURSES.filter((c) => !c.arcade && bests[c.id] != null).length;
 }
 
 export function has3dStamp(bests: Record<string, number>) {
@@ -411,6 +554,67 @@ export function lockReason(l: Lesson, bests: Record<string, number>) {
 
 export function canBoot(parts: string[]) {
   return ["mobo", "psu", "cpu", "ram", "os"].every((id) => parts.includes(id));
+}
+
+export function nextPart(owned: string[]): Part | null {
+  return PARTS.find((p) => !owned.includes(p.id)) ?? null;
+}
+
+export type { PlayStep } from "./play-step";
+export { playStep } from "./play-step";
+
+export function courseForPart(id: string) {
+  const hit = (Object.entries(BOARD_SLOT) as [CourseId, PartId][]).find(([, part]) => part === id);
+  return hit ? COURSES.find((c) => c.id === hit[0]) ?? null : null;
+}
+
+export function guideTeach(input: { alias: string; stamps: number; watts: number; parts: string[]; booted: boolean; bests: Record<string, number> }) {
+  if (!input.alias) return "Sign in to send your score. You can still play.";
+  if (input.booted) return "The PC is on. Race your best time.";
+  const next = nextPart(input.parts);
+  if (!next) return "All parts are in. Boot the PC.";
+  const board = courseForPart(next.id);
+  if (!board) return `${next.name} costs ${next.cost} watts.`;
+  if (input.bests[board.id] == null) return `Next: ${board.name}. You get the ${next.name}.`;
+  if (input.watts < next.cost) return `${next.name} costs ${next.cost} watts. You have ${input.watts}.`;
+  return `Put the ${next.name} in the case. It costs ${next.cost} watts.`;
+}
+
+export function clearReward(earned: number, watts: number, parts: string[], booted: boolean, bests: Record<string, number>) {
+  if (booted) return `+${earned} watts. Berty's PC is already on.`;
+  const pending = PARTS.find((part) => {
+    const board = courseForPart(part.id);
+    return !!board && bests[board.id] == null;
+  });
+  if (pending) return `+${earned} watts. Next reward: ${pending.name} (${pending.cost}). You have ${watts}.`;
+  const uninstalled = nextPart(parts);
+  if (uninstalled) return `Every part is won. Install ${uninstalled.name} with watts.`;
+  return `+${earned} watts. Every part is in. Boot the PC.`;
+}
+
+export const BOT_FEATURES = [
+  { id: "glow", name: "Glow", line: "Berty lights up.", at: 1 },
+  { id: "heart", name: "Spare heart", line: "Four hits before a reset.", at: 2 },
+  { id: "pull", name: "Bit pull", line: "Bits hop toward Berty.", at: 3 },
+  { id: "boost", name: "Hot boost", line: "Boost pads push harder.", at: 5 },
+  { id: "trail", name: "Light trail", line: "Berty leaves a cyan trail.", at: 7 },
+  { id: "crown", name: "Gold ring", line: "A gold ring spins on Berty.", at: 10 },
+] as const;
+
+export function botUnlocked(stamps: number) {
+  return BOT_FEATURES.filter((f) => stamps >= f.at);
+}
+
+export function nextBot(stamps: number) {
+  return BOT_FEATURES.find((f) => stamps < f.at) ?? null;
+}
+
+export function botGift(before: number, after: number) {
+  return BOT_FEATURES.find((f) => before < f.at && after >= f.at) ?? null;
+}
+
+export function heartCount(stamps: number) {
+  return stamps >= 2 ? 4 : 3;
 }
 
 export function earnOnClear(bests: Record<string, number>, id: CourseId, time: number, par: number) {

@@ -1,0 +1,99 @@
+/* Self-hosted on apps.kulibert.net. Chromebooks never fetch Google Fonts. */
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/outfit-latin-wght.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/fraunces-latin-wght.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/barlow-latin-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("/fonts/barlow-latin-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/barlow-latin-700.woff2") format("woff2");
+}
+/* Script subsets. The browser downloads a face only when a glyph in range is used. */
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/noto-sans-cyrillic-400.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/noto-sans-cyrillic-700.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Noto Sans Arabic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/noto-sans-arabic-400.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FBC2, U+FBD3-FD8F, U+FD92-FDC7, U+FDCF, U+FDF0-FDFF, U+FE70-FE74, U+FE76-FEFC, U+FEFF, U+10EFD-10EFF;
+}
+@font-face {
+  font-family: "Noto Sans Arabic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/noto-sans-arabic-700.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FBC2, U+FBD3-FD8F, U+FD92-FDC7, U+FDCF, U+FDF0-FDFF, U+FE70-FE74, U+FE76-FEFC, U+FEFF, U+10EFD-10EFF;
+}
+@font-face {
+  font-family: "Noto Sans Ethiopic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/noto-sans-ethiopic-400.woff2") format("woff2");
+  unicode-range: U+1200-1248, U+124A-124D, U+1250-1256, U+1258, U+125A-125D, U+1260-1288, U+128A-128D, U+1290-12B0, U+12B2-12B5, U+12B8-12BE, U+12C0, U+12C2-12C5, U+12C8-12D6, U+12D8-1310, U+1312-1315, U+1318-135A, U+135D-137C, U+1380-1399, U+2D80-2D96, U+2DA0-2DA6, U+2DA8-2DAE, U+2DB0-2DB6, U+2DB8-2DBE, U+2DC0-2DC6, U+2DC8-2DCE, U+2DD0-2DD6, U+2DD8-2DDE, U+AB01-AB06, U+AB09-AB0E, U+AB11-AB16, U+AB20-AB26, U+AB28-AB2E, U+1E7E0-1E7E6, U+1E7E8-1E7EB, U+1E7ED-1E7EE, U+1E7F0-1E7FE;
+}
+@font-face {
+  font-family: "Noto Sans Ethiopic";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/noto-sans-ethiopic-700.woff2") format("woff2");
+  unicode-range: U+1200-1248, U+124A-124D, U+1250-1256, U+1258, U+125A-125D, U+1260-1288, U+128A-128D, U+1290-12B0, U+12B2-12B5, U+12B8-12BE, U+12C0, U+12C2-12C5, U+12C8-12D6, U+12D8-1310, U+1312-1315, U+1318-135A, U+135D-137C, U+1380-1399, U+2D80-2D96, U+2DA0-2DA6, U+2DA8-2DAE, U+2DB0-2DB6, U+2DB8-2DBE, U+2DC0-2DC6, U+2DC8-2DCE, U+2DD0-2DD6, U+2DD8-2DDE, U+AB01-AB06, U+AB09-AB0E, U+AB11-AB16, U+AB20-AB26, U+AB28-AB2E, U+1E7E0-1E7E6, U+1E7E8-1E7EB, U+1E7ED-1E7EE, U+1E7F0-1E7FE;
+}
+:root {
+  --kp-font: Outfit, "Noto Sans", "Noto Sans Arabic", "Noto Sans Ethiopic", system-ui, sans-serif;
+}
+html[lang="ar"],
+html[lang="fa-AF"],
+html[lang="ti"] {
+  line-height: 1.5;
+}
+body.apps-always,
+.kb-bar,
+.kb-bar button,
+.kb-bar a {
+  font-family: var(--kp-font);
+}

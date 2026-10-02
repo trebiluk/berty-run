@@ -17,7 +17,7 @@ import {
   Play,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LESSONS, PARTS, canBoot, lessonById, lessonOpen, lockReason, partById, type Lesson, type LessonId, type PartId } from "@/game/curriculum";
+import { LESSONS, PARTS, canBoot, courseForPart, lessonById, lessonOpen, lockReason, partById, type Lesson, type LessonId, type PartId } from "@/game/curriculum";
 import { LESSON_STANDARDS, ROOM } from "@/game/techworks";
 import { cn } from "@/lib/utils";
 
@@ -109,7 +109,7 @@ export function BuildLab({
         </div>
       </div>
       <p className="text-sm text-muted">
-        Clear boards to earn watts. Open a lesson. Pass the check. Install the part. Boot when the core is in.
+        Help Berty learn the parts. Clears pay watts. Pass the check. Install the part. Boot when the core is in.
       </p>
 
       <Tower parts={parts} booted={booted} ready={ready} />
@@ -211,11 +211,20 @@ export function BuildLab({
               {part && done ? (
                 installed ? (
                   <p className="text-sm text-muted">{part.name} is in the case.</p>
-                ) : (
-                  <Button onClick={buy}>
-                    Install {part.name} · {part.cost} W
-                  </Button>
-                )
+                ) : (() => {
+                  const board = courseForPart(part.id);
+                  if (board && bests[board.id] == null) {
+                    return <p className="text-sm font-semibold text-fg">Clear {board.name} first. Then this part can go in.</p>;
+                  }
+                  if (watts < part.cost) {
+                    return <p className="text-sm font-semibold text-fg">Need {part.cost} watts. You have {watts}.</p>;
+                  }
+                  return (
+                    <Button onClick={buy}>
+                      Install {part.name} · {part.cost} W
+                    </Button>
+                  );
+                })()
               ) : null}
             </>
           ) : (
@@ -231,6 +240,7 @@ export function BuildLab({
         </Button>
         <a
           href={ROOM}
+          target="_top"
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-sm)] bg-transparent px-4 text-sm font-semibold uppercase tracking-wide text-fg ring-1 ring-line"
         >
           Tech Room
@@ -246,7 +256,7 @@ function Tower({ parts, booted, ready }: { parts: string[]; booted: boolean; rea
     <div className="relative overflow-hidden rounded-[20px] bg-ink p-3 ring-1 ring-line">
       <div className="pointer-events-none absolute inset-0 opacity-40" style={{
         backgroundImage:
-          "linear-gradient(#e8772222 1px, transparent 1px), linear-gradient(90deg, #e8772222 1px, transparent 1px)",
+          "linear-gradient(#3ee0ff22 1px, transparent 1px), linear-gradient(90deg, #3ee0ff22 1px, transparent 1px)",
         backgroundSize: "16px 16px",
       }} />
       <div className="relative grid grid-cols-3 gap-2 sm:grid-cols-5">

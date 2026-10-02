@@ -1,375 +1,265 @@
-// Playable L1 heat is src/game/trace.ts. These rows are not on the cart.
-import type { Course, CourseId, Seg } from "./types";
+import type { Course, CourseId } from "./types";
+import { trackById } from "./tracks3d";
 
 export const TILE = 48;
-export const L1_ID: CourseId = "roll-out";
 
-function track(segs: Seg[]): Seg[] {
-  return segs;
-}
+const ROWS_3D = [
+  "##########",
+  "#S......E#",
+  "##########",
+];
 
 export const COURSES: Course[] = [
   {
+    id: "practice-2d",
+    name: "Practice 2D",
+    blurb: "Learn the controls. Lean, hop the hole or go around it, grab the bits, park in the port.",
+    par: 40,
+    arcade: true,
+    rows: [
+      "######################",
+      "#S..o..........o.....#",
+      "#....................#",
+      "#....XXXX....o.......#",
+      "#............C.......#",
+      "#..o..............o.E#",
+      "######################",
+    ],
+  },
+  {
+    id: "practice-3d",
+    name: "Practice 3D",
+    blurb: "Learn to steer. A wide road, a bend, and bits. No virus.",
+    par: 40,
+    arcade: true,
+    mode: "3d",
+    rows: ROWS_3D,
+  },
+  {
+    id: "tube-run",
+    name: "Bus Tube",
+    blurb: "The data bus is a tube. Step onto a wall and the whole run turns. Ride the wire, then jump off.",
+    par: 24,
+    arcade: true,
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
     id: "roll-out",
-    name: "First Trace",
-    blurb: "Three bits on the copper. Gap, spike-via, overhang, window, then the gate.",
-    par: 46,
-    segs: track([
-      { k: "g", w: 3440 },
-      { k: "gap", w: 168 },
-      { k: "g", w: 1290 },
-      { k: "saw" },
-      { k: "g", w: 1290 },
-      { k: "gems", n: 1, form: "line" },
-      { k: "g", w: 1505 },
-      { k: "overhang" },
-      { k: "g", w: 1290 },
-      { k: "gems", n: 1, form: "line" },
-      { k: "g", w: 1720 },
-      { k: "window", w: 158 },
-      { k: "g", w: 1290 },
-      { k: "gems", n: 1, form: "line" },
-      { k: "g", w: 1720 },
-      { k: "gate" },
-    ]),
+    name: "Roll Out",
+    blurb: "Lean across the board. Grab every bit. The ring saves your spot. Park in the port.",
+    par: 36,
+    rows: [
+      "############################",
+      "#S.......o..........o......#",
+      "#...####......####.........#",
+      "#.........P....B....C......#",
+      "#......o.............o.....#",
+      "#....................o....E#",
+      "############################",
+    ],
   },
   {
     id: "mind-the-pit",
     name: "Mind the Pit",
-    blurb: "Empty sockets swallow a late jump. Hit the checkpoint. Stay on the copper.",
-    par: 48,
-    segs: track([
-      { k: "g", w: 720 },
-      { k: "gems", n: 3, form: "line" },
-      { k: "g", w: 40 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 200 },
-      { k: "crate" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 160 },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "g", w: 120 },
-      { k: "saw" },
-      { k: "g", w: 90 },
-      { k: "gap", w: 180 },
-      { k: "g", w: 160 },
-      { k: "gems", n: 4, form: "arc" },
-      { k: "g", w: 60 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 190 },
-      { k: "g", w: 240 },
-      { k: "check" },
-      { k: "g", w: 100 },
-      { k: "saw", h: 78 },
-      { k: "g", w: 80 },
-      { k: "crate" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 280 },
-      { k: "gems", n: 5, form: "line" },
-      { k: "g", w: 360 },
-      { k: "gate" },
-    ]),
+    blurb: "Holes swallow a fast lean. Hit the ring before the long gap.",
+    par: 50,
+    rows: [
+      "############################",
+      "#S.....o..XXXX.............#",
+      "#.........XXXX...o....C....#",
+      "#...o..........P...........#",
+      "#......XXXXXXXXXXXX........#",
+      "#............P..o..XXXX....#",
+      "#...T..XXXX......B....o...E#",
+      "############################",
+    ],
   },
   {
     id: "saw-line",
     name: "Fan Line",
-    blurb: "Cooling fans do not wait. Time the jump. Bits first, then the gate.",
-    par: 50,
-    segs: track([
-      { k: "g", w: 700 },
-      { k: "gems", n: 3, form: "line" },
-      { k: "saw" },
-      { k: "g", w: 180 },
-      { k: "saw", h: 64 },
-      { k: "g", w: 200 },
-      { k: "check" },
-      { k: "g", w: 80 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "saw" },
-      { k: "g", w: 160 },
-      { k: "gap", w: 150 },
-      { k: "g", w: 140 },
-      { k: "gems", n: 4, form: "arc" },
-      { k: "saw", h: 80 },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "g", w: 100 },
-      { k: "saw" },
-      { k: "g", w: 80 },
-      { k: "saw", h: 70 },
-      { k: "g", w: 200 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 280 },
-      { k: "gems", n: 5, form: "line" },
-      { k: "g", w: 340 },
-      { k: "gate" },
-    ]),
+    blurb: "Fans move. Boost, then cross the gap when the blade is clear.",
+    par: 68,
+    rows: [
+      "##############################",
+      "#S.....o.......#......o.....E#",
+      "#..............#.............#",
+      "#...o.....B....P....C....o...#",
+      "#............................#",
+      "#.......o......#........o....#",
+      "##############################",
+    ],
+    saws: [
+      { x: 9.5, y: 1.5, x2: 9.5, y2: 5.5, period: 2.8 },
+      { x: 14.5, y: 5.5, x2: 14.5, y2: 1.5, period: 3.2 },
+      { x: 20.5, y: 2.5, x2: 20.5, y2: 5.5, period: 2.9 },
+    ],
   },
   {
     id: "oil-pan",
     name: "Thermal Paste",
-    blurb: "Same jump. Tighter gaps. Boost pads shove you forward.",
-    par: 46,
-    segs: track([
-      { k: "g", w: 640 },
-      { k: "boost" },
-      { k: "g", w: 80 },
-      { k: "gems", n: 3, form: "high" },
-      { k: "gap", w: 180 },
-      { k: "g", w: 160 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "boost" },
-      { k: "g", w: 60 },
-      { k: "saw" },
-      { k: "g", w: 90 },
-      { k: "crate" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 185 },
-      { k: "g", w: 200 },
-      { k: "check" },
-      { k: "g", w: 80 },
-      { k: "gems", n: 5, form: "arc" },
-      { k: "saw", h: 76 },
-      { k: "g", w: 120 },
-      { k: "gap", w: 160 },
-      { k: "g", w: 300 },
-      { k: "gems", n: 4, form: "line" },
-      { k: "g", w: 320 },
-      { k: "gate" },
-    ]),
+    blurb: "Silver tiles slide. Arrows push. Hit the ring before the belt.",
+    par: 62,
+    rows: [
+      "##############################",
+      "#S.....o..IIII...............#",
+      "#.........IIII...o......C....#",
+      "#...o.............P..........#",
+      "#......IIIIIIII>>>>..C.......#",
+      "#............P..o.......o...E#",
+      "##############################",
+    ],
   },
   {
     id: "crew-gate",
     name: "Crew Gate",
-    blurb: "Solo this period: one button, one Berty. Tight rhythm into the port.",
-    par: 52,
-    segs: track([
-      { k: "g", w: 620 },
-      { k: "gems", n: 3, form: "line" },
-      { k: "crate" },
-      { k: "g", w: 60 },
-      { k: "saw" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 165 },
-      { k: "g", w: 140 },
-      { k: "check" },
-      { k: "crate" },
-      { k: "g", w: 50 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "saw", h: 72 },
-      { k: "g", w: 90 },
-      { k: "gap", w: 175 },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "gems", n: 4, form: "high" },
-      { k: "saw" },
-      { k: "g", w: 70 },
-      { k: "crate" },
-      { k: "g", w: 60 },
-      { k: "gap", w: 180 },
-      { k: "g", w: 80 },
-      { k: "saw", h: 80 },
-      { k: "g", w: 240 },
-      { k: "gems", n: 6, form: "line" },
-      { k: "g", w: 360 },
-      { k: "gate" },
-    ]),
+    blurb: "Two lanes. Both bots must reach the port. Boosts are in each lane.",
+    par: 64,
+    rows: [
+      "##############################",
+      "#S..B......XXXX........o....T#",
+      "#...o..##........##.....B....#",
+      "#......##...o....##.....C....#",
+      "#...C..##........##..........#",
+      "#.......................E....#",
+      "#...o.......XXXX......o......#",
+      "##############################",
+    ],
+    saws: [
+      { x: 13.5, y: 2.5, x2: 13.5, y2: 5.5, period: 2.6 },
+    ],
   },
   {
     id: "around-the-bend",
     name: "Around the Bend",
-    blurb: "Longer copper. Jump on the beat. Boost, then a late fan.",
-    par: 54,
-    segs: track([
-      { k: "g", w: 800 },
-      { k: "gems", n: 4, form: "line" },
-      { k: "g", w: 40 },
-      { k: "crate" },
-      { k: "g", w: 160 },
-      { k: "gap", w: 160 },
-      { k: "g", w: 180 },
-      { k: "boost" },
-      { k: "g", w: 80 },
-      { k: "saw" },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "crate" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 175 },
-      { k: "g", w: 140 },
-      { k: "gems", n: 4, form: "arc" },
-      { k: "saw", h: 74 },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "g", w: 80 },
-      { k: "crate" },
-      { k: "g", w: 60 },
-      { k: "saw" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 185 },
-      { k: "g", w: 280 },
-      { k: "gems", n: 5, form: "line" },
-      { k: "g", w: 400 },
-      { k: "gate" },
-    ]),
+    blurb: "Wide and slow. Jump with the button. Zap the pink virus.",
+    par: 62,
+    mode: "3d",
+    rows: ROWS_3D,
   },
   {
     id: "pit-drop",
     name: "Pit Drop",
-    blurb: "Skinny traces over the void. Jump the pits. Checkpoint after the pinch.",
-    par: 50,
-    segs: track([
-      { k: "g", w: 560 },
-      { k: "gems", n: 3, form: "line" },
-      { k: "gap", w: 175 },
-      { k: "g", w: 140 },
-      { k: "gap", w: 165 },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 180 },
-      { k: "g", w: 120 },
-      { k: "saw" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "gems", n: 4, form: "high" },
-      { k: "gap", w: 185 },
-      { k: "g", w: 140 },
-      { k: "crate" },
-      { k: "g", w: 60 },
-      { k: "gap", w: 175 },
-      { k: "g", w: 260 },
-      { k: "gems", n: 4, form: "line" },
-      { k: "g", w: 320 },
-      { k: "gate" },
-    ]),
+    blurb: "The worm crawls across the lane. Steer around it. There is no hole.",
+    par: 56,
+    mode: "3d",
+    rows: ROWS_3D,
   },
   {
     id: "blade-walk",
     name: "Blade Walk",
-    blurb: "Fans stacked on the beat. Jump, land, jump.",
-    par: 52,
-    segs: track([
-      { k: "g", w: 620 },
-      { k: "saw" },
-      { k: "g", w: 140 },
-      { k: "saw", h: 68 },
-      { k: "g", w: 150 },
-      { k: "saw" },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "gems", n: 3, form: "arc" },
-      { k: "saw", h: 76 },
-      { k: "g", w: 90 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "saw" },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "gap", w: 160 },
-      { k: "g", w: 100 },
-      { k: "saw", h: 80 },
-      { k: "g", w: 80 },
-      { k: "saw" },
-      { k: "g", w: 200 },
-      { k: "gems", n: 5, form: "line" },
-      { k: "g", w: 340 },
-      { k: "gate" },
-    ]),
+    blurb: "A zigzag. Three fans. Go around them.",
+    par: 58,
+    mode: "3d",
+    rows: ROWS_3D,
   },
   {
     id: "slick-shelf",
     name: "Slick Shelf",
-    blurb: "Boosts plus late jumps. Do not tap early.",
-    par: 48,
-    segs: track([
-      { k: "g", w: 600 },
-      { k: "boost" },
-      { k: "g", w: 40 },
-      { k: "gap", w: 190 },
-      { k: "g", w: 160 },
-      { k: "crate" },
-      { k: "boost" },
-      { k: "g", w: 40 },
-      { k: "saw" },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "gems", n: 4, form: "high" },
-      { k: "gap", w: 175 },
-      { k: "g", w: 120 },
-      { k: "boost" },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 180 },
-      { k: "g", w: 180 },
-      { k: "check" },
-      { k: "saw", h: 78 },
-      { k: "g", w: 90 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 260 },
-      { k: "gems", n: 5, form: "line" },
-      { k: "g", w: 320 },
-      { k: "gate" },
-    ]),
+    blurb: "A long icy shelf. Steer less.",
+    par: 54,
+    mode: "3d",
+    rows: ROWS_3D,
   },
   {
     id: "shop-exit",
     name: "I/O Exit",
-    blurb: "Finale. Mix of pits, fans, and crates. Port at the end.",
+    blurb: "The long snake. Fans, ice, then a thin port.",
+    par: 72,
+    mode: "3d",
+    rows: ROWS_3D,
+  },
+  {
+    id: "cable-loom",
+    name: "Cable Loom",
+    blurb: "One lane is ice. The bottom lane is clear. Both reach the port.",
+    par: 60,
+    rows: [
+      "##############################",
+      "#S......o....................#",
+      "#....####....o....####.......#",
+      "#....####..III....####..C....#",
+      "#....####..B......####.......#",
+      "#o...............o........o.E#",
+      "##############################",
+    ],
+  },
+  {
+    id: "case-fan",
+    name: "Case Fan",
+    blurb: "A virus sits in the lane. Press Zap, or the E key, before you roll into it.",
+    par: 66,
+    rows: [
+      "##############################",
+      "#S..o..........#.............#",
+      "#..............#......o......#",
+      "#....o....B....P.....C.......#",
+      "#..............#.............#",
+      "#......o...V...#........o...E#",
+      "##############################",
+    ],
+    saws: [
+      { x: 8.5, y: 1.5, x2: 8.5, y2: 4.5, period: 3.0 },
+      { x: 22.5, y: 4.5, x2: 22.5, y2: 1.5, period: 3.3 },
+    ],
+  },
+  {
+    id: "heat-sink",
+    name: "Heat Sink",
+    blurb: "The silver lane slides. Go around it, or cross when the fan is clear.",
     par: 58,
-    segs: track([
-      { k: "g", w: 700 },
-      { k: "gems", n: 4, form: "line" },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "saw" },
-      { k: "g", w: 80 },
-      { k: "gap", w: 170 },
-      { k: "g", w: 150 },
-      { k: "check" },
-      { k: "boost" },
-      { k: "g", w: 50 },
-      { k: "crate" },
-      { k: "g", w: 50 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "saw", h: 74 },
-      { k: "g", w: 80 },
-      { k: "gap", w: 180 },
-      { k: "g", w: 160 },
-      { k: "check" },
-      { k: "gems", n: 4, form: "arc" },
-      { k: "saw" },
-      { k: "g", w: 60 },
-      { k: "gap", w: 175 },
-      { k: "g", w: 90 },
-      { k: "saw", h: 80 },
-      { k: "g", w: 70 },
-      { k: "crate" },
-      { k: "g", w: 70 },
-      { k: "gap", w: 185 },
-      { k: "g", w: 260 },
-      { k: "gems", n: 6, form: "line" },
-      { k: "g", w: 400 },
-      { k: "gate" },
-    ]),
+    rows: [
+      "##############################",
+      "#S.....o.....................#",
+      "#..........IIIIIIII..........#",
+      "#...B..o...IIIIIIII..P...C...#",
+      "#..........IIIIIIII..........#",
+      "#......o................o...E#",
+      "##############################",
+    ],
+    saws: [{ x: 14.5, y: 1.5, x2: 14.5, y2: 5.5, period: 2.7 }],
+  },
+  {
+    id: "packet-lane",
+    name: "Packet Lane",
+    blurb: "Arrows push the packet right. Ride them, or take the quiet lane.",
+    par: 54,
+    rows: [
+      "##############################",
+      "#S..o........................#",
+      "#....>>>>....................#",
+      "#......o....P....B....C....o.#",
+      "#............................#",
+      "#.........o..............o..E#",
+      "##############################",
+    ],
+  },
+  {
+    id: "signal-hop",
+    name: "Signal Hop",
+    blurb: "A short hop to the left.",
+    par: 48,
+    mode: "3d",
+    rows: ROWS_3D,
+  },
+  {
+    id: "case-drop",
+    name: "Case Drop",
+    blurb: "A thin start, then a square room.",
+    par: 58,
+    mode: "3d",
+    rows: ROWS_3D,
+  },
+  {
+    id: "dark-bay",
+    name: "Dark Bay",
+    blurb: "A night run. Zap the virus. Jump the lock. The shelf is ice.",
+    par: 64,
+    mode: "3d",
+    rows: ROWS_3D,
   },
 ];
 
 export function courseById(id: CourseId): Course {
-  if (id !== L1_ID) return COURSES[0];
   const found = COURSES.find((c) => c.id === id);
   if (!found) throw new Error(`Unknown course ${id}`);
   return found;
@@ -390,4 +280,110 @@ export function fmtTime(t: number) {
   const m = Math.floor(t / 60);
   const s = t % 60;
   return `${m}:${s.toFixed(1).padStart(4, "0")}`;
+}
+
+export type Dye = { name: string; floor: string; wall: string; accent: string; ink: string };
+
+const DYES: Record<string, Dye> = {
+  lime: { name: "Lime", floor: "#245c22", wall: "#3a2e24", accent: "#d6ff4a", ink: "#0b1220" },
+  cyan: { name: "Cyan", floor: "#14506a", wall: "#1a3344", accent: "#7af0ff", ink: "#0b1220" },
+  gold: { name: "Gold", floor: "#6a4a12", wall: "#4a3418", accent: "#ffc857", ink: "#0b1220" },
+};
+
+const DYE_OF: Record<CourseId, keyof typeof DYES> = {
+  "roll-out": "lime",
+  "mind-the-pit": "cyan",
+  "saw-line": "gold",
+  "oil-pan": "lime",
+  "crew-gate": "cyan",
+  "around-the-bend": "gold",
+  "pit-drop": "cyan",
+  "blade-walk": "lime",
+  "slick-shelf": "gold",
+  "shop-exit": "cyan",
+  "cable-loom": "gold",
+  "case-fan": "cyan",
+  "heat-sink": "cyan",
+  "packet-lane": "lime",
+  "signal-hop": "lime",
+  "case-drop": "gold",
+  "dark-bay": "gold",
+  "practice-2d": "lime",
+  "practice-3d": "cyan",
+  "tube-run": "cyan",
+};
+
+export function dyeFor(id: CourseId): Dye {
+  return DYES[DYE_OF[id]];
+}
+
+export function courseMode(c: Course): "2d" | "3d" {
+  return c.mode === "3d" ? "3d" : "2d";
+}
+
+/** Zap is a button. It never fires by itself. Only boards with a virus show it. */
+export function courseHasZap(id: CourseId) {
+  const c = courseById(id);
+  if (c.rows.some((row) => row.includes("V"))) return true;
+  if (c.mode !== "3d") return false;
+  return (trackById(id).bugs?.length ?? 0) > 0;
+}
+
+export function trackCourses(mode: "2d" | "3d") {
+  return COURSES.filter((c) => courseMode(c) === mode && !c.arcade);
+}
+
+/**
+ * TEMP_UNLOCK_ALL_LEVELS — Diego test Ord (2026-09-23).
+ * false: the next board opens only after the one before is at or under par.
+ * Practice boards stay open either way. Teacher pin still opens all.
+ * Set true to open every board again. Do not delete isUnlocked.
+ */
+export const TEMP_UNLOCK_ALL_LEVELS = false;
+
+/** At or under par. Finishing slow still saves a score, but does not open the next board. */
+export function acceptable(c: Course, bests: Record<string, number>) {
+  const best = bests[c.id];
+  return best != null && best <= c.par;
+}
+
+export function isUnlocked(c: Course, bests: Record<string, number>) {
+  if (c.arcade) return true;
+  if (TEMP_UNLOCK_ALL_LEVELS) return true;
+  const track = trackCourses(courseMode(c));
+  const i = track.findIndex((x) => x.id === c.id);
+  if (i <= 0) return true;
+  return acceptable(track[i - 1], bests);
+}
+
+export function nextBoard(id: CourseId, bests: Record<string, number>, full: boolean): Course | null {
+  const cur = courseById(id);
+  const track = trackCourses(courseMode(cur));
+  const i = track.findIndex((c) => c.id === id);
+  const n = track[i + 1];
+  if (n && (full || isUnlocked(n, bests))) return n;
+  return null;
+}
+
+export function previousCourse(c: Course) {
+  const track = trackCourses(courseMode(c));
+  const i = track.findIndex((x) => x.id === c.id);
+  return i > 0 ? track[i - 1] : null;
+}
+
+/** Next board still short of par, else the latest open one on that track. */
+export function pickCourse(mode: "2d" | "3d", bests: Record<string, number>) {
+  const track = trackCourses(mode);
+  const next = track.find((c) => isUnlocked(c, bests) && !acceptable(c, bests));
+  if (next) return next;
+  const open = track.filter((c) => isUnlocked(c, bests));
+  return open[open.length - 1] ?? track[0];
+}
+
+/** First open campaign board that is not under par. Practice stays in the list, not on Play. */
+export function nextUnbeaten(bests: Record<string, number>, full: boolean) {
+  const tube = courseById("tube-run");
+  const order = [...trackCourses("2d"), ...trackCourses("3d"), tube];
+  const open = order.filter((c) => full || isUnlocked(c, bests));
+  return open.find((c) => !acceptable(c, bests)) ?? open[open.length - 1] ?? order[0];
 }

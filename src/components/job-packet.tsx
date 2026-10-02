@@ -33,9 +33,9 @@ export function JobPacket({
           <li key={d}>{d}</li>
         ))}
       </ul>
-      <p className="text-sm text-muted">Look-for a 3 · {HOUR.lookFor}</p>
+      {teacher ? <p className="text-sm text-muted">Look-for a 3 · {HOUR.lookFor}</p> : null}
       <p className="text-xs text-muted">
-        {stamps} board{stamps === 1 ? "" : "s"} stamped · {watts} W on this Chromebook. No names.
+        {stamps} board{stamps === 1 ? "" : "s"} cleared · {watts} watts on this Chromebook. No names.
       </p>
       {teacher ? (
         <section className="flex flex-col gap-2 rounded-2xl bg-navy-2 p-3 ring-1 ring-line">
@@ -60,7 +60,7 @@ export function JobPacket({
       )}
       <div className="flex flex-wrap gap-2">
         <Button onClick={onPlay}>
-          <ClipboardList className="size-4" /> Play First Trace
+          <ClipboardList className="size-4" /> Play Roll Out
         </Button>
         <Button variant="navy" onClick={onLab}>
           Build Lab

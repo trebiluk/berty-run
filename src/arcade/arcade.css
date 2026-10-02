@@ -1,0 +1,118 @@
+@import "@fontsource/press-start-2p/latin-400.css";
+
+html[data-theme="arcade"] {
+  --arc-a: #ff2bd6;
+  --arc-b: #3ee0ff;
+  --arc-c: #ffe56a;
+}
+
+html[data-theme="arcade"][data-cab="sunset"] {
+  --arc-a: #ff6a00;
+  --arc-b: #ff2d55;
+  --arc-c: #ffd15c;
+}
+
+html[data-theme="arcade"][data-cab="mint"] {
+  --arc-a: #5dffb1;
+  --arc-b: #7af0ff;
+  --arc-c: #e8ffe8;
+}
+
+html[data-theme="arcade"][data-cab="mono"] {
+  --arc-a: #39ff14;
+  --arc-b: #39ff14;
+  --arc-c: #b6ff9a;
+}
+
+html[data-theme="arcade"] .arcade-logo,
+html[data-theme="arcade"] .arcade-digits,
+html[data-theme="arcade"] .arcade-pop {
+  font-family: "Press Start 2P", ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 8px var(--arc-b), 3px 3px 0 #140014;
+}
+
+html[data-theme="arcade"] .arcade-blink {
+  font-family: "Press Start 2P", ui-monospace, monospace;
+  animation: arcade-blink 1s steps(2, end) infinite;
+}
+
+html[data-kp-lang="uk"] .script-font,
+html[data-kp-lang="ru"] .script-font,
+html[data-kp-lang="ar"] .script-font,
+html[data-kp-lang="fa-AF"] .script-font,
+html[data-kp-lang="ti"] .script-font,
+html[data-kp-lang="uk"] .arcade-blink,
+html[data-kp-lang="ru"] .arcade-blink,
+html[data-kp-lang="ar"] .arcade-blink,
+html[data-kp-lang="fa-AF"] .arcade-blink,
+html[data-kp-lang="ti"] .arcade-blink {
+  font-family: var(--kp-font), "Noto Sans", "Noto Sans Arabic", "Noto Sans Ethiopic", system-ui, sans-serif;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-shadow: none;
+}
+
+html[data-theme="arcade"] .arcade-banner {
+  border: 2px solid var(--arc-c);
+  box-shadow: 0 0 16px var(--arc-a), inset 0 0 12px rgba(0, 0, 0, 0.45);
+  background: #140018;
+}
+
+html[data-theme="arcade"] .overlay-panel {
+  border-radius: 6px;
+  background: linear-gradient(180deg, #1a0828 0%, #07010f 100%);
+  box-shadow: 0 0 0 2px var(--arc-a), 0 0 0 5px #140018, 0 0 22px var(--arc-b);
+}
+
+html[data-theme="arcade"] .overlay-panel button,
+html[data-theme="arcade"] .overlay-panel a {
+  min-height: 44px;
+  border-radius: 4px;
+  text-shadow: 0 0 6px var(--arc-b);
+  box-shadow: inset 0 0 0 1px var(--arc-b), 0 0 8px rgba(62, 224, 255, 0.25);
+}
+
+html[data-theme="arcade"] header .rounded-full {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--arc-c);
+}
+
+html[data-theme="arcade"][data-crt="1"] main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+html[data-shake="1"][data-fx="hi"] main {
+  filter: brightness(1.25);
+}
+
+html[data-theme="arcade"][data-fx="low"] .arcade-blink,
+html[data-theme="arcade"][data-fx="low"] main::after {
+  animation: none;
+  background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="arcade"] .arcade-blink {
+    animation: none;
+  }
+  html[data-theme="arcade"] main::after {
+    display: none;
+  }
+}
+
+@keyframes arcade-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes arcade-shake {
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}

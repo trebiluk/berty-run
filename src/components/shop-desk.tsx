@@ -13,6 +13,7 @@ import {
   SISTERS,
   downloadPack,
   hangHint,
+  packFileName,
   readPackFile,
   type BertyPack,
 } from "@/game/techworks";
@@ -36,7 +37,7 @@ export function ShopDesk({
     try {
       const next = await readPackFile(file);
       const err = onImport(next);
-      setMsg(err ?? "Loaded shop pack. No names in the file.");
+      setMsg(err ?? "Loaded on this Chromebook.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Could not open that file.");
     }
@@ -46,17 +47,17 @@ export function ShopDesk({
     <div className="flex flex-col gap-4">
       <div>
         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">Solvay MS · TechWorks</p>
-        <h2 className="text-2xl font-extrabold tracking-tight">Shop desk</h2>
+        <h2 className="text-2xl font-extrabold tracking-tight">Save file</h2>
       </div>
       <p className="text-sm leading-relaxed text-muted">
-        Berty's Run is a Tech Room lab. Scores stay on this Chromebook. No names. No accounts. Ed Law 2-d / FERPA.
+        Berty's Run is a Tech Room lab. Scores stay on this Chromebook. The file keeps a short name, not a real name. No roster id.
       </p>
 
       <div className="flex flex-wrap gap-2">
-        <a className={linkBtn} href={ROOM}>
+        <a className={linkBtn} href={ROOM} target="_top">
           <Home className="size-4" /> Tech Room
         </a>
-        <a className={linkBtnGhost} href={DESK}>
+        <a className={linkBtnGhost} href={DESK} target="_top">
           TechWorks desk
         </a>
       </div>
@@ -68,6 +69,7 @@ export function ShopDesk({
             <a
               key={s.id}
               href={s.href}
+              target="_top"
               title={s.blurb}
               className="inline-flex min-h-11 items-center rounded-lg bg-navy-2 px-3 text-xs font-bold uppercase tracking-wide text-fg ring-1 ring-line"
             >
@@ -130,20 +132,21 @@ export function ShopDesk({
       <section className="flex flex-col gap-2 rounded-2xl bg-ink p-3 ring-1 ring-line">
         <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-orange">Shop pack</p>
         <p className="text-sm text-muted">
-          Save or open <span className="font-semibold text-fg">.bertyrun.json</span>. Stamps, watts, and parts only.
-          No alias. No roster id.
+          Save or open <span className="font-semibold text-fg">.bertyrun.json</span>. Watts, parts, and boards stay on the alias code.
+          Not a real name. No roster id.
         </p>
         <p className="font-mono text-xs text-muted">
-          {pack.chip} · {Object.keys(pack.best).length} stamped · {pack.watts} W
+          {pack.code || "no code"} · {pack.alias || "no name"} · {pack.watts} watts
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => {
-              void downloadPack(pack);
-              setMsg("Saved bertys-run.bertyrun.json. Keep it local or a class Drive folder.");
+              void downloadPack(pack).then((ok) => {
+                setMsg(ok ? `Saved ${packFileName(pack.alias, pack.code)}. Keep the file. The desk will take it later.` : "Export canceled.");
+              });
             }}
           >
-            <Download className="size-4" /> Export
+            <Download className="size-4" /> Save successes
           </Button>
           <Button variant="navy" onClick={() => fileRef.current?.click()}>
             <Upload className="size-4" /> Open pack
@@ -151,7 +154,7 @@ export function ShopDesk({
           <input
             ref={fileRef}
             type="file"
-            accept=".json,.bertyrun.json,application/json"
+            accept=".json,application/json"
             className="sr-only"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -178,7 +181,7 @@ export function ShopDesk({
         <Button variant="navy" onClick={onBack}>
           Boards
         </Button>
-        <a className={cn(linkBtnGhost, "inline-flex items-center gap-2")} href={HUB.home.href}>
+        <a className={cn(linkBtnGhost, "inline-flex items-center gap-2")} href={HUB.home.href} target="_top">
           <BookOpen className="size-4" /> {HUB.home.label}
         </a>
       </div>
