@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.14 — 2026-10-03
+
+- What's new: Picking your PC takes you straight into the level.
+
 ## BR 1.12.13 — 2026-10-03
 
 - What's new: Taps press only what you tap, ☀ Menu opens the game menu, and phones get bigger thumb buttons. Picking your PC takes you straight into the level.
