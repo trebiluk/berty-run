@@ -1772,7 +1772,10 @@ export class Engine {
     if (this.phase === "title" || this.phase === "boot") return Math.max(0.2, zFit);
     const zFill = h / Math.max(1, boardH * 0.92);
     const zLocal = w / (12.2 * TILE);
-    const zWant = h > w ? Math.min(zLocal, w / (9 * TILE)) : Math.max(zLocal, zFill);
+    // Upright phone: about 7 tiles across so Berty stays readable. Landscape stays put.
+    const zWant = h > w
+      ? Math.min(w / (7 * TILE), (h * 0.6) / Math.max(1, boardH))
+      : Math.max(zLocal, zFill);
     return Math.max(zFit, zWant) * (1 + this.zoomPunch);
   }
 

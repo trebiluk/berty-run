@@ -1,5 +1,12 @@
 # Berty's Run
 
+## BR 1.12.13 — 2026-10-03
+
+- What's new: Taps press only what you tap, ☀ Menu opens the game menu, and phones get bigger thumb buttons. Picking your PC takes you straight into the level.
+- A finger scroll no longer presses the button it started on. One tap cannot press a second button after the panel moves.
+- ☀ opens Settings on the title, Levels, Stage Clear, and Try again. Mid-level it opens the pause menu and stops the clock.
+- Sideways phones keep Jump and Zap at the bottom-right thumb. Upright phones show a taller board.
+
 ## BR 1.12.12 — 2026-10-02
 
 - What's new: Settings has a name, and the game starts without errors.

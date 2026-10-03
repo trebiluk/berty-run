@@ -736,7 +736,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "Відкрити",
     wrongPin: "Хибний код",
     signedIn: "Вхід є. Бали йдуть за кодом TechWorks.",
-    signedOut: "Входу немає. Грати можна. Бали лишаються на цьому Chromebook.",
+    signedOut: "Входу немає. Грати можна. Бали лишаються на цьому пристрої.",
     menu: "Меню",
     mute: "Тиша",
     fullScreen: "На весь екран",
@@ -797,7 +797,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "Открыть",
     wrongPin: "Неверный код",
     signedIn: "Вход есть. Баллы идут по коду TechWorks.",
-    signedOut: "Входа нет. Играть можно. Баллы остаются на этом Chromebook.",
+    signedOut: "Входа нет. Играть можно. Баллы остаются на этом устройстве.",
     menu: "Меню",
     mute: "Тихо",
     fullScreen: "На весь экран",
@@ -858,7 +858,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "افتح",
     wrongPin: "رمز خطأ",
     signedIn: "أنت داخل. النقاط تستعمل رمز TechWorks.",
-    signedOut: "لست داخلًا. يمكنك اللعب. النقاط تبقى على هذا Chromebook.",
+    signedOut: "لست داخلًا. يمكنك اللعب. النقاط تبقى على هذا الجهاز.",
     menu: "القائمة",
     mute: "كتم",
     fullScreen: "ملء الشاشة",
@@ -919,7 +919,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "باز کن",
     wrongPin: "پین غلط",
     signedIn: "داخل شدی. نمره‌ها از کود TechWorks کار می‌گیرد.",
-    signedOut: "داخل نشدی. بازی کرده می‌توانی. نمره‌ها در این Chromebook می‌ماند.",
+    signedOut: "داخل نشدی. بازی کرده می‌توانی. نمره‌ها در این دستگاه می‌ماند.",
     menu: "منو",
     mute: "خاموشی صدا",
     fullScreen: "تمام صفحه",
@@ -980,7 +980,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "Fungura",
     wrongPin: "Kode itari yo",
     signedIn: "Winjiye. Amanota akoresha kode ya TechWorks.",
-    signedOut: "Ntabwo winjiye. Ushobora gukina. Amanota aguma kuri iyi Chromebook.",
+    signedOut: "Ntabwo winjiye. Ushobora gukina. Amanota aguma kuri iki gikoresho.",
     menu: "Ibikubiyemo",
     mute: "Gatuza",
     fullScreen: "Mugaragaza yuzuye",
@@ -1041,7 +1041,7 @@ const EXTRA: Partial<Record<Lang, Record<string, unknown>>> = {
     open: "ክፈት",
     wrongPin: "ጌጋ መፍትሕ",
     signedIn: "ኣቲኻ ኣለኻ። ነጥቢ ናይ TechWorks ኮድ ይጥቀም።",
-    signedOut: "ኣይኣተኻን። ክትጻወት ትኽእል። ነጥቢ ኣብዚ Chromebook ይቕመጥ።",
+    signedOut: "ኣይኣተኻን። ክትጻወት ትኽእል። ነጥቢ ኣብዚ መሳርሒ ይቕመጥ።",
     menu: "ዝርዝር",
     mute: "ስቕታ",
     fullScreen: "ምሉእ ስክሪን",
@@ -1388,4 +1388,20 @@ export function placeWord(lang: Lang, n: number): string {
   if (n === 2) return row?.[1] ?? "2nd";
   if (n === 3) return row?.[2] ?? "3rd";
   return lang === "en" || lang === "simple" ? `${n}th` : String(n);
+}
+
+const CLOSE_LABEL: Record<string, string> = {
+  en: "Close",
+  simple: "Close",
+  es: "Cerrar",
+  uk: "Закрити",
+  ru: "Закрыть",
+  ar: "إغلاق",
+  "fa-AF": "بستن",
+  rw: "Funga",
+  ti: "ዕጸው",
+};
+
+export function closeLabel(lang: string) {
+  return CLOSE_LABEL[lang] || "Close";
 }

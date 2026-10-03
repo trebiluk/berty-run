@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { applyPrefs, CABS, SKINS, STICKERS, initials, loadPrefs, reducedMotion, savePrefs, skinColor, watchPrefs, type Prefs, type Skin, type Sticker } from "@/arcade/cabinet";
 import { face } from "@/game/face";
-import { WHATS_NEW } from "@/game/techworks";
+import { whatsNew } from "@/game/techworks";
 import { useLang } from "@/game/use-lang";
 import { arcadeBlip, arcadeMood } from "@/arcade/sound";
 
@@ -99,7 +99,7 @@ export function Attract({ skin }: { skin: string }) {
       >
         {ui.coin}
       </p>
-      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{WHATS_NEW}</p>
+      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{whatsNew(useLang())}</p>
     </div>
   );
 }
@@ -238,7 +238,8 @@ export function ArcadeSettings({ stamps }: { stamps: number; lang?: string }) {
   const prefs = useCabinet();
   const set = (patch: Partial<Prefs>) => savePrefs({ ...prefs, ...patch });
   const crtLocked = reducedMotion();
-  const ui = face(useLang());
+  const lang = useLang();
+  const ui = face(lang);
   const onOff = (on: boolean) => (on ? ui.readOn : ui.readOff);
   return (
     <div className="mt-3 flex flex-col gap-1">
@@ -297,10 +298,11 @@ export function ArcadeSettings({ stamps }: { stamps: number; lang?: string }) {
               disabled={!open}
               aria-pressed={prefs.skin === skin.id}
               onClick={() => set({ skin: skin.id as Skin })}
-              className="min-h-11 text-xs font-bold ring-1 ring-line disabled:opacity-40"
+              aria-disabled={!open}
+              className="min-h-11 text-xs font-bold text-fg ring-1 ring-line disabled:opacity-100"
             >
               <span className="mr-1 inline-block size-2" style={{ background: skinColor(skin.id) }} />
-              {open ? ui.skins[skin.id] : `${skin.need} ${ui.wins}`}
+              {open ? ui.skins[skin.id] : `\u{1F512} ${lockNeed(lang, skin.need)}`}
             </button>
           );
         })}
@@ -317,16 +319,45 @@ export function ArcadeSettings({ stamps }: { stamps: number; lang?: string }) {
               disabled={!open}
               aria-pressed={prefs.sticker === sticker.id}
               onClick={() => set({ sticker: sticker.id as Sticker })}
-              className="min-h-11 px-2 text-left text-xs font-bold ring-1 ring-line disabled:opacity-40"
+              aria-disabled={!open}
+              className="min-h-11 px-2 text-left text-xs font-bold text-fg ring-1 ring-line disabled:opacity-100"
             >
-              {open ? ui.stickers[sticker.id].name : `${sticker.need} ${ui.wins}`}
-              <span className="mt-0.5 block font-semibold opacity-80">{ui.stickers[sticker.id].line}</span>
+              {open ? ui.stickers[sticker.id].name : `\u{1F512} ${lockNeed(lang, sticker.need)}`}
+              <span className="mt-0.5 block font-semibold">{ui.stickers[sticker.id].line}</span>
             </button>
           );
         })}
       </div>
     </div>
   );
+}
+
+
+function lockNeed(lang: string, need: number) {
+  const one: Record<string, string> = {
+    en: "Win 1 board",
+    simple: "Win 1 board",
+    es: "Gana 1 tablero",
+    uk: "Виграй 1 дошку",
+    ru: "Выиграй 1 доску",
+    ar: "اربح لوحة واحدة",
+    "fa-AF": "۱ تخته ببر",
+    rw: "Tsinda ikibaho 1",
+    ti: "1 ሰሌዳ ዓዊኻ",
+  };
+  const many: Record<string, string> = {
+    en: "Win {n} boards",
+    simple: "Win {n} boards",
+    es: "Gana {n} tableros",
+    uk: "Виграй {n} дошки",
+    ru: "Выиграй {n} доски",
+    ar: "اربح {n} لوحات",
+    "fa-AF": "{n} تخته ببر",
+    rw: "Tsinda ibibaho {n}",
+    ti: "{n} ሰሌዳታት ዓዊኻ",
+  };
+  if (need === 1) return one[lang] || one.en;
+  return (many[lang] || many.en).replace("{n}", String(need));
 }
 
 export function heatName(alias: string, demo: boolean) {

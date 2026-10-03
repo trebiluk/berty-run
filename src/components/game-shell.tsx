@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { COURSES, courseById, courseHasZap, courseMode, dyeFor, fmtTime, isUnlocked, nextBoard, nextUnbeaten, pickCourse, previousCourse, starsFromBest, TEMP_UNLOCK_ALL_LEVELS, trackCourses } from "@/game/courses";
 import { Engine } from "@/game/engine";
 import { unlockAudio } from "@/game/audio";
-import { CHIP, ROOM, WHATS_NEW, boardFor, downloadPack, placeLabel, readLaunch, rivalOf, studentsOnBoard } from "@/game/techworks";
+import { CHIP, ROOM, boardFor, downloadPack, placeLabel, readLaunch, rivalOf, studentsOnBoard, whatsNew } from "@/game/techworks";
 import { BOARD_SLOT, BOT_FEATURES, briefFor, botUnlocked, guideTeach, nextBot, slotPart, type LessonId, type PcGoal } from "@/game/curriculum";
 import { BuildLab } from "@/components/build-lab";
 import { ShopDesk } from "@/components/shop-desk";
@@ -14,7 +14,7 @@ import { JobPacket } from "@/components/job-packet";
 import { FieldGuide } from "@/components/field-guide";
 import type { CourseId, HudSnap } from "@/game/types";
 import { ACCESS_DEFAULT, DRIVES, askTilt, drivePatch, packFor, readAccess, say, stopSay, writeAccess, type Access, type Drive } from "@/game/access";
-import { cheerLine, courseLabel, face, partLabel, placeWord, rewardLine } from "@/game/face";
+import { cheerLine, closeLabel, courseLabel, face, partLabel, placeWord, rewardLine } from "@/game/face";
 import { fillHud, hudCopy, localizeLine } from "@/game/hud-copy";
 import { chooseLang, installLangWatch, LANGS } from "@/game/hub";
 import { appsFor, openSignIn } from "@/game/who";
@@ -272,7 +272,7 @@ function AccessPanel({
       <Button className="mt-3" onClick={onClose}>{ui.back}</Button>
       <div data-version-area className="mt-3">
         <p className="text-xs font-bold text-gold">{CHIP}</p>
-        <p className="mt-1 text-sm font-semibold leading-snug"><span className="text-gold">{ui.whatsNew}.</span> {WHATS_NEW}</p>
+        <p className="mt-1 text-sm font-semibold leading-snug"><span className="text-gold">{ui.whatsNew}.</span> {whatsNew(access.lang)}</p>
       </div>
     </div>
   );
@@ -467,9 +467,26 @@ export function GameShell() {
       styleHold.current = false;
     }
   }, [hud.phase]);
+  useEffect(() => {
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key !== "Escape") return;
+      if (styleOpen) {
+        setStyleOpen(false);
+        if (styleHold.current) {
+          styleHold.current = false;
+          engineRef.current?.resumeIfPaused();
+        }
+        return;
+      }
+      if (gear) setGear(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [styleOpen, gear]);
   const access = useAccess();
   const ui = face(access.lang);
   const hudWords = hudCopy(access.lang);
+  const coarse = useCoarse();
   const hintText = localizeLine(
     access.lang,
     turnWarn && !hud.tip
@@ -498,7 +515,11 @@ export function GameShell() {
                     ? hudWords.hintPaste
                     : hud.courseId === "case-fan"
                       ? hudWords.hintVirus
-                      : hudWords.hintStick,
+                      : coarse
+                        ? courseHasZap(hud.courseId)
+                          ? hudWords.hintTouchZap
+                          : hudWords.hintTouch
+                        : hudWords.hintStick,
   );
   const hintRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
@@ -598,6 +619,38 @@ export function GameShell() {
 
   const e = engineRef.current;
   const overlay = hud.phase !== "play";
+  const menuOpen = hud.phase === "play" || hud.phase === "pause" ? styleOpen : gear;
+  const toggleGameMenu = () => {
+    if (hud.phase === "play" || hud.phase === "pause") {
+      const opening = !styleOpen;
+      if (opening) {
+        if (hud.phase === "play") {
+          engineRef.current?.togglePause();
+          styleHold.current = true;
+        }
+        setStyleOpen(true);
+      } else {
+        setStyleOpen(false);
+        if (styleHold.current) {
+          styleHold.current = false;
+          engineRef.current?.resumeIfPaused();
+        }
+      }
+      return;
+    }
+    setGear((v) => !v);
+  };
+  const closeGameMenu = () => {
+    if (hud.phase === "play" || hud.phase === "pause") {
+      setStyleOpen(false);
+      if (styleHold.current) {
+        styleHold.current = false;
+        engineRef.current?.resumeIfPaused();
+      }
+      return;
+    }
+    setGear(false);
+  };
   const hideBoard = hud.phase === "title" || hud.phase === "win" || hud.phase === "fail" || hud.phase === "boot";
   const boardLocked = hideBoard || hud.phase === "pause" || styleOpen;
   const titlePane = hud.phase === "title";
@@ -644,38 +697,28 @@ export function GameShell() {
         }}
       />
 
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 px-2 pt-[max(0.35rem,env(safe-area-inset-top))]">
-        {hud.phase === "play" || hud.phase === "pause" ? (
-            <div className="hud-stack flex min-w-0 flex-col gap-1">
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-50 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]">
+        <div className={hud.phase === "play" || hud.phase === "pause" ? "hud-stack flex min-w-0 flex-col gap-1" : ""}>
             <div className="flex min-w-0 items-center gap-1.5">
             <div className="pointer-events-auto flex shrink-0">
               <button
                 type="button"
                 data-game-menu=""
-                aria-expanded={styleOpen}
+                aria-expanded={menuOpen}
                 aria-label={ui.menu}
                 className="inline-flex min-h-11 min-w-11 items-center justify-center bg-navy/80 text-fg ring-1 ring-white/30"
-                onPointerDown={(ev) => {
+                onClick={(ev) => {
                   ev.preventDefault();
                   ev.stopPropagation();
-                  const opening = !styleOpen;
-                  if (opening) {
-                    if (hud.phase === "play") {
-                      engineRef.current?.togglePause();
-                      styleHold.current = true;
-                    }
-                  } else if (styleHold.current) {
-                    styleHold.current = false;
-                    engineRef.current?.togglePause();
-                  }
-                  setStyleOpen(opening);
+                  toggleGameMenu();
                 }}
               >
                 <Menu className="size-5" />
               </button>
             </div>
+            {hud.phase === "play" || hud.phase === "pause" ? (
             <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold whitespace-nowrap ring-1 ring-line">
-              <span className="truncate">{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</span>
+              <span className="truncate"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
               <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)}</span>
               <span className="shrink-0 text-orange tabular-nums">{hud.gems}/{hud.gemTotal}</span>
               <span className="inline-flex shrink-0 items-center text-orange">
@@ -684,7 +727,10 @@ export function GameShell() {
                 ))}
               </span>
             </div>
+            ) : null}
             </div>
+            {hud.phase === "play" || hud.phase === "pause" ? (
+            <>
             <div className="ml-12 h-1.5 overflow-hidden rounded-full bg-navy/80" aria-hidden="true">
               <div
                 className={cn("h-full", hud.time > hud.par ? "bg-gold" : "bg-orange")}
@@ -695,10 +741,49 @@ export function GameShell() {
               <ArcadeScore gems={hud.gems} time={hud.time} par={hud.par} hearts={hud.hearts} show={arcade && hud.phase === "play"} />
             </div>
             <p data-hud="rev" className="ml-12 mt-1 text-[9px] font-bold text-gold opacity-75">{CHIP}</p>
-          </div>
-        ) : null}
+            </>
+            ) : null}
+        </div>
       </header>
       <FpsGuard />
+
+      {gear ? (
+        <div
+          className="settings-sheet absolute bottom-0 left-0 top-0 z-40 flex w-[min(22rem,92%)] flex-col bg-ink ring-1 ring-cyan"
+          style={{ left: 0, right: "auto", zIndex: 40 }}
+          onPointerDown={pressControl}
+          onClickCapture={swallowExtraClick}
+        >
+          <div className="flex shrink-0 justify-start p-1">
+            <button type="button" className="inline-flex size-11 items-center justify-center bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={() => setGear(false)}>
+              {closeLabel(access.lang)}
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <AccessPanel
+              hud={hud}
+              onClose={() => setGear(false)}
+              onLearn={() => { setGear(false); setLearn(true); }}
+              onHow={() => { setGear(false); setInduct(true); }}
+              onLab={() => { setGear(false); setLab(true); }}
+              onShop={() => { setGear(false); setShop(true); }}
+              onSound={() => e?.toggleMute()}
+              onSave={() => { const pack = e?.exportPack(); if (pack) void downloadPack(pack); }}
+              onGoal={() => { setGear(false); setPicking(true); }}
+              onPick={pickDrive}
+              onHeat={() => { setGear(false); setHeat(true); }}
+              onCrew={(on) => e?.setCrew(on)}
+              onGhost={() => e?.toggleGhost()}
+              onTryPin={(pin) => e?.tryFullUnlock(pin) ?? false}
+              onLockOff={() => e?.setFullUnlock(false)}
+              onJob={() => { setGear(false); setJob(true); }}
+              hour={hourLink}
+              full={full}
+              onFull={(on) => setShell(on)}
+            />
+          </div>
+        </div>
+      ) : null}
 
       {hud.phase === "play" && (hud.intro > 0 || hud.go) ? (
         <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center">
@@ -734,6 +819,9 @@ export function GameShell() {
           onPointerDown={pressControl}
           onClickCapture={swallowExtraClick}
         >
+          <button type="button" className="inline-flex size-11 items-center justify-center self-start bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={closeGameMenu}>
+            {closeLabel(access.lang)}
+          </button>
           <div className="grid grid-cols-4 gap-1">
             <button type="button" className="min-h-12 bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={() => {
               setStyleOpen(false);
@@ -769,6 +857,18 @@ export function GameShell() {
               {ui.exit}
             </button>
           </div>
+          <button type="button" className="min-h-12 bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={() => {
+            quietTitle(350);
+            setStyleOpen(false);
+            styleHold.current = false;
+            setFull(false);
+            setWide(false);
+            tellWide(false);
+            releaseWide();
+            engineRef.current?.selectCourse(hud.courseId);
+          }}>
+            {ui.levelsWord}
+          </button>
           {DRIVES.map((item) => (
             <button
               key={item.id}
@@ -807,7 +907,7 @@ export function GameShell() {
               onPointerDown={(ev) => { ev.preventDefault(); ev.stopPropagation(); e?.requestZap(); }}
             >
               <span className="text-sm font-extrabold leading-none">{hudWords.zap}</span>
-              <span className="mt-0.5 text-[10px] font-bold opacity-70">E</span>
+              <span className="key-hint mt-0.5 text-[10px] font-bold opacity-70">E</span>
             </button>
           ) : null}
           <button
@@ -817,7 +917,7 @@ export function GameShell() {
             onPointerDown={(ev) => { ev.preventDefault(); ev.stopPropagation(); e?.requestJump(); }}
           >
             <span className="text-sm font-extrabold leading-none">{hudWords.jump}</span>
-            <span className="mt-0.5 text-[10px] font-bold opacity-70">Space</span>
+            <span className="key-hint mt-0.5 text-[10px] font-bold opacity-70">Space</span>
           </button>
         </div>
       ) : null}
@@ -884,58 +984,6 @@ export function GameShell() {
               </button>
             </div>
             <div className={cn("panel-body relative min-h-0", gear && "flex-1 overflow-hidden", resultsPhase && !gear && "min-[960px]:flex-1 min-[960px]:overflow-hidden")}>
-            {gear ? (
-              <div className="absolute inset-0 z-20 overflow-y-auto bg-ink/80">
-                <div className="settings-body min-h-full w-full max-w-md bg-ink">
-              <AccessPanel
-                hud={hud}
-                onClose={() => setGear(false)}
-                onLearn={() => {
-                  setGear(false);
-                  setLearn(true);
-                }}
-                onHow={() => {
-                  setGear(false);
-                  setInduct(true);
-                }}
-                onLab={() => {
-                  setGear(false);
-                  setLab(true);
-                }}
-                onShop={() => {
-                  setGear(false);
-                  setShop(true);
-                }}
-                onSound={() => e?.toggleMute()}
-                onSave={() => {
-                  const pack = e?.exportPack();
-                  if (pack) void downloadPack(pack);
-                }}
-                onGoal={() => {
-                  setGear(false);
-                  setPicking(true);
-                }}
-                onPick={pickDrive}
-                onHeat={() => {
-                  setGear(false);
-                  setHeat(true);
-                }}
-                onCrew={(on) => e?.setCrew(on)}
-                onGhost={() => e?.toggleGhost()}
-                onTryPin={(pin) => e?.tryFullUnlock(pin) ?? false}
-                onLockOff={() => e?.setFullUnlock(false)}
-                onJob={() => {
-                  setGear(false);
-                  setJob(true);
-                }}
-                hour={hourLink}
-                full={full}
-                onFull={(on) => setShell(on)}
-              />
-                </div>
-              </div>
-            ) : null}
-
             {heat ? (
               <div
                 className="absolute inset-0 z-30 flex flex-col overflow-hidden bg-ink"
@@ -1048,8 +1096,10 @@ export function GameShell() {
               <GoalCard
                 stamps={hud.stamps}
                 onPick={(id) => {
+                  const fromPlay = Boolean(hud.needGoal) && !picking;
                   engineRef.current?.setGoal(id);
                   setPicking(false);
+                  if (fromPlay) engineRef.current?.startPlay();
                 }}
               />
             ) : null}
@@ -1299,25 +1349,62 @@ function swallowIfQuiet(ev: { preventDefault: () => void; stopPropagation: () =>
   ev.stopPropagation();
 }
 
+let swallowClicksUntil = 0;
+let swallowInstalled = false;
+
+function armClickSwallow() {
+  swallowClicksUntil = performance.now() + 400;
+  if (swallowInstalled || typeof document === "undefined") return;
+  swallowInstalled = true;
+  document.addEventListener("click", (ev) => {
+    if (performance.now() >= swallowClicksUntil) return;
+    if (!ev.isTrusted) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+  }, true);
+}
+
 function pressControl(ev: PointerEvent<HTMLElement>) {
   if (ev.pointerType !== "touch") return;
   const el = (ev.target as HTMLElement).closest("button, a");
   if (!(el instanceof HTMLElement)) return;
   if (!ev.currentTarget.contains(el)) return;
   if ((el as HTMLButtonElement).disabled) return;
-  ev.preventDefault();
-  ev.stopPropagation();
-  if (el.dataset.tap === "1") return;
-  el.dataset.tap = "1";
-  el.click();
-  window.setTimeout(() => {
-    delete el.dataset.tap;
-  }, 400);
+  const arm = { id: ev.pointerId, x: ev.clientX, y: ev.clientY, t: performance.now(), el, moved: false };
+  const move = (e: PointerEvent) => {
+    if (e.pointerId !== arm.id) return;
+    const dx = e.clientX - arm.x;
+    const dy = e.clientY - arm.y;
+    if (dx * dx + dy * dy >= 100) arm.moved = true;
+  };
+  const end = () => {
+    window.removeEventListener("pointermove", move);
+    window.removeEventListener("pointerup", up);
+    window.removeEventListener("pointercancel", cancel);
+  };
+  const up = (e: PointerEvent) => {
+    if (e.pointerId !== arm.id) return;
+    end();
+    const dx = e.clientX - arm.x;
+    const dy = e.clientY - arm.y;
+    if (arm.moved || dx * dx + dy * dy >= 100) return;
+    armClickSwallow();
+    if (performance.now() - arm.t >= 600) return;
+    if (!arm.el.isConnected) return;
+    arm.el.click();
+  };
+  const cancel = (e: PointerEvent) => {
+    if (e.pointerId !== arm.id) return;
+    arm.moved = true;
+    end();
+  };
+  window.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", up);
+  window.addEventListener("pointercancel", cancel);
 }
 
 function swallowExtraClick(ev: MouseEvent<HTMLElement>) {
-  const el = (ev.target as HTMLElement).closest("button, a");
-  if (!(el instanceof HTMLElement) || el.dataset.tap !== "1") return;
+  if (performance.now() >= swallowClicksUntil) return;
   if (ev.nativeEvent.isTrusted) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -1341,6 +1428,18 @@ function useShortLandscape() {
   const [on, setOn] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia(query);
+    const go = () => setOn(mq.matches);
+    go();
+    mq.addEventListener("change", go);
+    return () => mq.removeEventListener("change", go);
+  }, []);
+  return on;
+}
+
+function useCoarse() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse)");
     const go = () => setOn(mq.matches);
     go();
     mq.addEventListener("change", go);
@@ -1893,7 +1992,7 @@ function WinBoard({
       </div>
       {hud.botGift ? (
         <div className="win-gift-card w-full max-w-lg rounded-2xl bg-cyan px-4 py-3 text-ink">
-          <p className="text-xs font-bold uppercase tracking-wide">{ui.newOn} <bdi>Berty</bdi></p>
+          <p className="text-xs font-bold uppercase tracking-wide">{ui.newOn}</p>
           <p className="text-2xl font-extrabold leading-tight">{hud.botGift}</p>
           <p className="text-sm font-semibold">{hud.botLine}</p>
         </div>
@@ -2284,7 +2383,7 @@ function TitleCard({
         <div className="px-1 py-3 text-center">
           <h2 className="text-3xl font-extrabold leading-none tracking-tight text-paper"><bdi>BERTY'S RUN</bdi></h2>
           <p className="script-font mt-2 text-sm font-bold text-gold">{ui.coin}</p>
-          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{WHATS_NEW}</p>
+          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{whatsNew(access.lang)}</p>
         </div>
       )}
       <Button className="!min-h-16 w-full text-xl" onClick={onPlay}>

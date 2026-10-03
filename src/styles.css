@@ -280,30 +280,46 @@ html[dir="rtl"] body {
 @media (orientation: landscape) and (max-height: 500px) {
   .play-controls {
     flex-direction: row-reverse;
-    top: calc(env(safe-area-inset-top) + 7.25rem);
-    bottom: auto;
+    top: auto;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: max(1rem, env(safe-area-inset-right));
   }
   .play-controls.hands-controls {
     top: calc(env(safe-area-inset-top) + 7.25rem);
     bottom: auto;
+    right: max(0.75rem, env(safe-area-inset-right));
   }
   .play-controls [data-hud="jump"] {
     order: 1;
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    min-height: 72px;
   }
   .play-controls [data-hud="zap"] {
     order: 2;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+  }
+  .play-controls.hands-controls [data-hud="jump"],
+  .play-controls.hands-controls [data-hud="zap"] {
     width: 44px;
     height: 44px;
     min-width: 44px;
     min-height: 44px;
   }
-  header .hud-stack {
-    margin-right: 8.75rem;
-  }
+}
+
+@media (pointer: coarse) {
+  .key-hint { display: none; }
+}
+
+.settings-sheet,
+.menu-drawer {
+  left: 0;
+  right: auto;
 }
 
 /* Phone sideways results: actions + one-line reward on the left, tiles on the right. ≥960 stays on the desktop grid. */

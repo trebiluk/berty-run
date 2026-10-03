@@ -23,6 +23,8 @@ export type HudCopy = {
   hintPaste: string;
   hintVirus: string;
   hintStick: string;
+  hintTouch: string;
+  hintTouchZap: string;
 };
 
 const EN: HudCopy = {
@@ -47,6 +49,8 @@ const EN: HudCopy = {
   hintPaste: "Paste slides. Drag Lean before the slick.",
   hintVirus: "A pink virus is in the lane. Get close, then tap Zap.",
   hintStick: "Stick or WASD. Jump is Space. Zap is E.",
+  hintTouch: "Left thumb steers. Tap Jump.",
+  hintTouchZap: "Left thumb steers. Tap Jump. Tap Zap to zap.",
 };
 
 const SIMPLE: HudCopy = {
@@ -62,6 +66,8 @@ const SIMPLE: HudCopy = {
   hintPaste: "Paste is slippery. Drag Lean first.",
   hintVirus: "A pink virus is in the lane. Get close, then tap Zap.",
   hintStick: "Stick or WASD. Jump is Space. Zap is E.",
+  hintTouch: "Left thumb steers. Tap Jump.",
+  hintTouchZap: "Left thumb steers. Tap Jump. Tap Zap to zap.",
 };
 
 const ES: HudCopy = {
@@ -86,6 +92,8 @@ const ES: HudCopy = {
   hintPaste: "La pasta resbala. Arrastra Palanca antes.",
   hintVirus: "Hay un virus rosa. Acércate y toca Zap.",
   hintStick: "Palanca o WASD. Salto es Espacio. Zap es E.",
+  hintTouch: "El pulgar izquierdo gira. Toca Salto.",
+  hintTouchZap: "El pulgar izquierdo gira. Toca Salto. Toca Zap para zapear.",
 };
 
 const UK: HudCopy = {
@@ -110,6 +118,8 @@ const UK: HudCopy = {
   hintPaste: "Паста слизька. Потягни Нахил до неї.",
   hintVirus: "Рожевий вірус на доріжці. Підійди і натисни Зап.",
   hintStick: "Стік або WASD. Стрибок — пробіл. Зап — E.",
+  hintTouch: "Лівий палець керує. Торкни Стрибок.",
+  hintTouchZap: "Лівий палець керує. Торкни Стрибок. Торкни Зап, щоб запнути.",
 };
 
 const RU: HudCopy = {
@@ -134,6 +144,8 @@ const RU: HudCopy = {
   hintPaste: "Паста скользкая. Потяни Наклон до неё.",
   hintVirus: "Розовый вирус на дорожке. Подойди и нажми Зап.",
   hintStick: "Стик или WASD. Прыжок — пробел. Зап — E.",
+  hintTouch: "Левый палец рулит. Нажми Прыжок.",
+  hintTouchZap: "Левый палец рулит. Нажми Прыжок. Нажми Зап, чтобы запнуть.",
 };
 
 const AR: HudCopy = {
@@ -158,6 +170,8 @@ const AR: HudCopy = {
   hintPaste: "المعجون يزلق. اسحب الميل قبل الزلق.",
   hintVirus: "فيروس وردي في الممر. اقترب ثم المس زاب.",
   hintStick: "العصا أو WASD. القفز مسافة. زاب هو E.",
+  hintTouch: "الإبهام الأيسر يوجه. المس القفز.",
+  hintTouchZap: "الإبهام الأيسر يوجه. المس القفز. المس زاب للزاب.",
 };
 
 /** Dari (fa-AF), not Iranian Persian. Needs a native check. */
@@ -183,6 +197,8 @@ const FA: HudCopy = {
   hintPaste: "خمیر لیز است. پیش از لغزش Lean را بکش.",
   hintVirus: "ویروس گلابی در راه است. نزدیک شو، بعد زاپ بزن.",
   hintStick: "سویچ یا WASD. پرش Space است. زاپ E است.",
+  hintTouch: "شست چپ می‌راند. پرش را بزن.",
+  hintTouchZap: "شست چپ می‌راند. پرش را بزن. زاپ را بزن تا بزنی.",
 };
 
 /** Ikinyarwanda. Needs a native check. */
@@ -208,6 +224,8 @@ const RW: HudCopy = {
   hintPaste: "Umutobe uratera. Kurura Lean mbere.",
   hintVirus: "Virusi y'iroza iri mu muhanda. Eguka, ukande Zap.",
   hintStick: "Agakoni cyangwa WASD. Gusimbuka ni Space. Zap ni E.",
+  hintTouch: "Agakono k'ibumoso kayobora. Kanda Gusimbuka.",
+  hintTouchZap: "Agakono k'ibumoso kayobora. Kanda Gusimbuka. Kanda Zap kugira ngo uzape.",
 };
 
 /** ትግርኛ (Ge'ez). Needs a native check. */
@@ -233,6 +251,8 @@ const TI: HudCopy = {
   hintPaste: "ለቕለቕ ይንሽር። ቅድሚ ምንሽራር Lean ጎተት።",
   hintVirus: "ሮዛ ቫይረስ ኣብ መንገዲ ኣሎ። ቀረብ፣ ድሕሪኡ ዛፕ ጠውቕ።",
   hintStick: "ስቲክ ወይ WASD። ዘላይ Space እዩ። ዛፕ E እዩ።",
+  hintTouch: "ጸጋም ኣጻብዕ የመርሕ። ዘላይ ጠውቕ።",
+  hintTouchZap: "ጸጋም ኣጻብዕ የመርሕ። ዘላይ ጠውቕ። ዛፕ ንኽትዛፕ ጠውቕ።",
 };
 
 const ALL: Record<Lang, HudCopy> = {
@@ -259,15 +279,15 @@ type LineBag = Partial<Record<Lang, string>>;
 
 /** Exact engine lines. Missing language falls back to the English sentence. */
 const LINES: Record<string, LineBag> = {
-  "Set the first time": {
-    simple: "Be the first time.",
-    uk: "Постав перший час",
-    ru: "Поставь первое время",
-    es: "Pon el primer tiempo",
-    ar: "ضع أول وقت",
-    "fa-AF": "اولین وقت را بگذار",
-    rw: "Shyira umwanya wa mbere",
-    ti: "ቀዳማይ ግዜ ኣቐምጥ",
+  "No best time yet. Set one!": {
+    simple: "No best time yet. Set one!",
+    uk: "Ще немає кращого часу. Постав свій!",
+    ru: "Лучшего времени ещё нет. Поставь своё!",
+    es: "Aún no hay mejor tiempo. ¡Pon uno!",
+    ar: "لا يوجد أفضل وقت بعد. ضع واحدًا!",
+    "fa-AF": "هنوز بهترین وقت نیست. یکی بگذار!",
+    rw: "Nta mwanya mwiza urabaho. Shyira umwe!",
+    ti: "ዝበለጸ ግዜ የለን። ሓደ ኣቐምጥ!",
   },
   "You hold the best time": {
     simple: "You have the best time.",
