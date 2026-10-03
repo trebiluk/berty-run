@@ -247,6 +247,8 @@ export class Engine {
   private needBrief = false;
   warp = 0;
   private warped = false;
+  private boltX = 0;
+  private boltY = 0;
   keys = new Set<string>();
   injectKeys: string[] | null = null;
   injectAxis: { x: number; y: number } | null = null;
@@ -1820,7 +1822,7 @@ export class Engine {
     ctx.clearRect(0, 0, w, h);
     if (this.isTube()) {
       this.tubeSim?.draw(ctx, w, h, this.roomLess());
-      this.drawBolt(w, h, w / 2, h * 0.62);
+      this.drawBolt(w, h, this.tubeSim?.screenX ?? w / 2, (this.tubeSim?.screenY ?? h * 0.55) - 8);
       this.drawPads(w, h);
       return;
     }
@@ -1962,6 +1964,7 @@ export class Engine {
     }
 
     ctx.restore();
+    this.drawBolt(w, h, this.boltX || w / 2, this.boltY || h * 0.55);
     this.drawPads(w, h);
   }
 
@@ -2008,13 +2011,21 @@ export class Engine {
     ctx.fill();
     ctx.restore();
     const zoom = this.camZoom(this.canvas.clientWidth || 1, this.canvas.clientHeight || 1);
+    const m = ctx.getTransform();
+    const p = new DOMPoint(x, y).matrixTransform(m);
+    const dpr = paintScale();
+    this.boltX = p.x / dpr;
+    this.boltY = p.y / dpr;
+    const warpU = this.warp > 0 ? 1 - this.warp / (this.roomLess() ? 0.4 : 0.9) : 0;
     this.drawUpright(x, y, zoom, () => {
       const lift = hopU * 28;
       ctx.translate(0, -lift);
       ctx.rotate(b.angle);
       ctx.translate(0, stamps >= 1 ? Math.sin(this.time * 6) * 1.4 : 0);
-      ctx.scale(b.squash * (1 + hopU * 0.16), (2 - b.squash) * (1 + hopU * 0.16));
-      ctx.globalAlpha = b.alive ? 1 : Math.max(0, 1 - b.fall * 1.6);
+      const stretch = warpU > 0.2 && !this.roomLess() ? Math.min(2.2, 1 + warpU) : 1;
+      const thin = warpU > 0.2 && !this.roomLess() ? Math.max(0.25, 1 - warpU) : 1;
+      ctx.scale(b.squash * (1 + hopU * 0.16) * thin, (2 - b.squash) * (1 + hopU * 0.16) * stretch);
+      ctx.globalAlpha = (b.alive ? 1 : Math.max(0, 1 - b.fall * 1.6)) * (this.roomLess() && warpU > 0 ? 1 - warpU : warpU > 0.55 ? 1 - warpU : 1);
       const size = b.r * 2.9;
       ctx.drawImage(frames[fi], -size / 2, -size * 0.72, size, size);
     });
@@ -2170,44 +2181,73 @@ export class Engine {
     sfxWin();
     sfxGate();
     if (this.roomLess()) sfxChime();
-    else sfxThunder();
+    else {
+      sfxThunder();
+      this.burst(this.boltX || 320, this.boltY || 240, "#7af0ff", 8);
+      this.burst(this.boltX || 320, this.boltY || 240, "#ffe56a", 6);
+    }
     this.awardClear();
     this.emit();
   }
 
+  private boltJitter = 0;
+  private boltSeed = 0;
   private drawBolt(w: number, h: number, x: number, y: number) {
     if (this.warp <= 0) return;
     const ctx = this.ctx;
     const less = this.roomLess();
-    const u = 1 - this.warp / (less ? 0.4 : 0.9);
+    const total = less ? 0.4 : 0.9;
+    const u = 1 - this.warp / total;
     if (less) {
-      ctx.globalAlpha = 1 - u;
+      ctx.globalAlpha = 0.5 * (1 - u);
       ctx.strokeStyle = "#7af0ff";
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(x, y, 28 + u * 18, 0, Math.PI * 2);
+      ctx.arc(x, y, 18 * (1 + u * 0.3), 0, Math.PI * 2);
       ctx.stroke();
       ctx.globalAlpha = 1;
       return;
     }
-    if (u < 0.2) {
+    if (u < 0.14) {
+      if (performance.now() - this.boltJitter > 40) {
+        this.boltJitter = performance.now();
+        this.boltSeed = Math.random();
+      }
+      const j = (this.boltSeed - 0.5) * h * 0.06;
+      ctx.lineJoin = "miter";
+      ctx.lineCap = "round";
       ctx.strokeStyle = "#7af0ff";
       ctx.globalAlpha = 0.35;
       ctx.lineWidth = 10;
       ctx.beginPath();
-      ctx.moveTo(x, 8);
-      ctx.lineTo(x + 12, y * 0.4);
-      ctx.lineTo(x - 8, y * 0.7);
+      ctx.moveTo(x + (this.boltSeed - 0.5) * w * 0.12, 8);
+      ctx.lineTo(x + j, y * 0.35);
+      ctx.lineTo(x - j, y * 0.62);
       ctx.lineTo(x, y);
       ctx.stroke();
       ctx.globalAlpha = 1;
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 3;
       ctx.stroke();
+      ctx.strokeStyle = "#ffe56a";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x + j, y * 0.35);
+      ctx.lineTo(x + j * 2, y * 0.5);
+      ctx.stroke();
     }
-    if (u > 0.12 && u < 0.28) {
+    if (u > 0.12 && u < 0.22 && document.documentElement.dataset.fx !== "low") {
       ctx.fillStyle = "rgba(255,255,255,0.5)";
       ctx.fillRect(0, 0, w, h);
+    }
+    if (u > 0.28 && u < 0.7) {
+      ctx.strokeStyle = "#3ee0ff";
+      ctx.globalAlpha = 0.6 * (1 - (u - 0.28) / 0.42);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(x, y + 16, 22, 7, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
     }
   }
 

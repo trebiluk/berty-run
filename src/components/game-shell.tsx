@@ -913,7 +913,7 @@ export function GameShell() {
           )}
           dir="ltr"
         >
-          {hud.courseId === "tube-run" && !hud.tubeWire ? null : courseHasZap(hud.courseId) ? (
+          {hud.courseId === "tube-run" ? null : courseHasZap(hud.courseId) ? (
             <button
               type="button"
               className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-white/10 text-fg ring-2 ring-white/45"
@@ -924,15 +924,17 @@ export function GameShell() {
               <span className="key-hint mt-0.5 text-[10px] font-bold opacity-70">E</span>
             </button>
           ) : null}
+          {hud.courseId === "tube-run" && !hud.tubeWire ? null : (
           <button
             type="button"
-            className="flex h-[4.6rem] w-[4.6rem] flex-col items-center justify-center rounded-full bg-white/10 text-fg ring-2 ring-cyan/80"
+            className={"flex h-[4.6rem] w-[4.6rem] flex-col items-center justify-center rounded-full bg-white/10 text-fg ring-2 ring-cyan/80" + (hud.tubeWire ? " animate-pulse" : "")}
             data-hud="jump"
             onPointerDown={(ev) => { ev.preventDefault(); ev.stopPropagation(); e?.requestJump(); }}
           >
             <span className="text-sm font-extrabold leading-none">{hudWords.jump}</span>
             <span className="key-hint mt-0.5 text-[10px] font-bold opacity-70">Space</span>
           </button>
+          )}
         </div>
       ) : null}
       {hud.phase === "play" && !styleOpen ? (
