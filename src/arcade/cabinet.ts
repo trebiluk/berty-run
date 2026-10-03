@@ -14,6 +14,8 @@ export type Prefs = {
   music: boolean;
   sound: boolean;
   volume: number;
+  musicVolume: number;
+  sfxVolume: number;
 };
 
 export const CABS: { id: Cab; name: string }[] = [
@@ -38,7 +40,7 @@ export const STICKERS: { id: Sticker; name: string; need: number; line: string }
   { id: "heart", name: "Fan", need: 5, line: "Keeps it cool" },
 ];
 
-const BASE: Prefs = { look: "arcade", cab: "neon", skin: "lime", sticker: "bolt", crt: true, music: true, sound: true, volume: 0.7 };
+const BASE: Prefs = { look: "arcade", cab: "neon", skin: "lime", sticker: "bolt", crt: true, music: true, sound: true, volume: 0.7, musicVolume: 0.7, sfxVolume: 0.7 };
 
 function storageKey() {
   const code = readWho()?.code;
@@ -75,6 +77,8 @@ export function loadPrefs(): Prefs {
     ...saved,
     look: url ?? (saved.look === "classic" ? "classic" : "arcade"),
     volume: typeof saved.volume === "number" ? Math.min(1, Math.max(0, saved.volume)) : BASE.volume,
+    musicVolume: typeof saved.musicVolume === "number" ? Math.min(1, Math.max(0, saved.musicVolume)) : (typeof saved.volume === "number" ? saved.volume : BASE.musicVolume),
+    sfxVolume: typeof saved.sfxVolume === "number" ? Math.min(1, Math.max(0, saved.sfxVolume)) : (typeof saved.volume === "number" ? saved.volume : BASE.sfxVolume),
     sticker: STICKERS.some((s) => s.id === saved.sticker) ? (saved.sticker as Sticker) : "bolt",
   };
 }

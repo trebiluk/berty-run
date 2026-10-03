@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.14";
+export const CHIP = "BR 1.12.15";
 export const WHATS_NEW =
-  "BR 1.12.14: Picking your PC takes you straight into the level.";
+  "BR 1.12.15: Berty zaps out of each level in a lightning bolt, arcade music plays during every run with its own volume, and the Bus Tube is smoother, fairer and easier to read.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.14: Elegir tu PC te lleva directo al nivel.",
-  uk: "BR 1.12.14: Вибір ПК одразу веде в рівень.",
-  ru: "BR 1.12.14: Выбор ПК сразу ведёт в уровень.",
-  ar: "BR 1.12.14: اختيار الحاسوب يدخلك المستوى مباشرة.",
-  "fa-AF": "BR 1.12.14: انتخاب کامپیوتر تو را مستقیم به مرحله می‌برد.",
-  rw: "BR 1.12.14: Guhitamo PC bigutwara mu rwego ako kanya.",
-  ti: "BR 1.12.14: ፒሲ ምምራጽ ብቐጥታ ናብ ደረጃ የእቱ።",
+  es: "BR 1.12.15: Berty sale de cada nivel en un rayo, la música arcade suena en cada partida con su volumen, y el tubo bus es más suave, justo y fácil de leer.",
+  uk: "BR 1.12.15: Берті вилітає з рівня блискавкою, аркадна музика грає в кожному забігу зі своєю гучністю, а Шина-труба плавніша, чесніша і зрозуміліша.",
+  ru: "BR 1.12.15: Берти вылетает с уровня молнией, аркадная музыка играет в каждом забеге со своей громкостью, а Шина-труба плавнее, честнее и понятнее.",
+  ar: "BR 1.12.15: بيرتي يخرج من كل مستوى ببرق، وموسيقى الأركيد تعمل في كل جولة مع مستوى صوتها، وأنبوب الباص أنعم وأعدل وأوضح.",
+  "fa-AF": "BR 1.12.15: برتی با برق از هر مرحله بیرون می‌رود، موسیقی آرکید در هر دور با بلندی خودش پخش می‌شود، و لوله بس نرم‌تر، عادلانه‌تر و خواناتر است.",
+  rw: "BR 1.12.15: Berty ava mu rwego n'umurabyo, umuziki wa arcade urimo mu nkino yose ufite ubushobozi bwayo, kandi Bus Tube iroroshye, yuzuye kandi isomeka.",
+  ti: "BR 1.12.15: በርቲ ካብ ነፍሲ ወከፍ ደረጃ ብመብረቕ ይወጽእ፣ ሙዚቃ ኣርኬድ ኣብ ነፍሲ ወከፍ ጉዕዞ ብናቱ መጠን ትጻወት፣ ቱቦ ባስ ድማ ለውጢ፣ ፍትሓዊን ንባብን እዩ።",
 };
 
 export function whatsNew(lang: string) {

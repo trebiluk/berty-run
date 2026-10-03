@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.15 — 2026-10-03
+
+- What's new: Berty zaps out of each level in a lightning bolt, arcade music plays during every run with its own volume, and the Bus Tube is smoother, fairer and easier to read.
+
 ## BR 1.12.14 — 2026-10-03
 
 - What's new: Picking your PC takes you straight into the level.

@@ -317,6 +317,10 @@ const idle: HudSnap = {
   intro: 0,
   go: false,
   tip: "",
+  warp: 0,
+  tubeZ: 0,
+  tubeWire: false,
+  tubeLen: 45,
   follow: false,
   tilt: false,
   mouse: false,
@@ -348,11 +352,6 @@ export function GameShell() {
     applyPrefs(loadPrefs());
     bootArcadeAudio();
   }, []);
-  useEffect(() => {
-    if (!arcade) return;
-    if (hud.phase === "play") arcadeMood(hud.is3d || hud.stamps >= 6 ? "fast" : "level");
-    else if (hud.phase === "title" || hud.phase === "boot") arcadeMood("title");
-  }, [arcade, hud.phase, hud.is3d, hud.stamps]);
   useEffect(() => {
     if (hud.intro > 0) arcadeBlip("count");
     if (hud.go) arcadeBlip("power");
@@ -457,6 +456,15 @@ export function GameShell() {
   }, [hud.phase]);
 
   const [styleOpen, setStyleOpen] = useState(false);
+  useEffect(() => {
+    const ducked = styleOpen || gear || hud.phase === "pause" || hud.phase === "win" || hud.phase === "fail";
+    if (hud.phase === "play" && hud.courseId === "tube-run") arcadeMood("tube");
+    else if (hud.phase === "play" && hud.is3d) arcadeMood("deep");
+    else if (hud.phase === "play" && hud.stamps >= 6) arcadeMood("fast");
+    else if (hud.phase === "play") arcadeMood("level");
+    else arcadeMood("title");
+    if (ducked) arcadeMood(hud.phase === "fail" ? "over" : "clear");
+  }, [hud.phase, hud.is3d, hud.stamps, hud.courseId, styleOpen, gear]);
   const [turnWarn, setTurnWarn] = useState("");
   const [full, setFull] = useState(false);
   const [wide, setWide] = useState(false);
@@ -737,8 +745,14 @@ export function GameShell() {
                 style={{ width: `${Math.min(100, (hud.time / Math.max(0.1, hud.par)) * 100)}%` }}
               />
             </div>
-            <div data-hud="bar" className="ml-12 flex h-2.5 items-center text-[10px] leading-none">
-              <ArcadeScore gems={hud.gems} time={hud.time} par={hud.par} hearts={hud.hearts} show={arcade && hud.phase === "play"} />
+            <div data-hud="bar" className="ml-12 flex h-4 items-center text-[10px] leading-none">
+              {hud.courseId === "tube-run" ? (
+                <div className="h-1 flex-1 rounded-full bg-navy-2" aria-hidden="true">
+                  <div className="h-full bg-cyan" style={{ width: `${Math.min(100, (hud.tubeZ / Math.max(1, hud.tubeLen)) * 100)}%` }} />
+                </div>
+              ) : (
+                <ArcadeScore gems={hud.gems} time={hud.time} par={hud.par} hearts={hud.hearts} show={arcade && hud.phase === "play"} />
+              )}
             </div>
             <p data-hud="rev" className="ml-12 mt-1 text-[9px] font-bold text-gold opacity-75">{CHIP}</p>
             </>
@@ -899,7 +913,7 @@ export function GameShell() {
           )}
           dir="ltr"
         >
-          {courseHasZap(hud.courseId) ? (
+          {hud.courseId === "tube-run" && !hud.tubeWire ? null : courseHasZap(hud.courseId) ? (
             <button
               type="button"
               className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-white/10 text-fg ring-2 ring-white/45"
@@ -1214,7 +1228,7 @@ export function GameShell() {
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => e?.retry()}>{ui.retry}</Button>
                   <Button variant="ghost" onClick={() => e?.selectCourse(hud.courseId)}>
-                    {ui.courses}
+                    {ui.levelsWord}
                   </Button>
                 </div>
               </div>

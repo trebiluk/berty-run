@@ -77,6 +77,10 @@ export type HudSnap = {
   intro: number;
   go: boolean;
   tip: string;
+  warp: number;
+  tubeZ: number;
+  tubeWire: boolean;
+  tubeLen: number;
   follow: boolean;
   tilt: boolean;
   mouse: boolean;

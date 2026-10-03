@@ -633,7 +633,15 @@ export class Bend3D {
     if (heart?.visible) heart.position.y = R * 0.2 + Math.sin(t * 5) * 0.05;
   }
 
+  bertyScreen(w: number, h: number) {
+    if (!this.camera || !this.berty) return { x: w / 2, y: h * 0.55 };
+    const v = this.berty.position.clone();
+    v.project(this.camera);
+    return { x: (v.x * 0.5 + 0.5) * w, y: (-v.y * 0.5 + 0.5) * h };
+  }
+
   followAim(sx: number, sy: number, w: number, h: number): { x: number; y: number } {
+
     const cam = this.camera;
     if (!cam || w < 2 || h < 2) {
       return { x: clamp((sx / Math.max(1, w) - 0.5) * 2, -1, 1), y: clamp((sy / Math.max(1, h) - 0.42) * 2, -1, 1) };

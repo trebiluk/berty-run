@@ -14,12 +14,16 @@ import {
   sfxGo,
   sfxHurt,
   sfxWin,
+  sfxThunder,
+  sfxChime,
+  sfxBuzz,
   unlockAudio,
 } from "./audio";
 import { makePack, parsePack, markHowto, postScore, CHIP, type BertyPack } from "./techworks";
 import { drivePatch, readAccess, writeAccess } from "./access";
 import { recordClear, signedWho, stashRun } from "./who";
-import { TubeSim } from "@/arcade/tube";
+import { TubeSim, TUBE_LEN } from "@/arcade/tube";
+import { tubeTip } from "./hud-copy";
 import type { Course, CourseId, HudSnap } from "./types";
 
 const STEP = 1 / 60;
@@ -241,6 +245,8 @@ export class Engine {
   private briefPass = false;
   private needGoal = false;
   private needBrief = false;
+  warp = 0;
+  private warped = false;
   keys = new Set<string>();
   injectKeys: string[] | null = null;
   injectAxis: { x: number; y: number } | null = null;
@@ -881,6 +887,8 @@ export class Engine {
     this.ghostPlay = this.save.ghosts[this.course.id] ?? [];
     this.bend?.reset();
     this.tubeSim?.reset();
+    this.warp = 0;
+    this.warped = false;
   }
 
   private makeBody(x: number, y: number): Body {
@@ -1060,6 +1068,15 @@ export class Engine {
   }
 
   private step(dt: number) {
+    if (this.warp > 0) {
+      this.warp = Math.max(0, this.warp - dt);
+      if (this.tubeSim) this.tubeSim.warp = this.warp;
+      if (this.warp === 0) {
+        this.phase = "win";
+        this.emit();
+      }
+      return;
+    }
     this.watchTilt(dt);
     if (this.phase === "pause") return;
     if (this.is3d()) {
@@ -1105,13 +1122,7 @@ export class Engine {
           this.emit();
         }
       }
-      if (ev?.win && this.phase === "play") {
-        this.phase = "win";
-        sfxWin();
-        sfxGate();
-        this.awardClear();
-        this.emit();
-      }
+      if (ev?.win && this.phase === "play") this.beginWarp();
       if (playing && Math.floor(this.time * 10) !== Math.floor((this.time - dt) * 10)) this.emit();
       return;
     }
@@ -1123,14 +1134,17 @@ export class Engine {
         return;
       }
       this.time += dt;
-      const ev = this.tubeSim?.step(dt, this.held(), this.reduced);
+      const ev = this.tubeSim?.step(dt, this.held(), this.roomLess());
       if (ev?.turn) sfxBump();
       if (ev?.gem) {
         sfxGem();
         this.hitstop = 0.04;
       }
       if (ev?.boost) sfxBoost();
+      if (ev?.check) sfxCheck();
       if (ev?.tip) this.note(ev.tip);
+      if (ev?.tipKey) this.note(tubeTip(readAccess().lang, ev.tipKey));
+      if (ev?.tipKey === "bit") sfxBuzz();
       if (ev?.hurt) {
         sfxHurt();
         this.hearts -= 1;
@@ -1140,13 +1154,7 @@ export class Engine {
           this.emit();
         }
       }
-      if (ev?.win && this.phase === "play") {
-        this.phase = "win";
-        sfxWin();
-        sfxGate();
-        this.awardClear();
-        this.emit();
-      }
+      if (ev?.win && this.phase === "play") this.beginWarp();
       if (Math.floor(this.time * 10) !== Math.floor((this.time - dt) * 10)) this.emit();
       return;
     }
@@ -1563,15 +1571,7 @@ export class Engine {
       b.y < this.exit.y + this.exit.h;
     const p1ok = inGate(this.p1);
     const p2ok = this.p2 ? inGate(this.p2) : true;
-    if (p1ok && p2ok) {
-      this.phase = "win";
-      sfxWin();
-      sfxGate();
-      this.burst(this.p1.x, this.p1.y, "#c8f542", 28);
-      this.burst(this.exit.x + this.exit.w / 2, this.exit.y + this.exit.h / 2, "#f4efe6", 18);
-      this.awardClear();
-      this.emit();
-    }
+    if (p1ok && p2ok) this.beginWarp();
   }
 
   private followCam(dt: number) {
@@ -1819,12 +1819,15 @@ export class Engine {
     const ctx = this.ctx;
     ctx.clearRect(0, 0, w, h);
     if (this.isTube()) {
-      this.tubeSim?.draw(ctx, w, h, this.reduced);
+      this.tubeSim?.draw(ctx, w, h, this.roomLess());
+      this.drawBolt(w, h, w / 2, h * 0.62);
       this.drawPads(w, h);
       return;
     }
     if (this.is3d()) {
       this.bend?.render(this.phase === "play" || this.phase === "pause");
+      const pt = this.bend?.bertyScreen?.(w, h);
+      this.drawBolt(w, h, pt?.x ?? w / 2, pt?.y ?? h * 0.55);
       this.drawPads(w, h);
       return;
     }
@@ -2155,7 +2158,61 @@ export class Engine {
     return true;
   }
 
+  private roomLess() {
+    return this.reduced || (typeof document !== "undefined" && document.documentElement.dataset.kpMotion === "less");
+  }
+
+  private beginWarp() {
+    if (this.warped || this.phase !== "play") return;
+    this.warped = true;
+    this.warp = this.roomLess() ? 0.4 : 0.9;
+    if (this.tubeSim) this.tubeSim.warp = this.warp;
+    sfxWin();
+    sfxGate();
+    if (this.roomLess()) sfxChime();
+    else sfxThunder();
+    this.awardClear();
+    this.emit();
+  }
+
+  private drawBolt(w: number, h: number, x: number, y: number) {
+    if (this.warp <= 0) return;
+    const ctx = this.ctx;
+    const less = this.roomLess();
+    const u = 1 - this.warp / (less ? 0.4 : 0.9);
+    if (less) {
+      ctx.globalAlpha = 1 - u;
+      ctx.strokeStyle = "#7af0ff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 28 + u * 18, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      return;
+    }
+    if (u < 0.2) {
+      ctx.strokeStyle = "#7af0ff";
+      ctx.globalAlpha = 0.35;
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(x, 8);
+      ctx.lineTo(x + 12, y * 0.4);
+      ctx.lineTo(x - 8, y * 0.7);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+    if (u > 0.12 && u < 0.28) {
+      ctx.fillStyle = "rgba(255,255,255,0.5)";
+      ctx.fillRect(0, 0, w, h);
+    }
+  }
+
   private awardClear() {
+
     const t = this.time;
     const id = this.course.id;
     const counted = () => COURSES.filter((c) => !c.arcade && this.save.best[c.id] != null).length;
@@ -2430,6 +2487,10 @@ export class Engine {
       needBrief: this.needBrief,
       intro: this.intro > 0 ? Math.ceil(this.intro) : 0,
       go: this.go > 0,
+      warp: this.warp,
+      tubeZ: this.tubeSim?.z ?? 0,
+      tubeWire: this.tubeSim?.onWire() ?? false,
+      tubeLen: TUBE_LEN,
     };
     this.onHud(snap);
     window.__bertyRun = { phase: snap.phase, gems: snap.gems, time: snap.time };

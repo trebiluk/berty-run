@@ -260,23 +260,20 @@ export function ArcadeSettings({ stamps }: { stamps: number; lang?: string }) {
           </button>
         ))}
       </div>
-      <button type="button" className="flex min-h-11 items-center justify-between px-3 text-sm font-bold ring-1 ring-line" aria-pressed={prefs.music} onClick={() => set({ music: !prefs.music })}>
-        {ui.music} <span>{onOff(prefs.music)}</span>
+      <p className="text-[10px] font-bold uppercase tracking-wide text-gold">{ui.sound}</p>
+      <button type="button" className="flex min-h-12 items-center justify-between px-3 text-sm font-bold ring-1 ring-line" aria-pressed={prefs.music} onClick={() => set({ music: !prefs.music })}>
+        {mixLabel(lang, "music")} <span>{onOff(prefs.music)}</span>
       </button>
-      <button type="button" className="flex min-h-11 items-center justify-between px-3 text-sm font-bold ring-1 ring-line" aria-pressed={prefs.sound} onClick={() => set({ sound: !prefs.sound })}>
-        {ui.sound} <span>{onOff(prefs.sound)}</span>
+      <label className="flex min-h-12 items-center gap-2 px-3 text-sm font-bold ring-1 ring-line">
+        {mixLabel(lang, "musicVol")}
+        <input type="range" min={0} max={100} value={Math.round(prefs.musicVolume * 100)} aria-label={mixLabel(lang, "musicVol")} onChange={(ev) => set({ musicVolume: Number(ev.target.value) / 100, volume: Number(ev.target.value) / 100 })} className="min-h-11 flex-1" />
+      </label>
+      <button type="button" className="flex min-h-12 items-center justify-between px-3 text-sm font-bold ring-1 ring-line" aria-pressed={prefs.sound} onClick={() => set({ sound: !prefs.sound })}>
+        {mixLabel(lang, "sound")} <span>{onOff(prefs.sound)}</span>
       </button>
-      <label className="flex min-h-11 items-center gap-2 px-3 text-sm font-bold ring-1 ring-line">
-        {ui.volume}
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={Math.round(prefs.volume * 100)}
-          aria-label={ui.volume}
-          onChange={(ev) => set({ volume: Number(ev.target.value) / 100 })}
-          className="min-h-11 flex-1"
-        />
+      <label className="flex min-h-12 items-center gap-2 px-3 text-sm font-bold ring-1 ring-line">
+        {mixLabel(lang, "soundVol")}
+        <input type="range" min={0} max={100} value={Math.round(prefs.sfxVolume * 100)} aria-label={mixLabel(lang, "soundVol")} onChange={(ev) => set({ sfxVolume: Number(ev.target.value) / 100 })} className="min-h-11 flex-1" />
       </label>
       <button
         type="button"
@@ -332,6 +329,21 @@ export function ArcadeSettings({ stamps }: { stamps: number; lang?: string }) {
   );
 }
 
+
+function mixLabel(lang: string, key: "music" | "musicVol" | "sound" | "soundVol") {
+  const bag: Record<string, Record<string, string>> = {
+    en: { music: "Music", musicVol: "Music volume", sound: "Sound", soundVol: "Sound volume" },
+    simple: { music: "Music", musicVol: "Music volume", sound: "Sound", soundVol: "Sound volume" },
+    es: { music: "Música", musicVol: "Volumen de música", sound: "Sonido", soundVol: "Volumen de sonido" },
+    uk: { music: "Музика", musicVol: "Гучність музики", sound: "Звук", soundVol: "Гучність звуку" },
+    ru: { music: "Музыка", musicVol: "Громкость музыки", sound: "Звук", soundVol: "Громкость звука" },
+    ar: { music: "الموسيقى", musicVol: "مستوى الموسيقى", sound: "الصوت", soundVol: "مستوى الصوت" },
+    "fa-AF": { music: "موسیقی", musicVol: "بلندی موسیقی", sound: "صدا", soundVol: "بلندی صدا" },
+    rw: { music: "Umuziki", musicVol: "Ubushobozi bw'umuziki", sound: "Ijwi", soundVol: "Ubushobozi bw'ijwi" },
+    ti: { music: "ሙዚቃ", musicVol: "መጠን ሙዚቃ", sound: "ድምጺ", soundVol: "መጠን ድምጺ" },
+  };
+  return (bag[lang] || bag.en)[key];
+}
 
 function lockNeed(lang: string, need: number) {
   const one: Record<string, string> = {

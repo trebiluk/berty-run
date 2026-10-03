@@ -612,3 +612,78 @@ export function localizeLine(lang: Lang, text: string): string {
   return raw;
 }
 
+
+const TUBE_TIPS: Record<string, Record<string, string>> = {
+  wall: {
+    en: "The wall is your floor now.",
+    simple: "The wall is your floor now.",
+    es: "La pared es tu suelo ahora.",
+    uk: "Стіна тепер твоя підлога.",
+    ru: "Стена теперь твой пол.",
+    ar: "الجدار هو أرضك الآن.",
+    "fa-AF": "دیوار اکنون کف تو است.",
+    rw: "Urukuta ni ubutaka bwawe ubu.",
+    ti: "መንደቕ ሕጂ መሬትካ እዩ።",
+  },
+  wire: {
+    en: "On the wire, jump when you're on the green side.",
+    simple: "On the wire, jump on the green side.",
+    es: "En el cable, salta cuando estés en el lado verde.",
+    uk: "На дроті стрибай, коли ти на зеленому боці.",
+    ru: "На проводе прыгай, когда ты на зелёной стороне.",
+    ar: "على السلك، اقفز وأنت على الجانب الأخضر.",
+    "fa-AF": "روی سیم، وقتی سمت سبز هستی بپر.",
+    rw: "Ku rutoza, simbukira uri ku ruhande rw'icyatsi.",
+    ti: "ኣብ ሽቦ፣ ኣብ ቀጠልያ ጎኒ ምስ ኰንካ ዘልል።",
+  },
+  bit: {
+    en: "1 bit left. Back to the last ring!",
+    simple: "1 bit left. Back to the last ring!",
+    es: "Falta 1 dato. ¡Vuelta al último anillo!",
+    uk: "Лишився 1 біт. Назад на останнє кільце!",
+    ru: "Остался 1 бит. Назад на последнее кольцо!",
+    ar: "بقيت قطعة واحدة. عودة إلى الحلقة الأخيرة!",
+    "fa-AF": "۱ بیت مانده. برگرد به حلقه آخر!",
+    rw: "Hasigaye bit 1. Subira ku mpeta ya nyuma!",
+    ti: "1 ቢት ተሪፉ። ናብ ናይ መወዳእታ ቀለቤት ተመለስ!",
+  },
+  saved: {
+    en: "Saved here.",
+    simple: "Saved here.",
+    es: "Guardado aquí.",
+    uk: "Збережено тут.",
+    ru: "Сохранено здесь.",
+    ar: "حُفظ هنا.",
+    "fa-AF": "اینجا ذخیره شد.",
+    rw: "Byabitswe hano.",
+    ti: "ኣብዚ ተዓቂቡ።",
+  },
+  lit: {
+    en: "Steer onto the lit wall.",
+    simple: "Steer onto the lit wall.",
+    es: "Gira hacia la pared iluminada.",
+    uk: "Кермуй на освітлену стіну.",
+    ru: "Рули на освещённую стену.",
+    ar: "وجّه إلى الجدار المضيء.",
+    "fa-AF": "به دیوار روشن بچرخ.",
+    rw: "Yobora ku rukuta rucarana.",
+    ti: "ናብ ዝበርህ መንደቕ ኣምርሕ።",
+  },
+  wait: {
+    en: "Not yet.",
+    simple: "Not yet.",
+    es: "Todavía no.",
+    uk: "Ще ні.",
+    ru: "Ещё нет.",
+    ar: "ليس بعد.",
+    "fa-AF": "هنوز نه.",
+    rw: "Ntiragera.",
+    ti: "ገና ኣይኰነን።",
+  },
+};
+
+export function tubeTip(lang: string, key: string) {
+  const bag = TUBE_TIPS[key];
+  if (!bag) return "";
+  return bag[lang] || bag.en;
+}
