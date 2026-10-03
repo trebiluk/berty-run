@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.15";
+export const CHIP = "BR 1.12.16";
 export const WHATS_NEW =
-  "BR 1.12.15: Berty zaps out of each level in a lightning bolt, arcade music plays during every run with its own volume, and the Bus Tube is smoother, fairer and easier to read.";
+  "BR 1.12.16: Clearer goals with an arrow to the nearest bit, any clear opens the next board, Pause and Restart on screen, a score that counts up, smoother jumps, steadier music, and a faster game on Chromebooks.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.15: Berty sale de cada nivel en un rayo, la música arcade suena en cada partida con su volumen, y el tubo bus es más suave, justo y fácil de leer.",
-  uk: "BR 1.12.15: Берті вилітає з рівня блискавкою, аркадна музика грає в кожному забігу зі своєю гучністю, а Шина-труба плавніша, чесніша і зрозуміліша.",
-  ru: "BR 1.12.15: Берти вылетает с уровня молнией, аркадная музыка играет в каждом забеге со своей громкостью, а Шина-труба плавнее, честнее и понятнее.",
-  ar: "BR 1.12.15: بيرتي يخرج من كل مستوى ببرق، وموسيقى الأركيد تعمل في كل جولة مع مستوى صوتها، وأنبوب الباص أنعم وأعدل وأوضح.",
-  "fa-AF": "BR 1.12.15: برتی با برق از هر مرحله بیرون می‌رود، موسیقی آرکید در هر دور با بلندی خودش پخش می‌شود، و لوله بس نرم‌تر، عادلانه‌تر و خواناتر است.",
-  rw: "BR 1.12.15: Berty ava mu rwego n'umurabyo, umuziki wa arcade urimo mu nkino yose ufite ubushobozi bwayo, kandi Bus Tube iroroshye, yuzuye kandi isomeka.",
-  ti: "BR 1.12.15: በርቲ ካብ ነፍሲ ወከፍ ደረጃ ብመብረቕ ይወጽእ፣ ሙዚቃ ኣርኬድ ኣብ ነፍሲ ወከፍ ጉዕዞ ብናቱ መጠን ትጻወት፣ ቱቦ ባስ ድማ ለውጢ፣ ፍትሓዊን ንባብን እዩ።",
+  es: "BR 1.12.16: Metas más claras con una flecha al bit más cercano, cualquier victoria abre el siguiente tablero, Pausa y Reiniciar en pantalla, un puntaje que sube, saltos más suaves, música más estable y un juego más rápido en Chromebooks.",
+  uk: "BR 1.12.16: Ясніша мета зі стрілкою до найближчого біта, будь-яке проходження відкриває наступну дошку, Пауза і Спочатку на екрані, рахунок росте, м'якші стрибки, стабільніша музика і швидша гра на Chromebook.",
+  ru: "BR 1.12.16: Яснее цель со стрелкой к ближайшему биту, любое прохождение открывает следующую доску, Пауза и Сначала на экране, счёт растёт, мягче прыжки, ровнее музыка и быстрее игра на Chromebook.",
+  ar: "BR 1.12.16: أهداف أوضح مع سهم إلى أقرب بت، وأي إنهاء يفتح اللوح التالي، وإيقاف وإعادة على الشاشة، ونقاط تصعد، وقفز أنعم، وموسيقى أثبت، ولعبة أسرع على Chromebook.",
+  "fa-AF": "BR 1.12.16: برتی با برق از هر مرحله بیرون می‌رود، موسیقی آرکید در هر دور با بلندی خودش پخش می‌شود، و لوله بس نرم‌تر، عادلانه‌تر و خواناتر است.",
+  rw: "BR 1.12.16: Intego isobanutse n'akambi ku gice hafi, gutsinda byose bifungura imbago ikurikira, Hagarara na Ongera ku rubuga, amanota agenda hejuru, gusimbuka koroshye, umuziki utuje, no gukina vuba kuri Chromebook.",
+  ti: "BR 1.12.16: ንጹር ዕላማ ምስ ምልክት ናብ ቀረባ ቢት፣ ዝኾነ ምውዳእ ዝቕጽል ቦርድ ይኸፍት፣ ዕረፍን ዳግማይን ኣብ ስክሪን፣ ነጥቢ ይደይብ፣ ለውጢ ዝዘለለ፣ ርጉጽ ሙዚቃ፣ ቅልጡፍ ጸወታ ኣብ Chromebook.",
 };
 
 export function whatsNew(lang: string) {

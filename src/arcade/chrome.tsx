@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { applyPrefs, CABS, SKINS, STICKERS, initials, loadPrefs, reducedMotion, savePrefs, skinColor, watchPrefs, type Prefs, type Skin, type Sticker } from "@/arcade/cabinet";
+import { scoreFor, timeBonus } from "@/game/score";
+import { line16 } from "@/game/hud-copy";
 import { face } from "@/game/face";
 import { whatsNew } from "@/game/techworks";
 import { useLang } from "@/game/use-lang";
@@ -122,7 +124,7 @@ export function ArcadeScore({
   const last = useRef(gems);
   const combo = useRef(0);
   const comboAt = useRef(0);
-  const target = Math.max(0, gems * 100 + Math.floor(Math.max(0, par - time) * 10));
+  const target = gems * 100;
   useEffect(() => {
     if (!show) return;
     const id = window.setInterval(() => {
@@ -167,10 +169,11 @@ export function ArcadeScore({
   );
 }
 
-export function StageClear({ time, par, stars, rig, title, high }: { time: number; par: number; stars: number; rig: string; title?: string; high?: string }) {
+export function StageClear({ time, par, stars, rig, title, high, bits = 0 }: { time: number; par: number; stars: number; rig: string; title?: string; high?: string; bits?: number }) {
   const ui = face(useLang());
-  const [n, setN] = useState(0);
-  const goal = Math.max(0, Math.round((par - Math.min(time, par * 2)) * 100) + stars * 500);
+  const [n, setN] = useState(bits * 100);
+  const bonus = timeBonus(time, par);
+  const goal = scoreFor({ bits, time, par });
   useEffect(() => {
     arcadeMood("clear");
     const id = window.setInterval(() => setN((v) => (v < goal ? v + Math.max(25, Math.ceil((goal - v) / 10)) : goal)), 40);
@@ -180,6 +183,7 @@ export function StageClear({ time, par, stars, rig, title, high }: { time: numbe
     <div className="arcade-banner mb-2 p-2 text-center" dir="ltr">
       <p className="script-font text-sm font-extrabold text-[#ffe56a]">{title || ui.stageClear}</p>
       <p className="arcade-digits mt-1 text-xs text-[#3ee0ff]">{String(n).padStart(6, "0")}</p>
+      {bonus > 0 ? <p className="mt-1 text-xs font-bold text-[#d6ff4a]"><bdi>{line16(useLang(), "timeBonus", { n: bonus })}</bdi></p> : null}
       {stars >= 3 ? <p className="script-font mt-1 text-xs text-[#ff2bd6]">{high || ui.newHigh}</p> : null}
       {rig ? <p className="mt-1 text-xs font-bold text-[#d6ff4a]">{rig}</p> : null}
     </div>

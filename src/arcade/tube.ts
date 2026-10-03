@@ -81,6 +81,8 @@ export class TubeSim {
   private steer = 0;
   private queue = 0;
   private queueAt = 0;
+  private turnEase = 0;
+  private sawNeutral = false;
   private saidTurn = false;
   private saidWire = false;
   private saidGap = false;
@@ -183,34 +185,23 @@ export class TubeSim {
     }
 
     const ix = input.x;
-    if (this.steer === 0 && ix > 0.45) {
-      this.face = (this.face + 1) % 4;
-      this.steer = 1;
+    this.turnEase = Math.max(0, this.turnEase - dt);
+    if (Math.abs(ix) < 0.25) {
       this.queue = 0;
+      this.steer = 0;
+      if (this.turnEase > 0) this.sawNeutral = true;
+    } else if (Math.abs(ix) > 0.45 && this.steer === 0 && (this.turnEase <= 0 || this.sawNeutral)) {
+      const dir = ix > 0 ? 1 : -1;
+      this.face = (this.face + (dir > 0 ? 1 : 3)) % 4;
+      this.steer = dir;
+      this.queue = 0;
+      this.turnEase = 0.25;
+      this.sawNeutral = false;
       ev.turn = true;
       if (!this.saidTurn) {
         this.saidTurn = true;
         this.tip(ev, "wall", now);
       }
-    } else if (this.steer === 0 && ix < -0.45) {
-      this.face = (this.face + 3) % 4;
-      this.steer = -1;
-      this.queue = 0;
-      ev.turn = true;
-      if (!this.saidTurn) {
-        this.saidTurn = true;
-        this.tip(ev, "wall", now);
-      }
-    } else if (Math.abs(ix) < 0.25) {
-      if (this.queue && now - this.queueAt < 0.12 && this.steer === 0) {
-        this.face = (this.face + (this.queue > 0 ? 1 : 3)) % 4;
-        this.steer = this.queue > 0 ? 1 : -1;
-        this.queue = 0;
-        ev.turn = true;
-      } else this.steer = 0;
-    } else if (this.steer !== 0 && Math.sign(ix) === this.steer) {
-      this.queue = Math.sign(ix);
-      this.queueAt = now;
     }
 
     const here = this.cell(this.z, this.face);
@@ -320,19 +311,20 @@ export class TubeSim {
     this.lowFx = typeof document !== "undefined" && document.documentElement.dataset.fx === "low";
     const hud = 94;
     const thumb = Math.min(140, h * 0.22);
-    const freeTop = hud + 32;
+    const freeTop = hud + (h > w ? 28 : 56);
     const freeBot = h - thumb;
     const freeH = Math.max(80, freeBot - freeTop);
     const freeW = w;
     const upright = h > w;
-    const ring = upright ? freeW * 0.92 : freeH * 0.88;
+    const fit = Math.min(freeW, freeH) * 0.46;
+    const ring = Math.min(upright ? freeW * 0.72 : freeH * 0.78, fit * 1.15);
     const cx = w / 2;
     const cy = freeTop + freeH / 2;
     ctx.fillStyle = TUBE.ink;
     ctx.fillRect(0, 0, w, h);
     this.stars(ctx, cx, cy, ring, reduced);
     if (this.boost > 0 && !reduced && !this.lowFx) this.streaks(ctx, cx, cy, ring);
-    const bertyH = Math.max(44, Math.round(0.115 * Math.min(freeW, freeH)));
+    const bertyH = Math.max(w >= 1024 ? 64 : 44, Math.round(0.115 * Math.min(freeW, freeH)));
     const frac = this.z - Math.floor(this.z);
     ctx.save();
     ctx.translate(cx, cy);
@@ -355,7 +347,12 @@ export class TubeSim {
       }
     }
     ctx.restore();
-    const feet = cy + ring / 1.15;
+    const near0 = ring / (1.15 + frac * 0.55);
+    const mid = this.faceAngle(this.face);
+    const lx = Math.cos(mid) * near0;
+    const ly = Math.sin(mid) * near0;
+    const ry = lx * Math.sin(this.roll) + ly * Math.cos(this.roll);
+    const feet = cy + ry;
     this.screenX = cx;
     this.screenY = feet - bertyH * 0.45;
     this.berty(ctx, cx, feet, bertyH, reduced);

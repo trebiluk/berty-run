@@ -69,6 +69,10 @@ export class Bend3D {
   bugs: Bug3[] = [];
   ease = 1;
   jumpWas = false;
+  private coyote = 0;
+  private jumpBuf = 0;
+  private cutJump = false;
+  private sized = "";
   zapCool = 0;
   saidJump = false;
   saidDefrag = false;
@@ -246,6 +250,13 @@ export class Bend3D {
       this.scene.remove(this.trackRoot);
       this.trackRoot.traverse((obj) => {
         const mesh = obj as THREE.Mesh;
+        const mat = mesh.material as THREE.Material | THREE.Material[] | undefined;
+        const mats = Array.isArray(mat) ? mat : mat ? [mat] : [];
+        for (const m of mats) {
+          const map = (m as THREE.MeshBasicMaterial).map;
+          if (map) map.dispose();
+          m.dispose();
+        }
         if (mesh.userData.own && mesh.geometry) mesh.geometry.dispose();
       });
     }
@@ -311,6 +322,9 @@ export class Bend3D {
     const h = this.canvas.clientHeight;
     if (w < 2 || h < 2) return;
     const dpr = Math.min(this.low ? 1 : 1.25, window.devicePixelRatio || 1);
+    const key = `${w}x${h}x${dpr}`;
+    if (key === this.sized) return;
+    this.sized = key;
     this.renderer.setPixelRatio(dpr);
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
@@ -371,11 +385,22 @@ export class Bend3D {
       this.vel.z *= 10.5 / sp;
     }
 
+    if (this.grounded) this.coyote = 0.1;
+    else this.coyote = Math.max(0, this.coyote - dt);
     const jumpNow = !!input.jump && !this.jumpWas;
+    if (jumpNow) this.jumpBuf = 0.12;
+    this.jumpBuf = Math.max(0, this.jumpBuf - dt);
+    if (!input.jump && this.jumpWas && this.vel.y > 0 && !this.cutJump) {
+      this.vel.y *= 0.5;
+      this.cutJump = true;
+    }
     this.jumpWas = !!input.jump;
-    if (jumpNow && this.grounded) {
+    if (this.jumpBuf > 0 && (this.grounded || this.coyote > 0)) {
       this.vel.y = 8.4;
       this.grounded = false;
+      this.coyote = 0;
+      this.jumpBuf = 0;
+      this.cutJump = false;
       if (!this.saidJump) {
         this.saidJump = true;
         ev.tip = "Jump. Hop a lock, or a low fan.";
@@ -605,7 +630,7 @@ export class Bend3D {
     for (const g of this.gemMeshes) {
       if (g.got) continue;
       g.mesh.position.y = g.pos.y + Math.sin(this.time * 3 + g.t) * 0.12;
-      g.mesh.rotation.y += 0.03;
+      g.mesh.rotation.y += dt * 1.8;
     }
     this.spinGear();
     this.renderer.render(this.scene, cam);
@@ -625,6 +650,14 @@ export class Bend3D {
       }
     };
     spin("glow", t * 2);
+    if (this.gemsGot >= this.gemTotal && this.gemTotal > 0) {
+      const glow = this.trackRoot?.getObjectByName("glow");
+      if (glow) {
+        glow.visible = true;
+        const pulse = 1 + 0.25 * (0.5 + 0.5 * Math.sin(this.time * Math.PI * 2));
+        glow.scale.setScalar(pulse);
+      }
+    }
     spin("pull", -t, 0.06);
     spin("trail", t * 2.4);
     const crown = g.getObjectByName("crown");
@@ -919,6 +952,17 @@ export class Bend3D {
     return g;
   }
 
+  private chipGeom = new Map<string, THREE.BoxGeometry>();
+  private chipBox(x: number, y: number, z: number) {
+    const key = `${x}x${y}x${z}`;
+    let g = this.chipGeom.get(key);
+    if (!g) {
+      g = new THREE.BoxGeometry(x, y, z);
+      this.chipGeom.set(key, g);
+    }
+    return g;
+  }
+
   private plantChips(
     root: THREE.Group,
     def: { segs: { x1: number; z1: number; x2: number; z2: number }[] },
@@ -941,11 +985,11 @@ export class Bend3D {
         for (const side of [-1, 1]) {
           const ox = alongX ? 0 : side * (span / 2 + 0.2);
           const oz = alongX ? side * (span / 2 + 0.2) : 0;
-          const chip = new THREE.Mesh(new THREE.BoxGeometry(alongX ? 0.95 : 0.32, 0.62, alongX ? 0.32 : 0.95), body);
+          const chip = new THREE.Mesh(this.chipBox(alongX ? 0.95 : 0.32, 0.62, alongX ? 0.32 : 0.95), body);
           chip.position.set(x + ox, 0.78, z + oz);
           chip.castShadow = true;
           root.add(chip);
-          const finger = new THREE.Mesh(new THREE.BoxGeometry(alongX ? 0.72 : 0.08, 0.07, alongX ? 0.08 : 0.72), pin);
+          const finger = new THREE.Mesh(this.chipBox(alongX ? 0.72 : 0.08, 0.07, alongX ? 0.08 : 0.72), pin);
           finger.position.set(x + ox, 0.48, z + oz);
           root.add(finger);
         }

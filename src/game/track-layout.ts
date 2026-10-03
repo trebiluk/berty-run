@@ -1,6 +1,6 @@
 import type { TrackDef } from "./tracks3d";
 
-const EASE_ORDER = ["around-the-bend", "pit-drop", "blade-walk", "dark-bay", "slick-shelf", "shop-exit", "signal-hop", "case-drop"];
+const EASE_ORDER = ["around-the-bend", "pit-drop", "blade-walk", "dark-bay", "slick-shelf", "shop-exit", "signal-hop", "case-drop", "cable-loom", "case-fan", "heat-sink", "packet-lane"];
 
 export function easeOf(id: string) {
   const i = EASE_ORDER.indexOf(id);

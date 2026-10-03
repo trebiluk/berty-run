@@ -22,7 +22,7 @@ let rewound = false;
 let holdLane = 0;
 
 export async function runClearBot(eng: Engine) {
-  eng.tryFullUnlock("5656");
+  eng.markLab();
   eng.setGoal("gaming");
   if (!eng.mute) eng.toggleMute();
   eng.halt = true;

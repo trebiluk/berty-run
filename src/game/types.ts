@@ -60,6 +60,9 @@ export type HudSnap = {
   ghost: boolean;
   hasGhost: boolean;
   stamps: number;
+  score: number;
+  bestScore: number | null;
+  portOpen: boolean;
   watts: number;
   parts: string[];
   passed: string[];

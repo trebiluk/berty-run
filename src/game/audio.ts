@@ -15,8 +15,10 @@ let clock: number | null = null;
 let nextAt = 0;
 let beat = 0;
 let loop: Loop = LOOPS.title;
-let voices = 0;
+let musicVoices = 0;
+let sfxVoices = 0;
 let unlocked = false;
+let watching = false;
 
 function roomSilent() {
   return typeof document !== "undefined" && document.documentElement.dataset.kpSound === "0";
@@ -33,13 +35,20 @@ function makeBus(): Bus {
   return { ctx, master, sfx, music };
 }
 
-function applyGains() {
+export function applyGains() {
   if (!bus) return;
   const t = bus.ctx.currentTime;
   const silent = muted || roomSilent();
   bus.master.gain.setTargetAtTime(silent ? 0 : 0.85, t, 0.02);
-  bus.music.gain.setTargetAtTime(musicOn ? 0.22 * musicVol * duck : 0, t, 0.04);
-  bus.sfx.gain.setTargetAtTime(soundOn ? 0.55 * sfxVol : 0, t, 0.03);
+  bus.music.gain.setTargetAtTime(musicOn && !silent ? 0.22 * musicVol * duck : 0, t, 0.04);
+  bus.sfx.gain.setTargetAtTime(soundOn && !silent ? 0.55 * sfxVol : 0, t, 0.03);
+}
+
+function watchRoom() {
+  if (watching || typeof document === "undefined" || typeof MutationObserver === "undefined") return;
+  watching = true;
+  const obs = new MutationObserver(() => applyGains());
+  obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-kp-sound"] });
 }
 
 export function noteMix(next: { music: boolean; sound: boolean; musicVolume: number; sfxVolume: number }) {
@@ -56,6 +65,7 @@ export function unlockAudio() {
   if (bus.ctx.state === "suspended") void bus.ctx.resume();
   applyGains();
   arm();
+  watchRoom();
 }
 
 export function setMuted(next: boolean) {
@@ -77,12 +87,21 @@ export function setWorld(next: World) {
   world = next;
   loop = LOOPS[next];
   beat = 0;
-  if (bus) nextAt = bus.ctx.currentTime + 0.05;
+  if (!bus) return;
+  const t = bus.ctx.currentTime;
+  const silent = muted || roomSilent() || !musicOn;
+  const base = silent ? 0 : 0.22 * musicVol * duck;
+  bus.music.gain.setTargetAtTime(0, t, 0.04);
+  bus.music.gain.setTargetAtTime(base, t + 0.3, 0.12);
+  nextAt = t + 0.05;
 }
 
-function toneAt(when: number, freq: number, dur: number, type: OscillatorType, gain: number, dest: GainNode) {
-  if (!bus || voices >= 4) return;
-  voices += 1;
+function toneAt(when: number, freq: number, dur: number, type: OscillatorType, gain: number, dest: GainNode, cap: "music" | "sfx") {
+  if (!bus || roomSilent() || muted) return;
+  if (cap === "music" && musicVoices >= 6) return;
+  if (cap === "sfx" && sfxVoices >= 4) return;
+  if (cap === "music") musicVoices += 1;
+  else sfxVoices += 1;
   const o = bus.ctx.createOscillator();
   const g = bus.ctx.createGain();
   o.type = type;
@@ -94,13 +113,14 @@ function toneAt(when: number, freq: number, dur: number, type: OscillatorType, g
   o.start(when);
   o.stop(when + dur + 0.02);
   o.onended = () => {
-    voices = Math.max(0, voices - 1);
+    if (cap === "music") musicVoices = Math.max(0, musicVoices - 1);
+    else sfxVoices = Math.max(0, sfxVoices - 1);
   };
 }
 
 function beep(freq: number, dur: number, type: OscillatorType, gain = 0.12) {
-  if (!bus || !soundOn) return;
-  toneAt(bus.ctx.currentTime, freq, dur, type, gain, bus.sfx);
+  if (!bus || !soundOn || roomSilent() || muted) return;
+  toneAt(bus.ctx.currentTime, freq, dur, type, gain, bus.sfx, "sfx");
 }
 
 function arm() {
@@ -112,14 +132,14 @@ function arm() {
 function pump() {
   if (!bus || !unlocked || !musicOn || muted || roomSilent()) return;
   const horizon = bus.ctx.currentTime + 0.16;
-  const step = 60 / loop.bpm;
+  const step = 60 / loop.bpm / 4;
+  const barBeats = loop.bars * 4;
   while (nextAt < horizon) {
-    const barBeats = loop.bars * 4;
-    const at = beat % barBeats;
+    const at = Math.round((beat % barBeats) * 100) / 100;
     for (const note of loop.notes) {
-      if (Math.abs(note.b - at) < 0.01) toneAt(nextAt, note.f, note.d * step, note.type, note.g, bus.music);
+      if (Math.abs(note.b - at) < 0.02) toneAt(nextAt, note.f, note.d * (60 / loop.bpm), note.type, note.g, bus.music, "music");
     }
-    beat += 1;
+    beat += 0.25;
     nextAt += step;
   }
 }
@@ -168,7 +188,7 @@ export function sfxChime() {
   beep(880, 0.18, "sine", 0.08);
 }
 export function sfxThunder() {
-  if (!bus || !soundOn) return;
+  if (!bus || !soundOn || roomSilent() || muted) return;
   const ctx = bus.ctx;
   const t = ctx.currentTime;
   const frames = Math.floor(ctx.sampleRate * 0.35);
@@ -204,7 +224,7 @@ export function sfxThunder() {
 function duckBrief() {
   if (!bus) return;
   const t = bus.ctx.currentTime;
-  const base = musicOn ? 0.22 * musicVol * duck : 0;
+  const base = musicOn && !roomSilent() ? 0.22 * musicVol * duck : 0;
   bus.music.gain.setTargetAtTime(base * 0.35, t, 0.02);
   bus.music.gain.setTargetAtTime(base, t + 0.35, 0.12);
 }
@@ -230,4 +250,5 @@ if (typeof document !== "undefined") {
     if (document.hidden) void bus.ctx.suspend();
     else if (unlocked) void bus.ctx.resume();
   });
+  watchRoom();
 }

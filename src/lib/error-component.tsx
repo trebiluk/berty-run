@@ -24,6 +24,21 @@ export function AppErrorComponent({ error }: ErrorComponentProps) {
       <p className="max-w-md text-sm break-words text-zinc-500 dark:text-zinc-400">
         {errorMessage(error)}
       </p>
+      <button
+        type="button"
+        className="min-h-11 bg-orange px-4 font-bold text-zinc-950"
+        onClick={() => {
+          try {
+            const raw = localStorage.getItem("br-arcade-v1");
+            const prefs = raw ? JSON.parse(raw) : {};
+            prefs.look = "arcade";
+            localStorage.setItem("br-arcade-v1", JSON.stringify(prefs));
+          } catch { /* private */ }
+          location.assign(location.pathname);
+        }}
+      >
+        Play
+      </button>
     </main>
   );
 }

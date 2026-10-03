@@ -330,21 +330,58 @@ export function courseHasZap(id: CourseId) {
 }
 
 export function trackCourses(mode: "2d" | "3d") {
-  return COURSES.filter((c) => courseMode(c) === mode && !c.arcade);
+  const list = COURSES.filter((c) => courseMode(c) === mode && !c.arcade);
+  if (mode !== "3d") return list;
+  return [...list].sort((a, b) => ORDER_3D.indexOf(a.id) - ORDER_3D.indexOf(b.id));
 }
 
 /**
  * TEMP_UNLOCK_ALL_LEVELS — Diego test Ord (2026-09-23).
- * false: the next board opens only after the one before is at or under par.
- * Practice boards stay open either way. Teacher pin still opens all.
+ * false: the next board opens after the one before has any clear.
+ * Practice boards stay open either way.
  * Set true to open every board again. Do not delete isUnlocked.
  */
 export const TEMP_UNLOCK_ALL_LEVELS = false;
 
-/** At or under par. Finishing slow still saves a score, but does not open the next board. */
+export const ORDER_3D = [
+  "around-the-bend",
+  "pit-drop",
+  "blade-walk",
+  "dark-bay",
+  "slick-shelf",
+  "shop-exit",
+  "signal-hop",
+  "case-drop",
+  "cable-loom",
+  "case-fan",
+  "heat-sink",
+  "packet-lane",
+];
+
+const LEGACY_PREV: Record<string, string> = {
+  "slick-shelf": "blade-walk",
+  "shop-exit": "slick-shelf",
+  "cable-loom": "shop-exit",
+  "case-fan": "cable-loom",
+  "heat-sink": "case-fan",
+  "packet-lane": "heat-sink",
+  "signal-hop": "packet-lane",
+  "case-drop": "signal-hop",
+  "dark-bay": "case-drop",
+};
+
+/** At or under par. Stars and watts still use this. A slow clear still opens the next board. */
 export function acceptable(c: Course, bests: Record<string, number>) {
   const best = bests[c.id];
   return best != null && best <= c.par;
+}
+
+export function cleared(id: string, bests: Record<string, number>) {
+  return bests[id] != null;
+}
+
+export function campaignClears(bests: Record<string, number>) {
+  return COURSES.filter((c) => !c.arcade && bests[c.id] != null).length;
 }
 
 export function isUnlocked(c: Course, bests: Record<string, number>) {
@@ -353,7 +390,9 @@ export function isUnlocked(c: Course, bests: Record<string, number>) {
   const track = trackCourses(courseMode(c));
   const i = track.findIndex((x) => x.id === c.id);
   if (i <= 0) return true;
-  return acceptable(track[i - 1], bests);
+  if (cleared(track[i - 1].id, bests)) return true;
+  const legacy = LEGACY_PREV[c.id];
+  return legacy ? cleared(legacy, bests) : false;
 }
 
 export function nextBoard(id: CourseId, bests: Record<string, number>, full: boolean): Course | null {

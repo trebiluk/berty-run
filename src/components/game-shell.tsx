@@ -15,7 +15,7 @@ import { FieldGuide } from "@/components/field-guide";
 import type { CourseId, HudSnap } from "@/game/types";
 import { ACCESS_DEFAULT, DRIVES, askTilt, drivePatch, packFor, readAccess, say, stopSay, writeAccess, type Access, type Drive } from "@/game/access";
 import { cheerLine, closeLabel, courseLabel, face, partLabel, placeWord, rewardLine } from "@/game/face";
-import { fillHud, hudCopy, localizeLine } from "@/game/hud-copy";
+import { fillHud, hudCopy, line16, localizeLine } from "@/game/hud-copy";
 import { chooseLang, installLangWatch, LANGS } from "@/game/hub";
 import { appsFor, openSignIn } from "@/game/who";
 import { ArcadeScore, ArcadeSettings, Attract, ContinueClock, FpsGuard, StageClear, heatName, useCabinet } from "@/arcade/chrome";
@@ -265,6 +265,8 @@ function AccessPanel({
           <span>{full ? ui.readOn : ui.readOff}</span>
         </button>
         <ArcadeSettings stamps={hud.stamps} lang={access.lang} />
+        <button type="button" data-fs-exit className="min-h-11 px-3 text-sm font-bold text-fg" onClick={() => { void document.exitFullscreen?.(); localStorage.setItem("kulibert-fullscreen", "0"); setFsOn(false); }}>{line16(access.lang, "exitFull")}</button>
+        {/iPhone|iPad/.test(navigator.userAgent) ? <p className="px-3 text-xs font-semibold text-fg">{line16(access.lang, "iphoneHint")}</p> : null}
         <a href={ROOM} onClick={stayInShell} className="inline-flex min-h-11 items-center gap-2 px-4 text-sm font-semibold uppercase tracking-wide ring-1 ring-line">
           <Home className="size-4" /> {ui.home}
         </a>
@@ -300,6 +302,9 @@ const idle: HudSnap = {
   ghost: true,
   hasGhost: false,
   stamps: 0,
+  score: 0,
+  bestScore: null,
+  portOpen: false,
   watts: 0,
   parts: [],
   passed: [],
@@ -367,12 +372,19 @@ export function GameShell() {
     if (!canvas || !canvas3d) return;
     const engine = new Engine(canvas, canvas3d, setHud);
     engineRef.current = engine;
-    (window as unknown as { __eng?: Engine }).__eng = engine;
+    const labHost = () => {
+      const h = location.hostname;
+      return h === "localhost" || h === "127.0.0.1" || h.endsWith(".vercel.app");
+    };
     const launch = readLaunch();
     void engine.boot().then(() => {
       if (engine.destroyed || engineRef.current !== engine) return;
       if (launch.course) engine.applyLaunch(launch.course);
       const q = new URLSearchParams(location.search);
+      const probe = labHost() && (q.get("selftest") === "1" || q.get("bot") === "1" || q.get("hud") === "1");
+      if (!probe) return;
+      engine.markLab();
+      (window as unknown as { __eng?: Engine }).__eng = engine;
       if (q.get("selftest") === "1") {
         void import("@/game/selftest").then(({ runRespawnSelftest }) => {
           const report = runRespawnSelftest();
@@ -392,7 +404,7 @@ export function GameShell() {
         (window as unknown as { __eng?: Engine }).__eng = engine;
       }
       if (q.get("hud") === "1") {
-        engine.tryFullUnlock("5656");
+        engine.setFullUnlock(false);
         engine.setGoal("gaming");
         engine.selectCourse("around-the-bend");
         engine.ackBrief(null);
@@ -456,14 +468,27 @@ export function GameShell() {
   }, [hud.phase]);
 
   const [styleOpen, setStyleOpen] = useState(false);
+  const [keysOn, setKeysOn] = useState(false);
+  const [askRestart, setAskRestart] = useState(false);
+  const [fsOn, setFsOn] = useState(false);
+  useEffect(() => {
+    const onKey = () => setKeysOn(true);
+    window.addEventListener("keydown", onKey);
+    setFsOn(localStorage.getItem("kulibert-fullscreen") === "1");
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   useEffect(() => {
     const ducked = styleOpen || gear || hud.phase === "pause" || hud.phase === "win" || hud.phase === "fail";
+    if (ducked) {
+      arcadeMood(hud.phase === "fail" ? "over" : "clear");
+      return;
+    }
     if (hud.phase === "play" && hud.courseId === "tube-run") arcadeMood("tube");
     else if (hud.phase === "play" && hud.is3d) arcadeMood("deep");
     else if (hud.phase === "play" && hud.stamps >= 6) arcadeMood("fast");
     else if (hud.phase === "play") arcadeMood("level");
     else arcadeMood("title");
-    if (ducked) arcadeMood(hud.phase === "fail" ? "over" : "clear");
   }, [hud.phase, hud.is3d, hud.stamps, hud.courseId, styleOpen, gear]);
   const [turnWarn, setTurnWarn] = useState("");
   const [full, setFull] = useState(false);
@@ -477,6 +502,7 @@ export function GameShell() {
   }, [hud.phase]);
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
+      if (ev.key === "r" || ev.key === "R") { if (hud.phase === "play") setAskRestart(true); return; }
       if (ev.key !== "Escape") return;
       if (styleOpen) {
         setStyleOpen(false);
@@ -728,6 +754,16 @@ export function GameShell() {
             <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold whitespace-nowrap ring-1 ring-line">
               <span className="truncate"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
               <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)}</span>
+              <button type="button" data-hud="pause" aria-label={line16(access.lang, "pause")} className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-1 bg-navy px-2 text-fg ring-1 ring-line" onClick={() => e?.togglePause()}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4"><path d="M8 5v14M16 5v14"/></svg>
+                <span className="hidden sm:inline">{line16(access.lang, "pause")}</span>
+                {keysOn ? <span className="text-[10px]">P</span> : null}
+              </button>
+              <button type="button" data-hud="restart" aria-label={line16(access.lang, "restart")} className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-1 bg-navy px-2 text-fg ring-1 ring-line" onClick={() => setAskRestart(true)}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg>
+                <span className="hidden sm:inline">{line16(access.lang, "restart")}</span>
+                {keysOn ? <span className="text-[10px]">R</span> : null}
+              </button>
               <span className="shrink-0 text-orange tabular-nums">{hud.gems}/{hud.gemTotal}</span>
               <span className="inline-flex shrink-0 items-center text-orange">
                 {Array.from({ length: hud.hearts }, (_, i) => (
@@ -754,17 +790,39 @@ export function GameShell() {
                 <ArcadeScore gems={hud.gems} time={hud.time} par={hud.par} hearts={hud.hearts} show={arcade && hud.phase === "play"} />
               )}
             </div>
-            <p data-hud="rev" className="ml-12 mt-1 text-[9px] font-bold text-gold opacity-75">{CHIP}</p>
+            <p data-hud="rev" className={cn("ml-12 mt-1 text-[9px] font-bold text-gold opacity-75", hud.phase === "pause" && "hidden")}>{CHIP}</p>
             </>
             ) : null}
         </div>
       </header>
+
+      {hud.phase === "play" && hud.intro <= 3 ? (
+        <p data-hud="goal" className="pointer-events-none absolute left-1/2 top-[5.6rem] z-20 max-w-[16rem] -translate-x-1/2 rounded-full bg-navy/90 px-3 py-1 text-center text-xs font-semibold text-fg ring-1 ring-cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="mr-1 inline size-4" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+          <bdi>{hud.portOpen ? line16(access.lang, "portOpen") : hud.time < 3 || hud.intro > 0 ? line16(access.lang, "goal", { n: hud.gemTotal }) : `${hud.gems}/${hud.gemTotal}`}</bdi>
+        </p>
+      ) : null}
+      {askRestart ? (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-ink/70 p-4">
+          <div className="flex w-full max-w-sm flex-col gap-3 bg-ink p-4 ring-1 ring-cyan">
+            <p className="text-lg font-bold">{line16(access.lang, "restartAsk")}</p>
+            <button type="button" className="min-h-11 bg-orange font-bold text-ink" onClick={() => { setAskRestart(false); e?.retry(); }}>{line16(access.lang, "restart")}</button>
+            <button type="button" className="min-h-11 bg-navy font-bold text-fg ring-1 ring-line" onClick={() => setAskRestart(false)}>{line16(access.lang, "keepPlaying")}</button>
+          </div>
+        </div>
+      ) : null}
+      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute bottom-[max(0.5rem,env(safe-area-inset-bottom))] z-30 size-11 bg-navy/40 text-[10px] font-bold text-fg", access.lang === "ar" || access.lang === "fa-AF" ? "left-1" : "right-1")} onClick={() => {
+        const root = document.documentElement;
+        if (document.fullscreenElement) { void document.exitFullscreen(); localStorage.setItem("kulibert-fullscreen", "0"); setFsOn(false); }
+        else { void root.requestFullscreen?.(); localStorage.setItem("kulibert-fullscreen", "1"); setFsOn(true); }
+      }}>{line16(access.lang, "fullScreen")}</button>
+
       <FpsGuard />
 
       {gear ? (
         <div
-          className="settings-sheet absolute bottom-0 left-0 top-0 z-40 flex w-[min(22rem,92%)] flex-col bg-ink ring-1 ring-cyan"
-          style={{ left: 0, right: "auto", zIndex: 40 }}
+          className="settings-sheet absolute bottom-0 left-0 z-50 flex w-[min(22rem,92%)] flex-col bg-ink ring-1 ring-cyan"
+          style={{ left: 0, right: "auto", zIndex: 60, top: 0 }}
           onPointerDown={pressControl}
           onClickCapture={swallowExtraClick}
         >
@@ -1152,8 +1210,9 @@ export function GameShell() {
             ) : null}
 
             {hud.phase === "pause" ? (
-              <div className="flex w-full max-w-md flex-col gap-4 bg-ink p-4 ring-1 ring-cyan">
+              <div className="mt-24 flex w-full max-w-md flex-col gap-4 bg-ink p-4 ring-1 ring-cyan">
                 <h2 className="text-2xl font-bold tracking-tight">{ui.paused}</h2>
+                <p className="text-sm font-semibold text-fg">{keysOn ? "Esc · " + line16(access.lang, "pause") : ""}</p>
                 <p className="text-2xl font-extrabold tabular-nums">{fmt(hud.time)} / {fmt(hud.par)}</p>
                 <p className="text-muted">{ui.clockStopped}</p>
                 <div className="flex flex-wrap gap-2">
@@ -1303,9 +1362,11 @@ function useStage(wide: boolean) {
       const portrait = h > w + 80;
       document.documentElement.dataset.sideways = wide && portrait && w <= 500 ? "1" : "";
       if (wide && portrait) {
+        document.documentElement.dataset.turn = "1";
         setStage({ w: Math.max(280, Math.round(h)), h: Math.max(280, Math.round(w)), x: 0, y: 0, turn: true, vw: Math.round(w) });
         return;
       }
+      document.documentElement.dataset.turn = "0";
       setStage({ w: Math.max(280, Math.round(w)), h: Math.max(280, Math.round(h)), x: Math.round(x), y: Math.round(y), turn: false, vw: 0 });
     };
     const on = () => {
@@ -1990,11 +2051,11 @@ function WinBoard({
   const stage = (
     <div className="win-stage-inner flex w-full flex-col items-center justify-center gap-2 min-[960px]:h-full">
       <p className="win-compact hidden text-sm font-extrabold leading-snug">
-        {ui.stageClear} · {partName} · +{hud.earned} {ui.watts}
+        {ui.stageClear} · {partName} · +{hud.earned} {ui.watts} · <bdi>{line16(access.lang, "bestScore", { score: hud.bestScore ?? hud.score })}</bdi>
       </p>
       {hud.botGift ? <p className="win-gift-line hidden truncate text-sm font-extrabold leading-tight">{hud.botGift}</p> : null}
       {arcade ? (
-        <StageClear time={hud.time} par={hud.par} stars={hud.stars} rig={rig} title={ui.stageClear} high={ui.newHigh} />
+        <StageClear time={hud.time} par={hud.par} stars={hud.stars} bits={hud.gems} rig={rig} title={ui.stageClear} high={ui.newHigh} />
       ) : (
         <p className="win-kicker text-xs font-bold uppercase tracking-[0.18em] text-orange">{ui.stageClear}</p>
       )}
@@ -2298,6 +2359,7 @@ function PartBrief({
         ))}
       </div>
       {pick != null && !right ? <p className="text-sm font-semibold text-gold">{ui.try}</p> : null}
+      <Button onClick={() => onPass(null)}>{line16(access.lang, "playNow")}</Button>
       {right ? (
         <Button onClick={() => onPass(brief.lessonId)}>{ui.go}</Button>
       ) : (
@@ -2349,7 +2411,7 @@ function LevelPicker({
                     !open && "opacity-70",
                   )}
                 >
-                  {open ? <span className="w-6 shrink-0 tabular-nums">{n}</span> : <Lock className="size-5 shrink-0" aria-label={ui.locked} />}
+                  {open ? <span className="w-6 shrink-0 tabular-nums">{n}</span> : <Lock className="size-5 shrink-0" aria-label={line16(access.lang, "clearToOpen", { board: previousCourse(c)?.name || "" })} />}
                   <span className="leading-tight">{courseLabel(access.lang, c.id, c.name)}</span>
                 </button>
               );
@@ -2372,7 +2434,8 @@ function TitleCard({
 }) {
   const [levels, setLevels] = useState(false);
   const cabinet = useCabinet();
-  const ui = face(useAccess().lang);
+  const access = useAccess();
+  const ui = face(access.lang);
   const arcade = cabinet.look === "arcade";
   if (levels) {
     return (

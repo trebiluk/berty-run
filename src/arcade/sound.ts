@@ -19,8 +19,10 @@ export function arcadeUnlock() {
   prefs = loadPrefs();
   unlockAudio();
   pushMix();
-  started = true;
-  setWorld("title");
+  if (!started) {
+    started = true;
+    setWorld("title");
+  }
 }
 
 export function arcadeMood(next: Mood) {
@@ -51,12 +53,14 @@ export function bootArcadeAudio() {
     prefs = next;
     pushMix(next);
   });
+  const once = () => arcadeUnlock();
+  window.addEventListener("pointerdown", once, { capture: true, once: true });
+  window.addEventListener("keydown", once, { once: true });
   window.addEventListener(
     "pointerdown",
     () => {
-      arcadeUnlock();
+      unlockAudio();
     },
-    { capture: true, once: false },
+    { capture: true },
   );
-  window.addEventListener("keydown", () => arcadeUnlock(), { once: true });
 }

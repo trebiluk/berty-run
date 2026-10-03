@@ -1,5 +1,5 @@
 import type { Bend3D } from "./bend3d";
-import { COURSES, TILE, courseById, dyeFor, isUnlocked, nextBoard, starsFor } from "./courses";
+import { COURSES, TILE, campaignClears, courseById, dyeFor, isUnlocked, nextBoard, starsFor } from "./courses";
 import { pcbLook } from "./pcb";
 import { asGoal, botGift, courseForPart, earnOnClear, heartCount, lessonById, partById, playStep, type LessonId, type PartId, type PcGoal } from "./curriculum";
 import {
@@ -24,6 +24,7 @@ import { drivePatch, readAccess, writeAccess } from "./access";
 import { recordClear, signedWho, stashRun } from "./who";
 import { TubeSim, TUBE_LEN } from "@/arcade/tube";
 import { tubeTip } from "./hud-copy";
+import { hudScore, scoreFor } from "./score";
 import type { Course, CourseId, HudSnap } from "./types";
 
 const STEP = 1 / 60;
@@ -37,7 +38,6 @@ const OB_DEPTH = 0.9;
 const WALL_H = 8;
 const SAVE_KEY = "bertys-run-v1";
 const FULL_KEY = "bertys-run-full";
-const FULL_PIN = "5656";
 const REDUCED =
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -79,6 +79,7 @@ type GhostPt = { x: number; y: number; a: number };
 type Saw = { x: number; y: number; ox: number; oy: number; tx: number; ty: number; period: number; t: number; r: number };
 type Save = {
   best: Record<string, number>;
+  bestScore: Record<string, number>;
   mute: boolean;
   ghostOn: boolean;
   ghosts: Record<string, GhostPt[]>;
@@ -127,16 +128,15 @@ function loadImg(src: string) {
 async function loadSprites(): Promise<Sprites> {
   const frame = (base: string, n: number) =>
     Promise.all(Array.from({ length: n }, (_, i) => loadImg(assetUrl(`sprites/${base}-${i + 1}.png`))));
-  const [berty, bertyP2, gem, saw, gate, crate, floor] = await Promise.all([
+  const [berty, bertyP2, gate, crate, floor] = await Promise.all([
     frame("berty", 4),
     frame("berty-p2", 4),
-    frame("gem", 4),
-    frame("saw", 4),
     loadImg(assetUrl("sprites/gate.png")),
     loadImg(assetUrl("sprites/crate.png")),
     loadImg(assetUrl("sprites/floor.png")),
   ]);
-  return { berty, bertyP2, gem, saw, gate, crate, floor };
+  const blank = new Image();
+  return { berty, bertyP2, gem: [blank, blank, blank, blank], saw: [blank, blank, blank, blank], gate, crate, floor };
 }
 
 function assetUrl(path: string) {
@@ -187,6 +187,7 @@ function readSave(): Save {
     const active = code ? profiles[key] : device;
     return {
       ...active,
+      bestScore: p.bestScore ?? {},
       mute: !!p.mute,
       ghostOn: p.ghostOn !== false,
       inducted: !!p.inducted,
@@ -204,6 +205,7 @@ function emptySave(): Save {
   const guest = profileOf(undefined);
   return {
     ...guest,
+    bestScore: {},
     mute: false,
     ghostOn: true,
     inducted: false,
@@ -216,6 +218,11 @@ function emptySave(): Save {
 
 function readFull() {
   try {
+    if (localStorage.getItem("br-unlock-reset-1216") !== "1") {
+      localStorage.setItem(FULL_KEY, "0");
+      localStorage.setItem("br-unlock-reset-1216", "1");
+      return false;
+    }
     return localStorage.getItem(FULL_KEY) === "1";
   } catch {
     return false;
@@ -316,6 +323,14 @@ export class Engine {
   private streak = 0;
   private lastGem = -10;
   private portOpenSaid = false;
+  private saidLateBits = false;
+  private saidLatePort = false;
+  private handPlay = false;
+  private labForced = false;
+  private coyote = 0;
+  private jumpBuf = 0;
+  bestScore = 0;
+  portOpen = false;
   tip = "";
   private zapLock = false;
   private tipUntil = 0;
@@ -423,9 +438,10 @@ export class Engine {
     const game = ["KeyW", "KeyA", "KeyS", "KeyD", "Space", "KeyE", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
     if (game.includes(e.code) && (this.phase === "play" || this.phase === "pause" || e.code === "Space")) e.preventDefault();
     this.keys.add(e.code);
+    if (this.phase === "play") this.handPlay = true;
     if (e.code === "KeyP" || e.code === "Escape") this.togglePause();
     if (e.code === "KeyG") this.toggleGhost();
-    if (e.code === "KeyR" && (this.phase === "play" || this.phase === "fail" || this.phase === "win")) {
+    if (e.code === "KeyR" && (this.phase === "fail" || this.phase === "win")) {
       this.retry();
     }
     if ((e.code === "Space" || e.code === "Enter") && this.phase === "title") this.startPlay();
@@ -452,7 +468,7 @@ export class Engine {
     const size = h < 720 ? 108 : 112;
     const y = h - size - (h < 720 ? 28 : 14);
     if (which === "p1") return { x: 12, y, w: size, h: size };
-    return { x: w - size - 12, y, w: size, h: size };
+    return { x: w - size - 12, y: Math.max(96, y - size - 16), w: size, h: size };
   }
 
   private onPtrDown = (e: PointerEvent) => {
@@ -461,8 +477,9 @@ export class Engine {
     unlockAudio();
     this.canvas.setPointerCapture(e.pointerId);
     const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const turned = document.documentElement.dataset.turn === "1";
+    const x = turned ? e.clientY - rect.top : e.clientX - rect.left;
+    const y = turned ? rect.right - e.clientX : e.clientY - rect.top;
     let origin: "p1" | "p2" | "tilt" = "tilt";
     const p1 = this.padRect("p1");
     const p2 = this.padRect("p2");
@@ -473,6 +490,7 @@ export class Engine {
       this.finger = { x, y };
     }
     if (e.pointerType === "mouse" || e.pointerType === "pen") this.mouseDown = true;
+    if (this.phase === "play") this.handPlay = true;
     if (this.handsOn && !this.crew) {
       const slot = { id: e.pointerId, ox: x, oy: y, x, y };
       if (x < this.canvas.clientWidth / 2) {
@@ -483,8 +501,9 @@ export class Engine {
   };
   private onPtrMove = (e: PointerEvent) => {
     const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const turned = document.documentElement.dataset.turn === "1";
+    const x = turned ? e.clientY - rect.top : e.clientX - rect.left;
+    const y = turned ? rect.right - e.clientX : e.clientY - rect.top;
     this.mouseAt = { x, y };
     if (e.pointerType === "touch") e.preventDefault();
     const p = this.pointers.get(e.pointerId);
@@ -584,7 +603,7 @@ export class Engine {
     const angle = screenAngle();
     let gx = e.gamma;
     let gy = e.beta;
-    if (angle === 90) {
+    if (angle === 90 || document.documentElement.dataset.turn === "1") {
       gx = e.beta;
       gy = -e.gamma;
     } else if (angle === 270) {
@@ -622,7 +641,7 @@ export class Engine {
       goal: this.save.goal,
       cleared: this.save.best[this.course.id] != null,
       briefPass: this.briefPass,
-      firstFree: Object.keys(this.save.best).length === 0,
+      firstFree: campaignClears(this.save.best) === 0,
       arcade: this.course.arcade,
     });
     if (step === "locked") {
@@ -707,10 +726,13 @@ export class Engine {
     }
   }
 
-  tryFullUnlock(pin: string) {
-    if (pin.trim() !== FULL_PIN) return false;
-    this.setFullUnlock(true);
-    return true;
+  tryFullUnlock(_pin: string) {
+    return false;
+  }
+
+  markLab() {
+    this.labForced = true;
+    this.fullUnlock = false;
   }
 
   setFullUnlock(on: boolean) {
@@ -860,12 +882,16 @@ export class Engine {
 
   private resetRun() {
     this.time = 0;
-    this.hearts = heartCount(Object.keys(this.save.best).length);
-    this.bend?.setGear(this.gearLock ?? Object.keys(this.save.best).length);
+    this.hearts = heartCount(campaignClears(this.save.best));
+    this.bend?.setGear(this.gearLock ?? campaignClears(this.save.best));
     this.gemPulse = 0;
     this.streak = 0;
     this.lastGem = -10;
     this.portOpenSaid = false;
+    this.saidLateBits = false;
+    this.saidLatePort = false;
+    this.handPlay = false;
+    this.portOpen = false;
     this.particles = [];
     this.pops = [];
     this.hitstop = 0;
@@ -1083,7 +1109,7 @@ export class Engine {
     if (this.phase === "pause") return;
     if (this.is3d()) {
       if (!this.bend) return;
-      const stamps = this.gearLock ?? Object.keys(this.save.best).length;
+      const stamps = this.gearLock ?? campaignClears(this.save.best);
       if (this.bend.gear !== stamps) this.bend.setGear(stamps);
       const playing = this.phase === "play";
       if (playing && this.tickIntro(dt)) return;
@@ -1178,7 +1204,16 @@ export class Engine {
     this.time += dt;
     this.gemPulse += dt;
     const input = this.held();
-    if (input.jump && !this.jumpWas && this.p1.alive && this.p1.hop <= 0) this.startHop(this.p1);
+    const grounded = this.p1.alive && this.p1.hop <= 0;
+    if (grounded) this.coyote = 0.1;
+    else this.coyote = Math.max(0, this.coyote - dt);
+    if (input.jump && !this.jumpWas) this.jumpBuf = 0.12;
+    this.jumpBuf = Math.max(0, this.jumpBuf - dt);
+    if (this.jumpBuf > 0 && this.p1.alive && this.p1.hop <= 0 && (grounded || this.coyote > 0)) {
+      this.startHop(this.p1);
+      this.jumpBuf = 0;
+      this.coyote = 0;
+    }
     this.jumpWas = input.jump;
     if (input.zap && !this.zapLock) {
       this.zapLock = true;
@@ -1300,7 +1335,7 @@ export class Engine {
         dx = this.tilt.x;
         dy = this.tilt.y;
       }
-      const kick = Object.keys(this.save.best).length >= 5 ? 1100 : 780;
+      const kick = campaignClears(this.save.best) >= 5 ? 1100 : 780;
       const m = Math.hypot(dx, dy) || 1;
       b.vx += (dx / m) * kick * dt;
       b.vy += (dy / m) * kick * dt;
@@ -1473,7 +1508,7 @@ export class Engine {
 
   private pickups(b: Body, dt: number) {
     if (!b.alive) return;
-    const pull = (this.gearLock ?? Object.keys(this.save.best).length) >= 3;
+    const pull = (this.gearLock ?? campaignClears(this.save.best)) >= 3;
     for (const g of this.gems) {
       if (g.got) continue;
       if (pull) {
@@ -1501,7 +1536,16 @@ export class Engine {
         this.shake(0.12);
         if (!this.portOpenSaid && this.gems.every((gem) => gem.got)) {
           this.portOpenSaid = true;
-          this.note("All bits in my pocket. Roll me into the port.");
+          this.portOpen = true;
+          this.note("Port open!");
+        }
+        if (this.time > this.course.par && !this.saidLateBits && this.gems.some((g) => !g.got)) {
+          this.saidLateBits = true;
+          this.note(`${this.gems.filter((g) => !g.got).length} bits left. Follow the arrow.`);
+        }
+        if (this.time > this.course.par && !this.saidLatePort && this.gems.every((g) => g.got)) {
+          this.saidLatePort = true;
+          this.note("Find the port.");
         }
       }
     }
@@ -1816,7 +1860,12 @@ export class Engine {
     return { w, h };
   }
 
+  private still = "";
   private draw(alpha: number) {
+    const covered = this.phase === "title" || this.phase === "win" || this.phase === "fail" || this.phase === "boot";
+    if (covered && this.still === this.phase) return;
+    if (covered) this.still = this.phase;
+    else this.still = "";
     const { w, h } = this.size();
     const ctx = this.ctx;
     ctx.clearRect(0, 0, w, h);
@@ -1846,6 +1895,18 @@ export class Engine {
     ctx.transform(1, 0, OB_SHEAR, OB_DEPTH, 0, 0);
     ctx.translate(-this.cam.x, -this.cam.y);
     this.drawBoard(ctx);
+    if (this.exit && this.gems.length && this.gems.every((g) => g.got)) {
+      const cx = this.exit.x + this.exit.w / 2;
+      const cy = this.exit.y + this.exit.h / 2;
+      const pulse = this.reduced ? 1 : 1 + 0.25 * (0.5 + 0.5 * Math.sin(this.time * Math.PI * 2));
+      ctx.save();
+      ctx.strokeStyle = "#d6ff4a";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 18 * pulse, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
 
     for (const belt of this.belts) {
       ctx.fillStyle = dye.accent;
@@ -1975,7 +2036,7 @@ export class Engine {
     const fi = Math.floor(this.time * 8) % 4;
     const ctx = this.ctx;
     ctx.save();
-    const stamps = Object.keys(this.save.best).length;
+    const stamps = campaignClears(this.save.best);
     if (stamps >= 7 && b.alive) {
       const sp = Math.hypot(b.vx, b.vy);
       if (sp > 8) {
@@ -2046,17 +2107,30 @@ export class Engine {
   }
 
   private drawGemHint() {
-    const next = this.gems.find((g) => !g.got);
-    if (!next || this.phase !== "play") return;
+    if (this.phase !== "play") return;
+    let next: { x: number; y: number } | null = null;
+    let best = Infinity;
+    for (const g of this.gems) {
+      if (g.got) continue;
+      const d = Math.hypot(g.x - this.p1.x, g.y - this.p1.y);
+      if (d < best) {
+        best = d;
+        next = g;
+      }
+    }
+    if (!next && this.exit) next = { x: this.exit.x + this.exit.w / 2, y: this.exit.y + this.exit.h / 2 };
+    if (!next) return;
     const dx = next.x - this.p1.x;
     const dy = next.y - this.p1.y;
     const d = Math.hypot(dx, dy) || 1;
     if (d < 40) return;
+    const late = this.time > this.course.par && this.gems.some((g) => !g.got);
     const ctx = this.ctx;
     ctx.save();
     ctx.translate(this.p1.x + (dx / d) * 26, this.p1.y + (dy / d) * 26);
     ctx.rotate(Math.atan2(dy, dx));
-    ctx.fillStyle = "rgba(200,245,66,0.95)";
+    ctx.scale(late ? 1.4 : 1, late ? 1.4 : 1);
+    ctx.fillStyle = "rgba(214,255,74,0.95)";
     ctx.beginPath();
     ctx.moveTo(8, 0);
     ctx.lineTo(-5, 5);
@@ -2273,9 +2347,14 @@ export class Engine {
     const gift = botGift(before, counted());
     this.lastBot = gift?.name ?? "";
     this.lastBotLine = gift?.line ?? "";
-    this.bend?.setGear(Object.keys(this.save.best).length);
+    this.bend?.setGear(campaignClears(this.save.best));
+    const bits = this.is3d() ? (this.bend?.gemsGot ?? 0) : this.isTube() ? (this.tubeSim?.got ?? 0) : this.gems.filter((g) => g.got).length;
+    const sc = scoreFor({ bits, time: t, par: this.course.par });
+    this.bestScore = sc;
+    this.save.bestScore = { ...(this.save.bestScore ?? {}), [id]: Math.max(sc, this.save.bestScore?.[id] ?? 0) };
     const who = signedWho();
-    if (who) {
+    const liveMark = this.handPlay && !this.labForced && t >= 3;
+    if (who && liveMark) {
       postScore({
         code: who.code,
         alias: who.alias,
@@ -2375,7 +2454,7 @@ export class Engine {
       profiles,
     };
     writeSave(this.save);
-    this.bend?.setGear(Object.keys(this.save.best).length);
+    this.bend?.setGear(campaignClears(this.save.best));
     this.emit();
   }
 
@@ -2505,7 +2584,10 @@ export class Engine {
       bests: this.save.best,
       ghost: this.save.ghostOn,
       hasGhost: (this.save.ghosts[this.course.id]?.length ?? 0) > 4,
-      stamps: Object.keys(this.save.best).length,
+      stamps: campaignClears(this.save.best),
+      score: hudScore(gems),
+      bestScore: this.save.bestScore?.[this.course.id] ?? null,
+      portOpen: this.portOpen,
       watts: this.save.watts,
       parts: this.save.parts,
       passed: this.save.passed,
