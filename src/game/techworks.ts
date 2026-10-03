@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.16";
+export const CHIP = "BR 1.12.17";
 export const WHATS_NEW =
-  "BR 1.12.16: Clearer goals with an arrow to the nearest bit, any clear opens the next board, Pause and Restart on screen, a score that counts up, smoother jumps, steadier music, and a faster game on Chromebooks.";
+  "BR 1.12.17: Touching the board no longer rolls Berty, he stands on the Bus Tube floor, and the menu's Close button is easy to see.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.16: Metas más claras con una flecha al bit más cercano, cualquier victoria abre el siguiente tablero, Pausa y Reiniciar en pantalla, un puntaje que sube, saltos más suaves, música más estable y un juego más rápido en Chromebooks.",
-  uk: "BR 1.12.16: Ясніша мета зі стрілкою до найближчого біта, будь-яке проходження відкриває наступну дошку, Пауза і Спочатку на екрані, рахунок росте, м'якші стрибки, стабільніша музика і швидша гра на Chromebook.",
-  ru: "BR 1.12.16: Яснее цель со стрелкой к ближайшему биту, любое прохождение открывает следующую доску, Пауза и Сначала на экране, счёт растёт, мягче прыжки, ровнее музыка и быстрее игра на Chromebook.",
-  ar: "BR 1.12.16: أهداف أوضح مع سهم إلى أقرب بت، وأي إنهاء يفتح اللوح التالي، وإيقاف وإعادة على الشاشة، ونقاط تصعد، وقفز أنعم، وموسيقى أثبت، ولعبة أسرع على Chromebook.",
+  es: "BR 1.12.17: Tocar el tablero ya no hace rodar a Berty, se para en el suelo del tubo bus, y el botón Cerrar del menú se ve bien.",
+  uk: "BR 1.12.17: Дотик до дошки більше не котить Берті, він стоїть на підлозі шини-труби, і кнопку Закрити в меню добре видно.",
+  ru: "BR 1.12.17: Касание доски больше не катит Берти, он стоит на полу шины-трубы, и кнопку Закрыть в меню хорошо видно.",
+  ar: "BR 1.12.17: لمس اللوح لم يعد يدحرج بيرتي، ويقف على أرض أنبوب الباص، وزر إغلاق القائمة واضح.",
   "fa-AF": "BR 1.12.16: برتی با برق از هر مرحله بیرون می‌رود، موسیقی آرکید در هر دور با بلندی خودش پخش می‌شود، و لوله بس نرم‌تر، عادلانه‌تر و خواناتر است.",
-  rw: "BR 1.12.16: Intego isobanutse n'akambi ku gice hafi, gutsinda byose bifungura imbago ikurikira, Hagarara na Ongera ku rubuga, amanota agenda hejuru, gusimbuka koroshye, umuziki utuje, no gukina vuba kuri Chromebook.",
-  ti: "BR 1.12.16: ንጹር ዕላማ ምስ ምልክት ናብ ቀረባ ቢት፣ ዝኾነ ምውዳእ ዝቕጽል ቦርድ ይኸፍት፣ ዕረፍን ዳግማይን ኣብ ስክሪን፣ ነጥቢ ይደይብ፣ ለውጢ ዝዘለለ፣ ርጉጽ ሙዚቃ፣ ቅልጡፍ ጸወታ ኣብ Chromebook.",
+  rw: "BR 1.12.17: Gukora ku mbaho ntikizongera kuzunguriza Berty, ahagaze ku butaka bwa Bus Tube, kandi buto yo Gufunga ya menu iboneka neza.",
+  ti: "BR 1.12.17: ምድርባይ ቦርድ በርቲ ኣይደርብዮን፣ ኣብ መሬት ቱቦ ባስ ይቐውም፣ መዕጸዊ መዓልቲ ምልክት ድማ ንጹር ይርአ።",
 };
 
 export function whatsNew(lang: string) {

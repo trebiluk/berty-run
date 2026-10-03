@@ -324,7 +324,7 @@ export class TubeSim {
     ctx.fillRect(0, 0, w, h);
     this.stars(ctx, cx, cy, ring, reduced);
     if (this.boost > 0 && !reduced && !this.lowFx) this.streaks(ctx, cx, cy, ring);
-    const bertyH = Math.max(w >= 1024 ? 64 : 44, Math.round(0.115 * Math.min(freeW, freeH)));
+    const bertyH = w >= 1024 ? 64 : 47;
     const frac = this.z - Math.floor(this.z);
     ctx.save();
     ctx.translate(cx, cy);
@@ -348,9 +348,10 @@ export class TubeSim {
     }
     ctx.restore();
     const near0 = ring / (1.15 + frac * 0.55);
+    const chord = near0 * Math.cos(0.46 * Math.PI / 2);
     const mid = this.faceAngle(this.face);
-    const lx = Math.cos(mid) * near0;
-    const ly = Math.sin(mid) * near0;
+    const lx = Math.cos(mid) * chord;
+    const ly = Math.sin(mid) * chord;
     const ry = lx * Math.sin(this.roll) + ly * Math.cos(this.roll);
     const feet = cy + ry;
     this.screenX = cx;

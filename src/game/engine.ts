@@ -941,18 +941,14 @@ export class Engine {
     if (has("KeyS") || (!this.crew && has("ArrowDown"))) y += 1;
     if (this.injectSteer != null) x -= this.injectSteer;
     for (const p of this.pointers.values()) {
-      if ((this.followOn || this.handsOn) && p.origin !== "p2") continue;
-      const pad = p.origin === "p2" ? this.padRect("p2") : this.padRect("p1");
+      if (p.origin !== "p1") continue;
+      const pad = this.padRect("p1");
       const cx = pad.x + pad.w / 2;
       const cy = pad.y + pad.h / 2;
       const dx = (p.x - cx) / (pad.w * 0.9);
       const dy = (p.y - cy) / (pad.h * 0.9);
-      if (p.origin === "p2" && this.crew) {
-        /* applied in readP2 */
-      } else {
-        x += clamp(dx, -1, 1);
-        y += clamp(dy, -1, 1);
-      }
+      x += clamp(dx, -1, 1);
+      y += clamp(dy, -1, 1);
     }
     let direct = false;
     if (this.followOn && this.finger) {

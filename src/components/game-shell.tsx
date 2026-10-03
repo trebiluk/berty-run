@@ -731,7 +731,7 @@ export function GameShell() {
         }}
       />
 
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-50 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]">
+      <header className={cn("pointer-events-none absolute inset-x-0 top-0 z-50 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]", styleOpen && "invisible")}>
         <div className={hud.phase === "play" || hud.phase === "pause" ? "hud-stack flex min-w-0 flex-col gap-1" : ""}>
             <div className="flex min-w-0 items-center gap-1.5">
             <div className="pointer-events-auto flex shrink-0">
@@ -871,7 +871,7 @@ export function GameShell() {
       {styleOpen && (hud.phase === "play" || hud.phase === "pause") ? (
         <div
           className="menu-scrim absolute inset-0 bg-ink/55"
-          style={{ zIndex: 20, position: "absolute" }}
+          style={{ zIndex: 60, position: "absolute" }}
           onPointerDown={(ev) => {
             ev.preventDefault();
             ev.stopPropagation();
@@ -886,13 +886,13 @@ export function GameShell() {
 
       {styleOpen && (hud.phase === "play" || hud.phase === "pause") ? (
         <div
-          className="menu-drawer absolute top-[max(3.4rem,calc(env(safe-area-inset-top)+3rem))] bottom-0 left-0 z-40 flex w-[min(22rem,85%)] flex-col gap-1 overflow-y-auto"
-          style={{ zIndex: 30, position: "absolute" }}
+          className="menu-drawer absolute top-[max(0.5rem,env(safe-area-inset-top))] bottom-0 left-0 flex w-[min(22rem,85%)] flex-col gap-1 overflow-y-auto bg-ink"
+          style={{ zIndex: 70, position: "absolute" }}
           onPointerDown={pressControl}
           onClickCapture={swallowExtraClick}
         >
-          <button type="button" className="inline-flex size-11 items-center justify-center self-start bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={closeGameMenu}>
-            {closeLabel(access.lang)}
+          <button type="button" className="inline-flex h-11 min-h-11 min-w-11 items-center justify-center gap-1 self-start bg-navy px-3 text-sm font-extrabold text-fg ring-1 ring-line" onClick={closeGameMenu}>
+            <span aria-hidden="true">✕</span> {closeLabel(access.lang)}
           </button>
           <div className="grid grid-cols-4 gap-1">
             <button type="button" className="min-h-12 bg-navy text-sm font-extrabold text-fg ring-1 ring-line" onClick={() => {

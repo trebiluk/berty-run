@@ -1,5 +1,11 @@
 # Berty's Run
 
+## BR 1.12.17 — 2026-10-03
+
+- What's new: Touching the board no longer rolls Berty, he stands on the Bus Tube floor, and the menu's Close button is easy to see.
+
+# Berty's Run
+
 ## BR 1.12.16 — 2026-10-03
 
 - What's new: Clearer goals with an arrow to the nearest bit, any clear opens the next board, Pause and Restart on screen, a score that counts up, smoother jumps, steadier music, and a faster game on Chromebooks.
