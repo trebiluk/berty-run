@@ -3,3 +3,13 @@
 - [x] BR 1.12.18-1 Sideways cards fit (height ≤480, choices and Play now on screen; tube ≥3× Berty)
 - [x] BR 1.12.18-2 Full screen off Jump (top under HUD, hidden while a sheet or card is open)
 - [x] BR 1.12.18-3 After-par tip shows once per run (bits left, then find the port)
+- [x] BR 1.12.19-0p Sideways pause sheet: Resume, Retry, Boards, Mute on screen, Resume first and ≥44 px
+- [x] BR 1.12.19-0q Title Play and Levels whole at 915x412
+- [x] BR 1.12.19-0s Title blurb is a plain kid line; blurbAlice key present
+- [x] BR 1.12.19-1r Two hands counts the stick once
+- [x] BR 1.12.19-1a Teacher pin row hidden
+- [x] BR 1.12.19-1b Drop /__grok manifest and icon links
+- [x] BR 1.12.19-1c 3D camera uses real frame dt
+- [x] BR 1.12.19-1d One changelog heading
+- [x] BR 1.12.19-2 Port open and Glow translated; What's new is 1.12.19
+- [x] BR 1.12.19-3 Phone fit and contrast

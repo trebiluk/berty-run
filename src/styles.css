@@ -787,3 +787,43 @@ html[data-lights="gold"] {
     position: static;
   }
 }
+
+@media (max-height: 500px) {
+  .pause-sheet {
+    margin-top: 0.25rem !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: 0.4rem;
+    align-items: start;
+    max-height: calc(100dvh - 4.5rem);
+    overflow: hidden;
+  }
+  .pause-sheet .pause-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .pause-sheet .pause-actions button:first-child {
+    min-height: 48px;
+    font-size: 1.05rem;
+  }
+  .title-card {
+    gap: 0.4rem;
+  }
+  .title-card h2 {
+    font-size: 1.5rem;
+  }
+  .title-card > div {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  .title-card button {
+    min-height: 44px !important;
+  }
+}
+.gear-row {
+  padding-left: 3.25rem;
+}
+body:has(.kb-bar) .menu-drawer {
+  top: calc(3.25rem + env(safe-area-inset-top));
+}

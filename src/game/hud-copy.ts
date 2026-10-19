@@ -700,6 +700,43 @@ const LINES16: Record<string, Record<string, string>> = {
     rw: "Fata ibice {n}, ugere ku muryango.",
     ti: "‏{n} ቢት ውሰድ፣ ናብ ፖርት በጽሕ።",
   },
+
+  featGlow: {
+    en: "Berty lights up.",
+    simple: "Berty lights up.",
+    es: "Berty se enciende.",
+    uk: "Берті світиться.",
+    ru: "Берти светится.",
+    ar: "بيرتي يضيء.",
+    "fa-AF": "بیرتی روشن می‌شود.",
+    rw: "Berty araka.",
+    ti: "በርቲ ይበርህ።",
+  },
+  featHeart: {
+    en: "Four hits before a reset.", simple: "Four hits before a reset.",
+    es: "Cuatro golpes antes de reiniciar.", uk: "Чотири удари до скидання.", ru: "Четыре удара до сброса.",
+    ar: "أربع ضربات قبل إعادة الضبط.", "fa-AF": "چهار ضربه پیش از شروع دوباره.", rw: "Inshuro enye mbere yo gutangira.", ti: "ኣርባዕተ ምትቕንጻል ቅድሚ ምጅማር።",
+  },
+  featPull: {
+    en: "Bits hop toward Berty.", simple: "Bits hop toward Berty.",
+    es: "Los bits saltan hacia Berty.", uk: "Біти стрибають до Берті.", ru: "Биты прыгают к Берти.",
+    ar: "البتّات تقفز نحو بيرتي.", "fa-AF": "بیت‌ها به‌سوی بیرتی می‌جهند.", rw: "Ibice birasimba bigana Berty.", ti: "ቢት ናብ በርቲ ይዘልሉ።",
+  },
+  featBoost: {
+    en: "Boost pads push harder.", simple: "Boost pads push harder.",
+    es: "Las almohadillas empujan más.", uk: "Підкладки штовхають сильніше.", ru: "Подушки толкают сильнее.",
+    ar: "منصات الدفع تدفع أقوى.", "fa-AF": "بالشتک‌های تقویت سخت‌تر می‌رانند.", rw: "Ibipfuko bishyira imbaraga.", ti: "መንደቕቲ ኣዝዩ ይድፍኡ።",
+  },
+  featTrail: {
+    en: "Berty leaves a cyan trail.", simple: "Berty leaves a cyan trail.",
+    es: "Berty deja un rastro cian.", uk: "Берті лишає блакитний слід.", ru: "Берти оставляет голубой след.",
+    ar: "بيرتي يترك أثرًا سماويًا.", "fa-AF": "بیرتی رد آبی روشن می‌گذارد.", rw: "Berty asiga umurongo wa cyan.", ti: "በርቲ ሰማያዊ መንገዲ ይገድፍ።",
+  },
+  featCrown: {
+    en: "A gold ring spins on Berty.", simple: "A gold ring spins on Berty.",
+    es: "Un anillo de oro gira en Berty.", uk: "На Берті крутиться золоте кільце.", ru: "На Берти крутится золотое кольцо.",
+    ar: "حلقة ذهبية تدور على بيرتي.", "fa-AF": "حلقه طلایی روی بیرتی می‌چرخد.", rw: "Impeta y'izahabu izunguruka kuri Berty.", ti: "ወርቃዊ ቀለቤት ኣብ በርቲ ይዞር።",
+  },
   portOpen: {
     en: "Port open!",
     simple: "Port open!",
@@ -855,6 +892,13 @@ const LINES16: Record<string, Record<string, string>> = {
     ti: "ኣብ iPhone ነዚ ገጽ ናብ መጀመርታ ስክሪን ወስኽ።",
   },
 };
+
+
+export function featureLine(lang: string, id: string, fallback: string): string {
+  const key = "feat" + id.charAt(0).toUpperCase() + id.slice(1);
+  const hit = line16(lang, key);
+  return hit && hit !== key ? hit : fallback;
+}
 
 export function line16(lang: string, key: string, vars: Record<string, string | number> = {}) {
   const bag = LINES16[key] || {};

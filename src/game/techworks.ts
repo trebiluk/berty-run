@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.18";
+export const CHIP = "BR 1.12.19";
 export const WHATS_NEW =
-  "BR 1.12.18: Sideways, every card fits on the screen, the Full screen button no longer covers Jump, and you get a tip when you're stuck.";
+  "BR 1.12.19: Pause buttons fit sideways again, Two hands steers right again, every word shows in your language, and the screen fits better on phones.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.18: De lado, cada tarjeta cabe en la pantalla, el botón de pantalla completa ya no tapa Saltar, y recibes un aviso si te atascas.",
-  uk: "BR 1.12.18: Боком кожна картка вміщається на екран, кнопка на весь екран більше не закриває Стрибок, і є підказка, якщо застряг.",
-  ru: "BR 1.12.18: Боком каждая карточка помещается на экран, кнопка на весь экран больше не закрывает Прыжок, и есть подсказка, если застрял.",
-  ar: "BR 1.12.18: بالعرض، كل بطاقة تناسب الشاشة، وزر ملء الشاشة لم يعد يغطي القفز، وتظهر نصيحة إذا علقت.",
-  "fa-AF": "BR 1.12.18: به‌پهلو، هر کارت در صفحه جا می‌شود، دکمه تمام صفحه دیگر پرش را نمی‌پوشاند، و اگر گیر کردی راهنما می‌آید.",
-  rw: "BR 1.12.18: Ku ruhande, buri karita yuzura ku rubuga, buto y'ikirahure ntikongera gupfuka Gusimbuka, kandi ubona inama niba uhagaze.",
-  ti: "BR 1.12.18: ብጎኒ ኩሉ ካርድ ኣብ ስክሪን ይኣቱ፣ ምሉእ ስክሪን ዘላይ ኣይሽፍን፣ እንተተጨናኒኻ መዘኻኸሪ ይመጽእ።",
+  es: "BR 1.12.19: Los botones de pausa caben de lado otra vez, Dos manos dirige bien otra vez, cada palabra sale en tu idioma, y la pantalla cabe mejor en el teléfono.",
+  uk: "BR 1.12.19: Кнопки паузи знову вміщаються боком, Дві руки знову керують правильно, кожне слово твоїм мовою, і екран краще сідає на телефон.",
+  ru: "BR 1.12.19: Кнопки паузы снова помещаются боком, Две руки снова рулят правильно, каждое слово на твоём языке, и экран лучше садится на телефон.",
+  ar: "BR 1.12.19: أزرار الإيقاف تناسب العرض من جديد، واليدان توجّهان بشكل صحيح من جديد، وكل كلمة تظهر بلغتك، والشاشة تناسب الهاتف أفضل.",
+  "fa-AF": "BR 1.12.19: دکمه‌های توقف دوباره به‌پهلو جا می‌شوند، دو دست دوباره درست هدایت می‌کند، هر واژه به زبان تو می‌آید، و صفحه بهتر در گوشی جا می‌شود.",
+  rw: "BR 1.12.19: Buto zo guhagarara zongera kwinjira ku ruhande, amaboko abiri ayobora neza, ijambo ryose risa mu rurimi rwawe, kandi ekara yuzura neza kuri terefone.",
+  ti: "BR 1.12.19: ናይ ምዕጋት መልጎም ብጎኒ ደጊሙ ይኣቱ፣ ክልተ ኢድ ደጊሙ ብትኽክል ይመርሕ፣ ኩሉ ቃል ብቋንቋኻ ይረአ፣ ስክሪን ድማ ኣብ ስልኪ ይሰማማዕ።",
 };
 
 export function whatsNew(lang: string) {

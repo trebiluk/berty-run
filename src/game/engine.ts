@@ -941,7 +941,7 @@ export class Engine {
     if (has("KeyS") || (!this.crew && has("ArrowDown"))) y += 1;
     if (this.injectSteer != null) x -= this.injectSteer;
     for (const p of this.pointers.values()) {
-      if (p.origin !== "p1") continue;
+      if (p.origin !== "p1" || this.handsOn) continue;
       const pad = this.padRect("p1");
       const cx = pad.x + pad.w / 2;
       const cy = pad.y + pad.h / 2;
@@ -1126,7 +1126,7 @@ export class Engine {
         if (this.bend) this.bend.punch = 0.32;
         if (this.bend && this.bend.gemsGot >= this.bend.gemTotal && !this.portOpenSaid) {
           this.portOpenSaid = true;
-          this.note("All bits in my pocket. Roll me into the port.");
+          this.note(line16(readAccess().lang, "portOpen"));
         }
       }
       if (ev?.bump) sfxBump();

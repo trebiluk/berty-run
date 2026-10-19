@@ -15,7 +15,7 @@ import { FieldGuide } from "@/components/field-guide";
 import type { CourseId, HudSnap } from "@/game/types";
 import { ACCESS_DEFAULT, DRIVES, askTilt, drivePatch, packFor, readAccess, say, stopSay, writeAccess, type Access, type Drive } from "@/game/access";
 import { cheerLine, closeLabel, courseLabel, face, partLabel, placeWord, rewardLine } from "@/game/face";
-import { fillHud, hudCopy, line16, localizeLine } from "@/game/hud-copy";
+import { featureLine, fillHud, hudCopy, line16, localizeLine } from "@/game/hud-copy";
 import { chooseLang, installLangWatch, LANGS } from "@/game/hub";
 import { appsFor, openSignIn } from "@/game/who";
 import { ArcadeScore, ArcadeSettings, Attract, ContinueClock, FpsGuard, StageClear, heatName, useCabinet } from "@/arcade/chrome";
@@ -223,9 +223,9 @@ function AccessPanel({
         {hud.stamps > 0 ? <Button onClick={onSave}>{ui.save}</Button> : null}
         <Button variant="navy" onClick={onLab}>{ui.lab}</Button>
         <Button variant="navy" onClick={onGoal}>{ui.goal}</Button>
-        {hud.fullUnlock ? (
+        {false && hud.fullUnlock ? (
           <Button variant="ghost" onClick={onLockOff}>{ui.teacherOn}</Button>
-        ) : pinAsk ? (
+        ) : false && pinAsk ? (
           <form
             className="flex flex-wrap items-center gap-2"
             onSubmit={(ev) => {
@@ -251,9 +251,7 @@ function AccessPanel({
             <Button type="submit">{ui.open}</Button>
             {pinNo ? <span className="text-xs font-semibold text-orange">{ui.wrongPin}</span> : null}
           </form>
-        ) : (
-          <Button variant="ghost" onClick={() => setPinAsk(true)}>{ui.teacherPin}</Button>
-        )}
+        ) : null}
         {hud.goal ? (
           <a href={`${ROOM}/paperlab/?plan=${hud.goal}`} className="inline-flex min-h-11 items-center px-4 text-sm font-semibold uppercase tracking-wide text-cyan ring-1 ring-line">
             {ui.paper}
@@ -751,8 +749,8 @@ export function GameShell() {
               </button>
             </div>
             {hud.phase === "play" || hud.phase === "pause" ? (
-            <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold whitespace-nowrap ring-1 ring-line">
-              <span className="truncate"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
+            <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold ring-1 ring-line">
+              <span className="min-w-0 whitespace-normal text-xs leading-tight"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
               <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)}</span>
               <button type="button" data-hud="pause" aria-label={line16(access.lang, "pause")} className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-1 bg-navy px-2 text-fg ring-1 ring-line" onClick={() => e?.togglePause()}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4"><path d="M8 5v14M16 5v14"/></svg>
@@ -790,14 +788,14 @@ export function GameShell() {
                 <ArcadeScore gems={hud.gems} time={hud.time} par={hud.par} hearts={hud.hearts} show={arcade && hud.phase === "play"} />
               )}
             </div>
-            <p data-hud="rev" className={cn("ml-12 mt-1 text-[9px] font-bold text-gold opacity-75", hud.phase === "pause" && "hidden")}>{CHIP}</p>
+            <p data-hud="rev" className={cn("ml-12 mt-1 text-[9px] font-bold text-gold", hud.phase === "pause" && "hidden")}>{CHIP}</p>
             </>
             ) : null}
         </div>
       </header>
 
       {hud.phase === "play" && hud.intro <= 3 ? (
-        <p data-hud="goal" className="pointer-events-none absolute left-1/2 top-[5.6rem] z-20 max-w-[16rem] -translate-x-1/2 rounded-full bg-navy/90 px-3 py-1 text-center text-xs font-semibold text-fg ring-1 ring-cyan">
+        <p data-hud="goal" className="pointer-events-none absolute left-1/2 top-[4.4rem] z-20 max-w-[16rem] -translate-x-1/2 rounded-full bg-navy/90 px-3 py-1 text-center text-xs font-semibold text-fg ring-1 ring-cyan">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="mr-1 inline size-4" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
           <bdi>{hud.portOpen ? line16(access.lang, "portOpen") : hud.time < 3 || hud.intro > 0 ? line16(access.lang, "goal", { n: hud.gemTotal }) : `${hud.gems}/${hud.gemTotal}`}</bdi>
         </p>
@@ -1001,7 +999,7 @@ export function GameShell() {
         <p
           ref={hintRef}
           data-hud="hint"
-          className="pointer-events-none absolute top-[max(7.6rem,calc(env(safe-area-inset-top)+7.2rem))] left-1/2 z-10 w-max max-w-[min(20rem,60%)] -translate-x-1/2 truncate rounded-full bg-navy/85 px-2 py-0.5 text-center text-[11px] font-semibold text-fg ring-1 ring-line"
+          className="pointer-events-none absolute top-[max(8.8rem,calc(env(safe-area-inset-top)+8.4rem))] left-1/2 z-10 w-max max-w-[min(20rem,60%)] -translate-x-1/2 truncate rounded-full bg-navy px-2 py-0.5 text-center text-[11px] font-semibold text-fg ring-1 ring-line"
           style={{ opacity: 1 }}
         >
           {hintText}
@@ -1212,12 +1210,14 @@ export function GameShell() {
             ) : null}
 
             {hud.phase === "pause" ? (
-              <div className="mt-24 flex w-full max-w-md flex-col gap-4 bg-ink p-4 ring-1 ring-cyan">
+              <div className="pause-sheet mt-24 flex w-full max-w-md flex-col gap-4 bg-ink p-4 ring-1 ring-cyan">
+                <div className="pause-info">
                 <h2 className="text-2xl font-bold tracking-tight">{ui.paused}</h2>
-                <p className="text-sm font-semibold text-fg">{keysOn ? "Esc · " + line16(access.lang, "pause") : ""}</p>
+                {keysOn && !coarse ? <p className="pause-esc text-sm font-semibold text-fg">{"Esc · " + line16(access.lang, "pause")}</p> : null}
                 <p className="text-2xl font-extrabold tabular-nums">{fmt(hud.time)} / {fmt(hud.par)}</p>
-                <p className="text-muted">{ui.clockStopped}</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="text-fg">{ui.clockStopped}</p>
+                </div>
+                <div className="pause-actions flex flex-wrap gap-2">
                   <Button onClick={() => e?.togglePause()}>{ui.resume}</Button>
                   <Button variant="navy" onClick={() => e?.retry()}>{ui.retry}</Button>
                   <Button
@@ -2264,7 +2264,7 @@ function BotTrack({ stamps }: { stamps: number }) {
           {BOT_FEATURES.map((f) => (
             <li key={f.id} className="text-sm">
               <span className="font-bold">{f.name}. </span>
-              {f.line} {f.at} {f.at === 1 ? ui.win : ui.wins}.
+              {featureLine(access.lang, f.id, f.line)} {f.at} {f.at === 1 ? ui.win : ui.wins}.
             </li>
           ))}
         </ul>
@@ -2470,7 +2470,7 @@ function TitleCard({
         <div className="px-1 py-3 text-center">
           <h2 className="text-3xl font-extrabold leading-none tracking-tight text-paper"><bdi>BERTY'S RUN</bdi></h2>
           <p className="script-font mt-2 text-sm font-bold text-gold">{ui.coin}</p>
-          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{whatsNew(access.lang)}</p>
+          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{ui.blurb}</p>
         </div>
       )}
       <Button className="!min-h-16 w-full text-xl" onClick={onPlay}>

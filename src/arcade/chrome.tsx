@@ -156,7 +156,7 @@ export function ArcadeScore({
         <span className="script-font">{ui.score}</span>{" "}
         <span className="arcade-digits">{String(shown).padStart(6, "0")}</span>
       </p>
-      <p className="shrink-0 text-[10px] leading-none text-[#ff2bd6]">
+      <p className="shrink-0 text-[10px] leading-none text-[#ffd6f5]">
         {popup ? (
           <span className="script-font">{popup === "PERFECT!" ? ui.perfect : ui.great}</span>
         ) : combo.current > 1 ? (
@@ -184,7 +184,7 @@ export function StageClear({ time, par, stars, rig, title, high, bits = 0 }: { t
       <p className="script-font text-sm font-extrabold text-[#ffe56a]">{title || ui.stageClear}</p>
       <p className="arcade-digits mt-1 text-xs text-[#3ee0ff]">{String(n).padStart(6, "0")}</p>
       {bonus > 0 ? <p className="mt-1 text-xs font-bold text-[#d6ff4a]"><bdi>{line16(useLang(), "timeBonus", { n: bonus })}</bdi></p> : null}
-      {stars >= 3 ? <p className="script-font mt-1 text-xs text-[#ff2bd6]">{high || ui.newHigh}</p> : null}
+      {stars >= 3 ? <p className="script-font mt-1 text-xs text-[#ffd6f5]">{high || ui.newHigh}</p> : null}
       {rig ? <p className="mt-1 text-xs font-bold text-[#d6ff4a]">{rig}</p> : null}
     </div>
   );

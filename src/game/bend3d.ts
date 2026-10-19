@@ -613,7 +613,10 @@ export class Bend3D {
       this.look.add(this.tmp);
     }
     const k = playing ? 5.2 : 2.4;
-    const dt = 1 / 60;
+    const now = typeof performance !== "undefined" ? performance.now() : 0;
+    const raw = this.lastFrame ? (now - this.lastFrame) / 1000 : 1 / 60;
+    this.lastFrame = now;
+    const dt = Math.min(0.05, Math.max(0.001, raw || 1 / 60));
     this.camPos.lerp(this.desired, 1 - Math.exp(-k * dt));
     const shake = this.trauma * this.trauma;
     if (!this.reduced && shake > 0.001) {

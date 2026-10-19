@@ -39,6 +39,7 @@ const SHARED_EN: Record<string, string> = {
   close: "Close",
   readAloud: "Read aloud",
   noVoice: "No voice yet. Read the words.",
+  blurbAlice: "Help Alice guard the pups",
 };
 
 type PrefsApi = {

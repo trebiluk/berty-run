@@ -82,10 +82,12 @@ export type Screen = {
   cheerN: string;
   cheer0: string;
   watts: string;
+  blurb: string;
 };
 
 const EN: Screen = {
   coin: "INSERT COIN / TAP TO START",
+  blurb: "Roll Berty through the PC. Grab bits. Find the port.",
   stageClear: "Stage clear",
   yourReward: "Your reward",
   youWon: "You won. This part is yours. Watts pay to put it in the case.",
@@ -160,6 +162,7 @@ const EN: Screen = {
 const SIMPLE: Screen = {
   ...EN,
   coin: "TAP TO START",
+  blurb: "Roll Berty through the PC. Grab bits. Find the port.",
   stageClear: "You cleared it",
   yourReward: "Your prize",
   youWon: "You won this part. Watts pay to put it in the case.",
@@ -177,6 +180,7 @@ const SIMPLE: Screen = {
 const ES: Screen = {
   ...EN,
   coin: "METE MONEDA / TOCA PARA EMPEZAR",
+  blurb: "Rueda a Berty por la PC. Toma bits. Encuentra el puerto.",
   stageClear: "Tablero listo",
   yourReward: "Tu premio",
   youWon: "Ganaste. Esta pieza es tuya. Los vatios pagan para ponerla en la caja.",
@@ -250,6 +254,7 @@ const ES: Screen = {
 const UK: Screen = {
   ...EN,
   coin: "КИНЬ МОНЕТУ / ТОРКНИСЬ, ЩОБ ПОЧАТИ",
+  blurb: "Коти Берті через ПК. Збери біти. Знайди порт.",
   stageClear: "Етап пройдено",
   yourReward: "Твоя нагорода",
   youWon: "Ти виграв. Ця деталь твоя. Вати платять, щоб поставити її в корпус.",
@@ -323,6 +328,7 @@ const UK: Screen = {
 const RU: Screen = {
   ...EN,
   coin: "БРОСЬ МОНЕТУ / КОСНИСЬ, ЧТОБЫ НАЧАТЬ",
+  blurb: "Кати Берти через ПК. Собери биты. Найди порт.",
   stageClear: "Этап пройден",
   yourReward: "Твоя награда",
   youWon: "Ты выиграл. Эта деталь твоя. Ватты платят, чтобы поставить её в корпус.",
@@ -396,6 +402,7 @@ const RU: Screen = {
 const AR: Screen = {
   ...EN,
   coin: "أدخل قطعة / المس للبدء",
+  blurb: "دحرج بيرتي داخل الحاسوب. خذ البتّات. جد المنفذ.",
   stageClear: "أنهيت المرحلة",
   yourReward: "جائزتك",
   youWon: "فزت. هذه القطعة لك. الواط تدفع لوضعها في الصندوق.",
@@ -470,6 +477,7 @@ const AR: Screen = {
 const FA: Screen = {
   ...EN,
   coin: "سکه بینداز / برای شروع لمس کن",
+  blurb: "بیرتی را در کمپیوتر بغلتان. بیت‌ها را بگیر. درگاه را پیدا کن.",
   stageClear: "مرحله تمام شد",
   yourReward: "جایزه تو",
   youWon: "بردی. این پارچه از تو است. وات می‌پردازد تا در جعبه بنشیند.",
@@ -543,6 +551,7 @@ const FA: Screen = {
 const RW: Screen = {
   ...EN,
   coin: "SHYIRA IFARANGA / KANDA UTANGIRE",
+  blurb: "Zungurura Berty mu mudasobwa. Fata ibice. Shaka umuryango.",
   stageClear: "Warangije icyiciro",
   yourReward: "Igihembo cyawe",
   youWon: "Watsinze. Iki gice ni icyawe. Watts yishyura kugira kibone mu gasanduku.",
@@ -616,6 +625,7 @@ const RW: Screen = {
 const TI: Screen = {
   ...EN,
   coin: "ሳንቲም ኣእቱ / ንምጅማር ጠውቕ",
+  blurb: "በርቲ ኣብ ኮምፒተር ኣንቀሳቕስ። ቢት ውሰድ። ፖርት ድለ።",
   stageClear: "ደረጃ ተወዲኡ",
   yourReward: "ሽልማትካ",
   youWon: "ተዓዊትካ። እዚ ክፋል ናትካ እዩ። ዋት ንኽኣቱ ኣብ ሳንዱቕ ይከፍል።",
