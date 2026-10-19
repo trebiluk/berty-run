@@ -756,3 +756,34 @@ html[data-lights="gold"] {
     animation: none;
   }
 }
+
+@media (max-height: 480px) {
+  .fit-card {
+    display: grid !important;
+    grid-template-columns: minmax(7.5rem, 0.85fr) minmax(0, 1.15fr);
+    gap: 0.45rem;
+    align-items: start;
+    max-height: calc(100dvh - 6.5rem);
+    overflow: hidden;
+  }
+  html[dir="rtl"] .fit-card {
+    direction: rtl;
+  }
+  .fit-choices {
+    min-width: 0;
+  }
+  .fit-choices button,
+  .fit-choices .min-h-11 {
+    min-height: 44px;
+  }
+  .menu-layer .overlay-panel {
+    max-height: 100%;
+    overflow: hidden;
+  }
+  .menu-layer .panel-body {
+    overflow: hidden;
+  }
+  .win-actions {
+    position: static;
+  }
+}

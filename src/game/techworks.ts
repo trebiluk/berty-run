@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.17";
+export const CHIP = "BR 1.12.18";
 export const WHATS_NEW =
-  "BR 1.12.17: Touching the board no longer rolls Berty, he stands on the Bus Tube floor, and the menu's Close button is easy to see.";
+  "BR 1.12.18: Sideways, every card fits on the screen, the Full screen button no longer covers Jump, and you get a tip when you're stuck.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.17: Tocar el tablero ya no hace rodar a Berty, se para en el suelo del tubo bus, y el botón Cerrar del menú se ve bien.",
-  uk: "BR 1.12.17: Дотик до дошки більше не котить Берті, він стоїть на підлозі шини-труби, і кнопку Закрити в меню добре видно.",
-  ru: "BR 1.12.17: Касание доски больше не катит Берти, он стоит на полу шины-трубы, и кнопку Закрыть в меню хорошо видно.",
-  ar: "BR 1.12.17: لمس اللوح لم يعد يدحرج بيرتي، ويقف على أرض أنبوب الباص، وزر إغلاق القائمة واضح.",
-  "fa-AF": "BR 1.12.16: برتی با برق از هر مرحله بیرون می‌رود، موسیقی آرکید در هر دور با بلندی خودش پخش می‌شود، و لوله بس نرم‌تر، عادلانه‌تر و خواناتر است.",
-  rw: "BR 1.12.17: Gukora ku mbaho ntikizongera kuzunguriza Berty, ahagaze ku butaka bwa Bus Tube, kandi buto yo Gufunga ya menu iboneka neza.",
-  ti: "BR 1.12.17: ምድርባይ ቦርድ በርቲ ኣይደርብዮን፣ ኣብ መሬት ቱቦ ባስ ይቐውም፣ መዕጸዊ መዓልቲ ምልክት ድማ ንጹር ይርአ።",
+  es: "BR 1.12.18: De lado, cada tarjeta cabe en la pantalla, el botón de pantalla completa ya no tapa Saltar, y recibes un aviso si te atascas.",
+  uk: "BR 1.12.18: Боком кожна картка вміщається на екран, кнопка на весь екран більше не закриває Стрибок, і є підказка, якщо застряг.",
+  ru: "BR 1.12.18: Боком каждая карточка помещается на экран, кнопка на весь экран больше не закрывает Прыжок, и есть подсказка, если застрял.",
+  ar: "BR 1.12.18: بالعرض، كل بطاقة تناسب الشاشة، وزر ملء الشاشة لم يعد يغطي القفز، وتظهر نصيحة إذا علقت.",
+  "fa-AF": "BR 1.12.18: به‌پهلو، هر کارت در صفحه جا می‌شود، دکمه تمام صفحه دیگر پرش را نمی‌پوشاند، و اگر گیر کردی راهنما می‌آید.",
+  rw: "BR 1.12.18: Ku ruhande, buri karita yuzura ku rubuga, buto y'ikirahure ntikongera gupfuka Gusimbuka, kandi ubona inama niba uhagaze.",
+  ti: "BR 1.12.18: ብጎኒ ኩሉ ካርድ ኣብ ስክሪን ይኣቱ፣ ምሉእ ስክሪን ዘላይ ኣይሽፍን፣ እንተተጨናኒኻ መዘኻኸሪ ይመጽእ።",
 };
 
 export function whatsNew(lang: string) {

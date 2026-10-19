@@ -316,8 +316,10 @@ export class TubeSim {
     const freeH = Math.max(80, freeBot - freeTop);
     const freeW = w;
     const upright = h > w;
-    const fit = Math.min(freeW, freeH) * 0.46;
-    const ring = Math.min(upright ? freeW * 0.72 : freeH * 0.78, fit * 1.15);
+    const bertyNeed = (w >= 1024 ? 64 : 47) * 3;
+    const ring = upright
+      ? Math.min(freeW * 0.72, freeH * 0.9)
+      : Math.max(bertyNeed, Math.min(freeW * 0.62, freeH * 0.92));
     const cx = w / 2;
     const cy = freeTop + freeH / 2;
     ctx.fillStyle = TUBE.ink;

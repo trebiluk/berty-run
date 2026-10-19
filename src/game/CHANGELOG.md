@@ -1,5 +1,11 @@
 # Berty's Run
 
+## BR 1.12.18 — 2026-10-19
+
+- What's new: Sideways, every card fits on the screen, the Full screen button no longer covers Jump, and you get a tip when you're stuck.
+
+# Berty's Run
+
 ## BR 1.12.17 — 2026-10-03
 
 - What's new: Touching the board no longer rolls Berty, he stands on the Bus Tube floor, and the menu's Close button is easy to see.

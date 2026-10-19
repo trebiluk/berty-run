@@ -23,7 +23,7 @@ import { makePack, parsePack, markHowto, postScore, CHIP, type BertyPack } from 
 import { drivePatch, readAccess, writeAccess } from "./access";
 import { recordClear, signedWho, stashRun } from "./who";
 import { TubeSim, TUBE_LEN } from "@/arcade/tube";
-import { tubeTip } from "./hud-copy";
+import { line16, tubeTip } from "./hud-copy";
 import { hudScore, scoreFor } from "./score";
 import type { Course, CourseId, HudSnap } from "./types";
 
@@ -1114,6 +1114,7 @@ export class Engine {
         return;
       }
       if (playing) this.time += dt;
+      if (playing) this.lateTips();
       if (playing && !this.saidRoad) {
         this.saidRoad = true;
         this.note("Stay on my road. Jump a lock. I roll with you.");
@@ -1199,6 +1200,7 @@ export class Engine {
     if (this.tickIntro(dt)) return;
     this.time += dt;
     this.gemPulse += dt;
+    this.lateTips();
     const input = this.held();
     const grounded = this.p1.alive && this.p1.hop <= 0;
     if (grounded) this.coyote = 0.1;
@@ -1502,6 +1504,23 @@ export class Engine {
     }
   }
 
+
+  private lateTips() {
+    if (this.phase !== "play" || this.isTube() || this.time <= this.course.par) return;
+    const left = this.is3d()
+      ? Math.max(0, (this.bend?.gemTotal ?? 0) - (this.bend?.gemsGot ?? 0))
+      : this.gems.filter((g) => !g.got).length;
+    const lang = readAccess().lang;
+    if (left > 0 && !this.saidLateBits) {
+      this.saidLateBits = true;
+      this.note(line16(lang, "bitsLeft", { n: left }));
+    }
+    if (left === 0 && !this.saidLatePort) {
+      this.saidLatePort = true;
+      this.note(line16(lang, "findPort"));
+    }
+  }
+
   private pickups(b: Body, dt: number) {
     if (!b.alive) return;
     const pull = (this.gearLock ?? campaignClears(this.save.best)) >= 3;
@@ -1533,15 +1552,7 @@ export class Engine {
         if (!this.portOpenSaid && this.gems.every((gem) => gem.got)) {
           this.portOpenSaid = true;
           this.portOpen = true;
-          this.note("Port open!");
-        }
-        if (this.time > this.course.par && !this.saidLateBits && this.gems.some((g) => !g.got)) {
-          this.saidLateBits = true;
-          this.note(`${this.gems.filter((g) => !g.got).length} bits left. Follow the arrow.`);
-        }
-        if (this.time > this.course.par && !this.saidLatePort && this.gems.every((g) => g.got)) {
-          this.saidLatePort = true;
-          this.note("Find the port.");
+          this.note(line16(readAccess().lang, "portOpen"));
         }
       }
     }

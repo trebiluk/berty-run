@@ -811,11 +811,13 @@ export function GameShell() {
           </div>
         </div>
       ) : null}
-      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute bottom-[max(0.5rem,env(safe-area-inset-bottom))] z-30 size-11 bg-navy/40 text-[10px] font-bold text-fg", access.lang === "ar" || access.lang === "fa-AF" ? "left-1" : "right-1")} onClick={() => {
+      {!styleOpen && !gear && !overlay ? (
+      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute top-[max(5.4rem,calc(env(safe-area-inset-top)+5rem))] z-30 inline-flex size-11 items-center justify-center bg-navy/80 text-[10px] font-bold leading-none text-fg ring-1 ring-line", access.lang === "ar" || access.lang === "fa-AF" ? "left-2" : "right-2")} onClick={() => {
         const root = document.documentElement;
         if (document.fullscreenElement) { void document.exitFullscreen(); localStorage.setItem("kulibert-fullscreen", "0"); setFsOn(false); }
         else { void root.requestFullscreen?.(); localStorage.setItem("kulibert-fullscreen", "1"); setFsOn(true); }
       }}>{line16(access.lang, "fullScreen")}</button>
+      ) : null}
 
       <FpsGuard />
 
@@ -2279,22 +2281,26 @@ function GoalCard({ stamps, onPick }: { stamps: number; onPick: (id: PcGoal) => 
     { id: "laptop" as const, name: ui.goalLaptop, line: ui.goalLaptopLine },
   ];
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{ui.goalKicker}</p>
-      <h2 className="text-3xl font-extrabold tracking-tight">{ui.goalTitle}</h2>
-      <BotTrack stamps={stamps} />
-      <p className="text-base leading-snug">{ui.goalLine}</p>
+    <div className="fit-card flex flex-col gap-3">
+      <div className="fit-pic min-w-0">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{ui.goalKicker}</p>
+        <h2 className="text-2xl font-extrabold tracking-tight">{ui.goalTitle}</h2>
+        <BotTrack stamps={stamps} />
+        <p className="text-sm leading-snug">{ui.goalLine}</p>
+      </div>
+      <div className="fit-choices flex flex-col gap-2">
       {goals.map((g) => (
         <button
           key={g.id}
           type="button"
           onClick={() => onPick(g.id)}
-          className="min-h-14 rounded-2xl bg-navy-2 px-4 py-3 text-start ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
+          className="min-h-11 rounded-2xl bg-navy-2 px-3 py-2 text-start ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
         >
           <span className="block text-base font-extrabold">{g.name}</span>
-          <span className="block text-sm text-muted">{g.line}</span>
+          <span className="block text-xs text-muted">{g.line}</span>
         </button>
       ))}
+      </div>
     </div>
   );
 }
@@ -2328,7 +2334,8 @@ function PartBrief({
     return () => stopSay();
   }, [courseId, access.speak, access.lang]);
   return (
-    <div className="flex flex-col gap-3">
+    <div className="fit-card flex flex-col gap-3">
+      <div className="fit-pic min-w-0">
       <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{ui.oneQuestion}</p>
       <h2 className="text-2xl font-extrabold tracking-tight">{title}</h2>
       <p className="text-base leading-snug">{line}</p>
@@ -2343,7 +2350,8 @@ function PartBrief({
           <Volume2 className="size-4" /> {ui.readBtn}
         </button>
       </div>
-      <div className="flex flex-col gap-2">
+      </div>
+      <div className="fit-choices flex flex-col gap-2">
         {shown.map(({ choice, i }) => (
           <button
             key={choice}
@@ -2357,7 +2365,6 @@ function PartBrief({
             {choice}
           </button>
         ))}
-      </div>
       {pick != null && !right ? <p className="text-sm font-semibold text-gold">{ui.try}</p> : null}
       <Button onClick={() => onPass(null)}>{line16(access.lang, "playNow")}</Button>
       {right ? (
@@ -2367,6 +2374,7 @@ function PartBrief({
           {ui.back}
         </Button>
       )}
+      </div>
     </div>
   );
 }
