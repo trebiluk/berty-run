@@ -3,6 +3,9 @@
 ## BR 1.12.33 — 2026-10-20
 
 - Levels unlocked. Best time replaces the lock.
+- CPU fact card only on level-clear with X and fixed text. Read-aloud box hides on close.
+- Tilt back-clamp removed. Control rows are 56px.
+- Clock shows Under par / Over par.
 
 ## BR 1.12.32 — 2026-10-20
 

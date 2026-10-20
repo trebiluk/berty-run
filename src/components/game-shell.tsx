@@ -180,17 +180,19 @@ function AccessPanel({
         </button>
         <p className="mt-3 text-[10px] font-bold uppercase tracking-wide text-gold">{ui.playStyle}</p>
         <div className="mt-1 flex flex-col gap-1">
-          {DRIVES.map((item) => (
+          {(window.innerWidth < 700 ? ["lean", "tilt", "hands", "keys", "follow"] : DRIVES.map((d) => d.id)).map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
+            <div key={item.id} className="flex flex-col gap-1">
             <button
-              key={item.id}
               type="button"
               aria-pressed={access.drive === item.id}
               onClick={() => onPick(item.id)}
-              className={cn("min-h-11 px-3 text-left ring-1", access.drive === item.id ? "bg-orange text-ink ring-orange" : "bg-navy-2 text-fg ring-line")}
+              className={cn("min-h-14 w-full px-3 text-left ring-1", access.drive === item.id ? "bg-orange text-ink ring-orange" : "bg-navy-2 text-fg ring-line")}
             >
               <span className="block text-sm font-bold">{ui.drives[item.id].name}</span>
               <span className="block text-xs font-semibold opacity-80">{ui.drives[item.id].line}</span>
             </button>
+            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>Turn on tilt</button> : null}
+            </div>
           ))}
         </div>
       </div>
@@ -793,7 +795,7 @@ export function GameShell() {
             {hud.phase === "play" || hud.phase === "pause" ? (
             <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold ring-1 ring-line">
               <span className="min-w-0 whitespace-normal text-xs leading-tight"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
-              <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)}</span>
+              <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)} {hud.time <= hud.par ? ui.underPar : ui.overPar}</span>
               <button type="button" data-hud="pause" aria-label={line16(access.lang, "pause")} className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-1 bg-navy px-2 text-fg ring-1 ring-line" onClick={() => e?.togglePause()}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-4"><path d="M8 5v14M16 5v14"/></svg>
                 <span className="hidden sm:inline">{line16(access.lang, "pause")}</span>
@@ -983,12 +985,12 @@ export function GameShell() {
           }}>
             {ui.levelsWord}
           </button>
-          {DRIVES.map((item) => (
+          {(window.innerWidth < 700 ? ["lean", "tilt", "hands", "keys", "follow"] : DRIVES.map((d) => d.id)).map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
+            <div key={item.id} className="flex flex-col gap-1">
             <button
-              key={item.id}
               type="button"
               aria-pressed={access.drive === item.id}
-              className={cn("min-h-12 px-3 text-left ring-1", access.drive === item.id ? "bg-orange text-ink ring-orange" : "bg-navy text-fg ring-line")}
+              className={cn("min-h-14 w-full px-3 text-left ring-1", access.drive === item.id ? "bg-orange text-ink ring-orange" : "bg-navy text-fg ring-line")}
               onPointerDown={(ev) => {
                 ev.preventDefault();
                 ev.stopPropagation();
@@ -998,6 +1000,8 @@ export function GameShell() {
               <span className="block text-sm font-extrabold">{ui.drives[item.id].name}</span>
               <span className="block text-xs font-semibold opacity-80">{ui.drives[item.id].line}</span>
             </button>
+            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>Turn on tilt</button> : null}
+            </div>
           ))}
         </div>
       ) : null}

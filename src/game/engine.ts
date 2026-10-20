@@ -1004,7 +1004,7 @@ export class Engine {
       y = aim.y;
     } else if (this.deviceTilt && this.tiltRead) {
       x = this.tiltRead.x;
-      y = this.is3d() ? Math.min(0, this.tiltRead.y) : this.tiltRead.y;
+      y = this.tiltRead.y;
       direct = this.is3d();
     }
     if (!direct) {

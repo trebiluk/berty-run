@@ -27,3 +27,6 @@
 - [x] BR 1.12.32-2 Spin Tube seed opens the board and step() moves
 - [x] BR 1.12.32-3 Two hands stick 8px clear of Jump
 - [x] BR 1.12.33-1 Every level open, best time replaces the lock
+- [x] BR 1.12.33-2 Fact card only on the clear screen, read-aloud box hides
+- [x] BR 1.12.33-3 Tilt steers all four ways, 56px control rows
+- [x] BR 1.12.33-4 Clock says Under par / Over par
