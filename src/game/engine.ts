@@ -723,7 +723,7 @@ export class Engine {
   }
 
   selectCourse(id: CourseId) {
-    if (!this.boardsOpen(courseById(id))) return;
+    if (!this.testMode && !this.boardsOpen(courseById(id))) return;
     this.loadCourse(id, this.crew, true);
     this.phase = "title";
     this.briefPass = false;
