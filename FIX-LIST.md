@@ -23,3 +23,6 @@
 - [x] BR 1.12.31-2 Language links carry lang and dir
 - [x] BR 1.12.31-3 Full screen clear of 1UP
 - [x] BR 1.12.31-4 Hidden Spin Tube test seed
+- [x] BR 1.12.32-1 Language link beats the saved language
+- [x] BR 1.12.32-2 Spin Tube seed opens the board and step() moves
+- [x] BR 1.12.32-3 Two hands stick 8px clear of Jump

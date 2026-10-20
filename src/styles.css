@@ -245,7 +245,7 @@ html[dir="rtl"] body {
 
 .hands-controls {
   top: auto;
-  bottom: max(9.75rem, calc(env(safe-area-inset-bottom) + 9.2rem));
+  bottom: max(10.4rem, calc(env(safe-area-inset-bottom) + 9.8rem));
 }
 
 .win-col,
@@ -287,7 +287,7 @@ html[dir="rtl"] body {
   }
   .play-controls.hands-controls {
     top: auto;
-    bottom: max(8.6rem, calc(env(safe-area-inset-bottom) + 8.2rem));
+    bottom: max(10.2rem, calc(env(safe-area-inset-bottom) + 9.6rem));
     right: max(0.75rem, env(safe-area-inset-right));
   }
   .play-controls [data-hud="jump"] {

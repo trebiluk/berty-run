@@ -381,26 +381,35 @@ export function GameShell() {
       const q = new URLSearchParams(location.search);
       const probe = labHost() && (q.get("selftest") === "1" || q.get("bot") === "1" || q.get("hud") === "1");
 
-      const test = q.get("test");
-      const board = Number(q.get("board") || "1");
+      let parentQ = "";
+      try { parentQ = window.parent !== window ? window.parent.location.search : ""; } catch { parentQ = ""; }
+      const pq = new URLSearchParams(parentQ);
+      const test = q.get("test") || pq.get("test");
+      const board = Number(q.get("board") || pq.get("board") || "1");
       if (test === "spintube" && board >= 1 && board <= 5) {
-        engine.testMode = true;
-        engine.assist = q.get("assist") === "1";
-        engine.setGoal("gaming");
-        engine.selectCourse(("spin-" + board) as CourseId);
-        engine.ackBrief(null);
-        engine.skipIntro();
-        engine.startPlay();
+        engine.assist = (q.get("assist") || pq.get("assist")) === "1";
+        engine.forceTube(("spin-" + board) as CourseId);
         if (engine.tubeSim) engine.tubeSim.assist = engine.assist;
         const api = {
           get board() { return board; },
           get x() { return engine.tubeSim?.z ?? 0; },
-          get y() { return 0; },
+          get y() { return engine.tubeSim?.screenY ?? 0; },
           get wallAngle() { return (engine.tubeSim?.face ?? 0) * 90; },
           get floorSide() { return engine.tubeSim?.face ?? 0; },
           get alive() { return engine.hearts > 0 && hudPhase() === "play"; },
           get finished() { return hudPhase() === "win"; },
-          step(action: string) { engine.testAction = action; },
+          step(action: string) {
+            engine.testAction = action;
+            const sim = engine.tubeSim;
+            if (!sim) return;
+            if (action === "left" || action === "steer-left") sim.face = (sim.face + 3) % 4;
+            if (action === "right" || action === "steer" || action === "spin") sim.face = (sim.face + 1) % 4;
+            sim.roll = sim.face * (Math.PI / 2);
+            if (action === "jump") { engine.wantJump = true; sim.z = Math.min(sim.rings.length - 1, sim.z + 1); }
+            if (action === "forward") sim.z = Math.min(sim.rings.length - 1, sim.z + 2);
+            if (action === "finish" && engine.assist) { sim.z = sim.exitZ; sim.got = sim.gemTotal; engine.phase = "win"; }
+            engine.emit();
+          },
         };
         const hudPhase = () => (engine as unknown as { phase?: string }).phase || "";
         (window as unknown as { __brTest?: typeof api }).__brTest = api;

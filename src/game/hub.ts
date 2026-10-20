@@ -95,8 +95,6 @@ function queryLang(href: string): Lang | "" {
 /** ?lang= on this frame, then the Hub frame when we can read it. */
 export function frameLang(): Lang | "" {
   if (typeof window === "undefined") return "";
-  const own = queryLang(location.search);
-  if (own) return own;
   try {
     if (window.parent && window.parent !== window) {
       const fromParent = queryLang(window.parent.location.search);
@@ -105,7 +103,7 @@ export function frameLang(): Lang | "" {
   } catch {
     /* cross-origin hub: the postMessage kp-lang path covers this */
   }
-  return "";
+  return queryLang(location.search);
 }
 
 export function pickLang(storedApp?: Lang | ""): Lang {

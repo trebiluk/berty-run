@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.31";
+export const CHIP = "BR 1.12.32";
 export const WHATS_NEW =
-  "BR 1.12.31: Levels fits sideways, and language links open in your language.";
+  "BR 1.12.32: Language links open in your language, and the Two hands stick has more room.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.31: Levels fits. Links use your language.",
-  es: "BR 1.12.31: Niveles cabe en horizontal y los enlaces de idioma se abren en tu idioma.",
-  uk: "BR 1.12.31: Кнопка «Рівні» вміщується горизонтально, а мовні посилання відкриваються вашою мовою.",
-  ru: "BR 1.12.31: Кнопка «Уровни» помещается в горизонтальном режиме, а языковые ссылки открываются на вашем языке.",
-  ar: "BR 1.12.31: زر المستويات يظهر كاملًا بالوضع الأفقي، وروابط اللغة تُفتح بلغتك.",
-  "fa-AF": "BR 1.12.31: دکمهٔ مرحله‌ها در حالت افقی کامل دیده می‌شود و لینک‌های زبان به زبان شما باز می‌شوند.",
-  rw: "BR 1.12.31: Levels igaragara yose iyo telefoni iryamye, kandi amahuza y'ururimi afunguka mu rurimi rwawe.",
-  ti: "BR 1.12.31: መደባት ብጐድኒ ምሉእ ይርአ፣ ናይ ቋንቋ መላግቦታት ድማ ብቋንቋኻ ይኽፈቱ።",
+  simple: "BR 1.12.32: Links use your language. The stick has room.",
+  es: "BR 1.12.32: Los enlaces de idioma se abren en tu idioma y el joystick de Dos manos tiene más espacio.",
+  uk: "BR 1.12.32: Мовні посилання відкриваються вашою мовою, а стік «Дві руки» має більше місця.",
+  ru: "BR 1.12.32: Языковые ссылки открываются на вашем языке, а у стика «Две руки» больше места.",
+  ar: "BR 1.12.32: روابط اللغة تُفتح بلغتك، وعصا وضع اليدين صار لها مساحة أكبر.",
+  "fa-AF": "BR 1.12.32: لینک‌های زبان به زبان شما باز می‌شوند و دستهٔ حالت دو دست جای بیشتری دارد.",
+  rw: "BR 1.12.32: Amahuza y'ururimi afunguka mu rurimi rwawe, kandi inkoni ya Amaboko abiri ifite umwanya uhagije.",
+  ti: "BR 1.12.32: ናይ ቋንቋ መላግቦታት ብቋንቋኻ ይኽፈቱ፣ ናይ ክልተ ኢድ መቆጻጸሪ ድማ ዝያዳ ቦታ ኣለዎ።",
 };
 
 export function whatsNew(lang: string) {

@@ -638,6 +638,18 @@ export class Engine {
     this.emit();
   }
 
+  forceTube(id: CourseId) {
+    this.testMode = true;
+    this.needGoal = false;
+    this.needBrief = false;
+    this.save.goal = this.save.goal || "gaming";
+    this.selectCourse(id);
+    this.phase = "play";
+    this.intro = 0;
+    this.time = 0;
+    this.emit();
+  }
+
   startPlay() {
     const step = playStep({
       alias: this.save.alias,
