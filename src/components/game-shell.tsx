@@ -804,7 +804,7 @@ export function GameShell() {
               </button>
             </div>
             {hud.phase === "play" || hud.phase === "pause" ? (
-            <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold ring-1 ring-line">
+            <div className="hud-bar flex min-w-0 flex-1 flex-wrap items-center gap-2 rounded-full bg-navy/90 px-3 py-1.5 text-sm font-semibold ring-1 ring-line">
               <span className="min-w-0 whitespace-normal text-xs leading-tight"><bdi>{courseLabel(access.lang, hud.courseId, hud.courseName)}{hud.is3d ? " 3D" : ""}</bdi></span>
               <span data-hud="timer" className={cn("shrink-0 tabular-nums", arcade && "arcade-digits text-[11px]")}>{fmt(hud.time)}/{fmt(hud.par)} {hud.time <= hud.par ? ui.underPar : ui.overPar}</span>
               <button type="button" data-hud="pause" aria-label={line16(access.lang, "pause")} className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-1 bg-navy px-2 text-fg ring-1 ring-line" onClick={() => e?.togglePause()}>

@@ -37,3 +37,6 @@
 - [x] BR 1.12.35-2 Obstacles as parts
 - [x] BR 1.12.35-3 Virus is a bug glyph
 - [x] BR 1.12.35-4 Soft path glow
+- [x] BR 1.12.36-1 Board step and What's new in every language
+- [x] BR 1.12.36-2 Jump stays 44px sideways, title and timer don't touch
+- [ ] BR 1.12.36-3 Test win switch waiting on hub kw-test.js

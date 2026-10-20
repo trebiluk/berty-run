@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.35";
+export const CHIP = "BR 1.12.36";
 export const WHATS_NEW =
-  "BR 1.12.35: The 2D boards look like real circuit boards now: copper traces, chips and a softly lit path. Each board keeps its own color. Play is exactly the same.";
+  "BR 1.12.36: Every language has the board help, and the Jump button is easier to hit sideways.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.35: The boards look like computer boards. Each board keeps its color. Play is the same.",
-  es: "BR 1.12.35: Los tableros 2D ahora parecen placas de circuito reales: pistas de cobre, chips y un camino con luz suave. Cada placa mantiene su color. El juego es igual.",
-  uk: "BR 1.12.35: 2D-плати тепер схожі на справжні друковані плати: мідні доріжки, чипи й м'яко підсвічений шлях. Кожна плата зберігає свій колір. Гра не змінилася.",
-  ru: "BR 1.12.35: 2D-платы теперь похожи на настоящие печатные платы: медные дорожки, чипы и мягко подсвеченный путь. Каждая плата сохраняет свой цвет. Игра не изменилась.",
-  ar: "BR 1.12.34: يشرح «طريقة اللعب» المستويات المفتوحة ومعلومة المعالج والإمالة والوقت المثالي، وزر Esc يغلق بطاقة المعلومة.",
-  "fa-AF": "BR 1.12.34: «طرز بازی» مرحله‌های باز، نکتهٔ پردازنده، کج کردن و زمان هدف را توضیح می‌دهد، و Esc کارت نکته را می‌بندد.",
-  rw: "BR 1.12.34: \"Uko bikinwa\" isobanura ingazi zifunguye, amakuru ya CPU, kugoreka na par, kandi Esc ifunga ikarita y'amakuru.",
-  ti: "BR 1.12.34: \"ከመይ ይጽወት\" ክፉታት ደረጃታት፣ ሓበሬታ CPU፣ ምዝንባልን ፓርን ይገልጽ፣ Esc ድማ ካርድ ሓበሬታ ይዓጹ።",
+  simple: "BR 1.12.36: Board help in every language. Jump is easier to hit.",
+  es: "BR 1.12.36: Todos los idiomas tienen la ayuda de la placa, y el botón Saltar es más fácil de tocar de lado.",
+  uk: "BR 1.12.36: Кожна мова має довідку про плату, а кнопку стрибка легше натиснути, коли телефон боком.",
+  ru: "BR 1.12.36: На каждом языке есть подсказка о плате, а кнопку прыжка легче нажать, когда телефон боком.",
+  ar: "BR 1.12.36: كل لغة فيها مساعدة اللوحة، وزر القفز أسهل للضغط والهاتف بالعرض.",
+  "fa-AF": "BR 1.12.36: هر زبان راهنمای بورد را دارد و دکمه پرش در حالت افقی آسان‌تر زده می‌شود.",
+  rw: "BR 1.12.36: Buri rurimi rufite ubufasha ku kibaho, kandi akabuto ko gusimbuka korohereye gukanda telefoni iri ku ruhande.",
+  ti: "BR 1.12.36: ኩሉ ቋንቋ ሓገዝ ሰሌዳ ኣለዎ፣ መልጎም ዝላ ድማ ብጎኒ ብቐሊሉ ይጽቀጥ።",
 };
 
 export function whatsNew(lang: string) {

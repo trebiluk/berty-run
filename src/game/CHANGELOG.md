@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.36 — 2026-10-20
+
+- Board help in every language. Jump is easier to hit sideways. Title and timer no longer touch.
+
 ## BR 1.12.35 — 2026-10-20
 
 - 2D boards restyled as circuit boards. Each board keeps its own color. Play is the same.
