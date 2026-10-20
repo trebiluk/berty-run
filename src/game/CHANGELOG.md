@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.31 — 2026-10-20
+
+- What's new: Levels fits sideways, and language links open in your language.
+
 ## BR 1.12.30 — 2026-10-20
 
 - What's new: Five new Spin Tube boards: steer onto a wall, spin the tube, and jump from your new floor!

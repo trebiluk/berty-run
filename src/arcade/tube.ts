@@ -108,6 +108,7 @@ export class TubeSim {
   private sprite: HTMLImageElement | null = null;
   private gem: HTMLImageElement | null = null;
   warp = 0;
+  assist = false;
   reduced = false;
   lowFx = false;
   screenX = 0;
@@ -336,6 +337,7 @@ export class TubeSim {
   }
 
   private beginFall() {
+    if (this.assist) return;
     this.falling = 0.55;
     this.falls += 1;
   }

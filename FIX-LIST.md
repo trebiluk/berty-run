@@ -19,3 +19,7 @@
 - [x] BR 1.12.20-3a Two hands right stick clear of Jump and Full screen
 - [x] BR 1.12.20-3b Pause Settings button clear of the HUD
 - [x] BR 1.12.30 Spin Tube pack: First Spin, Two Walls, Wire Hop, Low-G Drift, Full Turn
+- [x] BR 1.12.31-1 Levels whole on the sideways title
+- [x] BR 1.12.31-2 Language links carry lang and dir
+- [x] BR 1.12.31-3 Full screen clear of 1UP
+- [x] BR 1.12.31-4 Hidden Spin Tube test seed

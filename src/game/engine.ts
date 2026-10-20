@@ -350,6 +350,9 @@ export class Engine {
   reduced = REDUCED;
   bend: Bend3D | null = null;
   tubeSim: TubeSim | null = null;
+  testMode = false;
+  assist = false;
+  testAction = "";
   private bendPromise: Promise<Bend3D> | null = null;
 
   constructor(canvas: HTMLCanvasElement, canvas3d: HTMLCanvasElement, onHud: (h: HudSnap) => void) {
@@ -941,6 +944,9 @@ export class Engine {
     if (has("KeyD") || (!this.crew && has("ArrowRight"))) x += 1;
     if (has("KeyW") || (!this.crew && has("ArrowUp"))) y -= 1;
     if (has("KeyS") || (!this.crew && has("ArrowDown"))) y += 1;
+    if (this.testAction === "left") x -= 1;
+    if (this.testAction === "right") x += 1;
+    if (this.testAction === "jump") this.wantJump = true;
     if (this.injectSteer != null) x -= this.injectSteer;
     for (const p of this.pointers.values()) {
       if (p.origin !== "p1" || this.handsOn) continue;
@@ -1136,7 +1142,7 @@ export class Engine {
       if (ev?.check) sfxCheck();
       if (ev?.zap) sfxGem();
       if (ev?.tip) this.note(ev.tip);
-      if (ev?.hurt) {
+      if (ev?.hurt && !this.assist) {
         sfxHurt();
         this.hearts -= 1;
         this.hitstop = 0.07;
@@ -1172,7 +1178,7 @@ export class Engine {
       if (ev?.tip) this.note(ev.tip);
       if (ev?.tipKey) this.note(tubeTip(readAccess().lang, ev.tipKey));
       if (ev?.tipKey === "bit") sfxBuzz();
-      if (ev?.hurt) {
+      if (ev?.hurt && !this.assist) {
         sfxHurt();
         this.hearts -= 1;
         this.hitstop = 0.06;
@@ -2335,6 +2341,7 @@ export class Engine {
   }
 
   private awardClear() {
+    if (this.testMode) return;
 
     const t = this.time;
     const id = this.course.id;

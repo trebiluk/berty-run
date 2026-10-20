@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.30";
+export const CHIP = "BR 1.12.31";
 export const WHATS_NEW =
-  "BR 1.12.30 — Five new Spin Tube boards: steer onto a wall, spin the tube, and jump from your new floor!";
+  "BR 1.12.31: Levels fits sideways, and language links open in your language.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: WHATS_NEW,
-  es: "BR 1.12.30 — Cinco niveles nuevos de Tubo Giratorio: sube por una pared, gira el tubo y salta desde tu nuevo suelo.",
-  uk: "BR 1.12.30 — П'ять нових рівнів «Обертова труба»: заїжджай на стіну, обертай трубу та стрибай від нової підлоги!",
-  ru: "BR 1.12.30 — Пять новых уровней «Вращающаяся труба»: заезжай на стену, вращай трубу и прыгай от нового пола!",
-  ar: "BR 1.12.30 — خمسة مستويات جديدة في الأنبوب الدوّار: اصعد على جدار، أدر الأنبوب، واقفز من أرضك الجديدة!",
-  "fa-AF": "BR 1.12.30 — پنج مرحلهٔ جدید تیوب چرخان: روی دیوار برو، تیوب را بچرخان و از زمین جدیدت بپر!",
-  rw: "BR 1.12.30 — Ibyiciro bitanu bishya bya Spin Tube: zamuka ku rukuta, zunguruka umuyoboro, usimbe uva ku butaka bushya!",
-  ti: "BR 1.12.30 — ሓሙሽተ ሓደሽቲ ደረጃታት Spin Tube: ናብ መናወዲ ዕጠፍ፣ ነቲ ቱቦ ኣዙሮ፣ ካብ ሓድሽ መሬትካ ዝለል!",
+  simple: "BR 1.12.31: Levels fits. Links use your language.",
+  es: "BR 1.12.31: Niveles cabe en horizontal y los enlaces de idioma se abren en tu idioma.",
+  uk: "BR 1.12.31: Кнопка «Рівні» вміщується горизонтально, а мовні посилання відкриваються вашою мовою.",
+  ru: "BR 1.12.31: Кнопка «Уровни» помещается в горизонтальном режиме, а языковые ссылки открываются на вашем языке.",
+  ar: "BR 1.12.31: زر المستويات يظهر كاملًا بالوضع الأفقي، وروابط اللغة تُفتح بلغتك.",
+  "fa-AF": "BR 1.12.31: دکمهٔ مرحله‌ها در حالت افقی کامل دیده می‌شود و لینک‌های زبان به زبان شما باز می‌شوند.",
+  rw: "BR 1.12.31: Levels igaragara yose iyo telefoni iryamye, kandi amahuza y'ururimi afunguka mu rurimi rwawe.",
+  ti: "BR 1.12.31: መደባት ብጐድኒ ምሉእ ይርአ፣ ናይ ቋንቋ መላግቦታት ድማ ብቋንቋኻ ይኽፈቱ።",
 };
 
 export function whatsNew(lang: string) {

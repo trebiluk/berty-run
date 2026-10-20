@@ -380,6 +380,33 @@ export function GameShell() {
       if (launch.course) engine.applyLaunch(launch.course);
       const q = new URLSearchParams(location.search);
       const probe = labHost() && (q.get("selftest") === "1" || q.get("bot") === "1" || q.get("hud") === "1");
+
+      const test = q.get("test");
+      const board = Number(q.get("board") || "1");
+      if (test === "spintube" && board >= 1 && board <= 5) {
+        engine.testMode = true;
+        engine.assist = q.get("assist") === "1";
+        engine.setGoal("gaming");
+        engine.selectCourse(("spin-" + board) as CourseId);
+        engine.ackBrief(null);
+        engine.skipIntro();
+        engine.startPlay();
+        if (engine.tubeSim) engine.tubeSim.assist = engine.assist;
+        const api = {
+          get board() { return board; },
+          get x() { return engine.tubeSim?.z ?? 0; },
+          get y() { return 0; },
+          get wallAngle() { return (engine.tubeSim?.face ?? 0) * 90; },
+          get floorSide() { return engine.tubeSim?.face ?? 0; },
+          get alive() { return engine.hearts > 0 && hudPhase() === "play"; },
+          get finished() { return hudPhase() === "win"; },
+          step(action: string) { engine.testAction = action; },
+        };
+        const hudPhase = () => (engine as unknown as { phase?: string }).phase || "";
+        (window as unknown as { __brTest?: typeof api }).__brTest = api;
+        return;
+      }
+
       if (!probe) return;
       engine.markLab();
       (window as unknown as { __eng?: Engine }).__eng = engine;
@@ -433,6 +460,7 @@ export function GameShell() {
       if ((window as unknown as { __eng?: Engine }).__eng === engine) {
         delete (window as unknown as { __eng?: Engine }).__eng;
       }
+      delete (window as unknown as { __brTest?: unknown }).__brTest;
       engine.destroy();
       engineRef.current = null;
       window.removeEventListener("storage", pull);
@@ -810,7 +838,7 @@ export function GameShell() {
         </div>
       ) : null}
       {!styleOpen && !gear && !overlay ? (
-      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute top-[max(5.4rem,calc(env(safe-area-inset-top)+5rem))] z-30 inline-flex size-11 items-center justify-center bg-navy/80 text-[10px] font-bold leading-none text-fg ring-1 ring-line", access.lang === "ar" || access.lang === "fa-AF" ? "left-2" : "right-2")} onClick={() => {
+      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute top-[max(7.4rem,calc(env(safe-area-inset-top)+7rem))] z-30 inline-flex size-11 items-center justify-center bg-navy/80 text-[10px] font-bold leading-none text-fg ring-1 ring-line", access.lang === "ar" || access.lang === "fa-AF" ? "left-2" : "right-2")} onClick={() => {
         const root = document.documentElement;
         if (document.fullscreenElement) { void document.exitFullscreen(); localStorage.setItem("kulibert-fullscreen", "0"); setFsOn(false); }
         else { void root.requestFullscreen?.(); localStorage.setItem("kulibert-fullscreen", "1"); setFsOn(true); }
