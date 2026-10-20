@@ -18,3 +18,4 @@
 - [x] BR 1.12.20-2 Title blurb is a plain kid line in every language
 - [x] BR 1.12.20-3a Two hands right stick clear of Jump and Full screen
 - [x] BR 1.12.20-3b Pause Settings button clear of the HUD
+- [x] BR 1.12.30 Spin Tube pack: First Spin, Two Walls, Wire Hop, Low-G Drift, Full Turn

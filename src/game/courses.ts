@@ -44,6 +44,46 @@ export const COURSES: Course[] = [
     rows: ["######", "#S...E#", "######"],
   },
   {
+    id: "spin-1",
+    name: "First Spin",
+    blurb: "Steer onto a wall. The tube spins. Jump the short gap from your new floor.",
+    par: 55,
+    mode: "tube",
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
+    id: "spin-2",
+    name: "Two Walls",
+    blurb: "Spin left, run the wall, spin back. The gap is right after the second spin.",
+    par: 60,
+    mode: "tube",
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
+    id: "spin-3",
+    name: "Wire Hop",
+    blurb: "Ride the glowing wire, hop off to a wall, then cross the crumbling tiles.",
+    par: 60,
+    mode: "tube",
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
+    id: "spin-4",
+    name: "Low-G Drift",
+    blurb: "Float through the low stretch. The high wall has extra bits. The low wall is safe.",
+    par: 65,
+    mode: "tube",
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
+    id: "spin-5",
+    name: "Full Turn",
+    blurb: "Four spins make a full turn. Gaps, a wire hop, and a crumble. Bits on three faces.",
+    par: 75,
+    mode: "tube",
+    rows: ["######", "#S...E#", "######"],
+  },
+  {
     id: "roll-out",
     name: "Roll Out",
     blurb: "Lean across the board. Grab every bit. The ring saves your spot. Park in the port.",
@@ -311,6 +351,7 @@ const DYE_OF: Record<CourseId, keyof typeof DYES> = {
   "practice-2d": "lime",
   "practice-3d": "cyan",
   "tube-run": "cyan",
+  "spin-1": "cyan",
 };
 
 export function dyeFor(id: CourseId): Dye {
@@ -384,7 +425,14 @@ export function campaignClears(bests: Record<string, number>) {
   return COURSES.filter((c) => !c.arcade && bests[c.id] != null).length;
 }
 
+export const TUBE_ORDER = ["tube-run", "spin-1", "spin-2", "spin-3", "spin-4", "spin-5"];
+
 export function isUnlocked(c: Course, bests: Record<string, number>) {
+  if (c.mode === "tube") {
+    const i = TUBE_ORDER.indexOf(c.id);
+    if (i <= 0) return true;
+    return cleared(TUBE_ORDER[i - 1], bests);
+  }
   if (c.arcade) return true;
   if (TEMP_UNLOCK_ALL_LEVELS) return true;
   const track = trackCourses(courseMode(c));
@@ -397,6 +445,13 @@ export function isUnlocked(c: Course, bests: Record<string, number>) {
 
 export function nextBoard(id: CourseId, bests: Record<string, number>, full: boolean): Course | null {
   const cur = courseById(id);
+  if (cur.mode === "tube" || id === "tube-run") {
+    const i = TUBE_ORDER.indexOf(id);
+    const n = i >= 0 ? TUBE_ORDER[i + 1] : "";
+    if (!n) return null;
+    const next = courseById(n as CourseId);
+    return full || isUnlocked(next, bests) ? next : null;
+  }
   const track = trackCourses(courseMode(cur));
   const i = track.findIndex((c) => c.id === id);
   const n = track[i + 1];
@@ -405,6 +460,10 @@ export function nextBoard(id: CourseId, bests: Record<string, number>, full: boo
 }
 
 export function previousCourse(c: Course) {
+  if (c.mode === "tube") {
+    const i = TUBE_ORDER.indexOf(c.id);
+    return i > 0 ? courseById(TUBE_ORDER[i - 1] as CourseId) : courseById("tube-run");
+  }
   const track = trackCourses(courseMode(c));
   const i = track.findIndex((x) => x.id === c.id);
   return i > 0 ? track[i - 1] : null;
@@ -422,7 +481,8 @@ export function pickCourse(mode: "2d" | "3d", bests: Record<string, number>) {
 /** First open campaign board that is not under par. Practice stays in the list, not on Play. */
 export function nextUnbeaten(bests: Record<string, number>, full: boolean) {
   const tube = courseById("tube-run");
-  const order = [...trackCourses("2d"), ...trackCourses("3d"), tube];
+  const spins = ["spin-1", "spin-2", "spin-3", "spin-4", "spin-5"].map((id) => courseById(id as CourseId));
+  const order = [...trackCourses("2d"), ...trackCourses("3d"), tube, ...spins];
   const open = order.filter((c) => full || isUnlocked(c, bests));
   return open.find((c) => !acceptable(c, bests)) ?? open[open.length - 1] ?? order[0];
 }

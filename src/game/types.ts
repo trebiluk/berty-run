@@ -20,7 +20,12 @@ export type CourseId =
   | "dark-bay"
   | "practice-2d"
   | "practice-3d"
-  | "tube-run";
+  | "tube-run"
+  | "spin-1"
+  | "spin-2"
+  | "spin-3"
+  | "spin-4"
+  | "spin-5";
 
 export type SawDef = {
   x: number;
@@ -37,7 +42,7 @@ export type Course = {
   par: number;
   rows: string[];
   saws?: SawDef[];
-  mode?: "2d" | "3d";
+  mode?: "2d" | "3d" | "tube";
   /** Always open. Not part of the par ladder, and not a PC part. */
   arcade?: boolean;
 };

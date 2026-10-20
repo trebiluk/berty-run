@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.30 — 2026-10-20
+
+- What's new: Five new Spin Tube boards: steer onto a wall, spin the tube, and jump from your new floor!
+
 ## BR 1.12.20 — 2026-10-19
 
 - What's new: Change PC works again, the title fits sideways, and the two-hands sticks stay off your buttons.

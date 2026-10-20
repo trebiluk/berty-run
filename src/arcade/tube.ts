@@ -62,6 +62,13 @@ export const TUBE_WIRE_Z = 21;
 export const TUBE_EXIT_Z = 31;
 
 export class TubeSim {
+  readonly rings: string[];
+  readonly spinBoard: boolean;
+  readonly pace: number;
+  readonly gapZ: number;
+  readonly wireZ: number;
+  readonly exitZ: number;
+  readonly finishTip: string;
   z = 0;
   face = 0;
   roll = 0;
@@ -84,6 +91,7 @@ export class TubeSim {
   private turnEase = 0;
   private sawNeutral = false;
   private saidTurn = false;
+  private saidDown = false;
   private saidWire = false;
   private saidGap = false;
   private missHold = 0;
@@ -92,6 +100,10 @@ export class TubeSim {
   private tipAt = 0;
   private spark = 0;
   private boosted = false;
+  private hop = 0;
+  private jumpWas = false;
+  private lowG = false;
+  private downUntil = 0;
   private starField: HTMLCanvasElement | null = null;
   private sprite: HTMLImageElement | null = null;
   private gem: HTMLImageElement | null = null;
@@ -101,8 +113,15 @@ export class TubeSim {
   screenX = 0;
   screenY = 0;
 
-  constructor() {
-    this.gemTotal = RINGS.reduce((n, row) => n + [...row].filter((c) => c === "o").length, 0);
+  constructor(rings?: string[], opts?: { spin?: boolean; pace?: number; gapZ?: number; wireZ?: number; exitZ?: number; finishTip?: string }) {
+    this.rings = rings && rings.length ? rings : RINGS;
+    this.spinBoard = !!opts?.spin;
+    this.pace = opts?.pace ?? 1;
+    this.gapZ = opts?.gapZ ?? TUBE_GAP_Z;
+    this.wireZ = opts?.wireZ ?? TUBE_WIRE_Z;
+    this.exitZ = opts?.exitZ ?? TUBE_EXIT_Z;
+    this.finishTip = opts?.finishTip ?? "";
+    this.gemTotal = this.rings.reduce((n, row) => n + [...row].filter((c) => c === "o").length, 0);
     try {
       this.first = localStorage.getItem("br-tube-seen") !== "1";
     } catch {
@@ -129,6 +148,7 @@ export class TubeSim {
     this.steer = 0;
     this.queue = 0;
     this.saidTurn = false;
+    this.saidDown = false;
     this.saidWire = false;
     this.saidGap = false;
     this.missHold = 0;
@@ -136,6 +156,10 @@ export class TubeSim {
     this.tipAt = 0;
     this.spark = 0;
     this.boosted = false;
+    this.hop = 0;
+    this.jumpWas = false;
+    this.lowG = false;
+    this.downUntil = 0;
     this.warp = 0;
   }
 
@@ -144,12 +168,12 @@ export class TubeSim {
   }
 
   private cell(z: number, face: number): Cell {
-    const row = RINGS[Math.max(0, Math.min(RINGS.length - 1, Math.floor(z)))] ?? "#...";
+    const row = this.rings[Math.max(0, Math.min(this.rings.length - 1, Math.floor(z)))] ?? "#...";
     return row[(face + 4) % 4] ?? ".";
   }
 
   private solid(cell: Cell) {
-    return cell === "#" || cell === "K" || cell === "s" || cell === "f" || cell === "c" || cell === "o" || cell === "E";
+    return cell === "#" || cell === "K" || cell === "s" || cell === "f" || cell === "c" || cell === "o" || cell === "E" || cell === "L";
   }
 
   private tip(ev: TubeEvent, key: string, now: number) {
@@ -184,6 +208,10 @@ export class TubeSim {
       return ev;
     }
 
+    if (this.spinBoard && !this.saidDown && this.z < 1) {
+      this.saidDown = true;
+      this.tip(ev, "downChanges", now);
+    }
     const ix = input.x;
     this.turnEase = Math.max(0, this.turnEase - dt);
     if (Math.abs(ix) < 0.25) {
@@ -198,17 +226,22 @@ export class TubeSim {
       this.turnEase = 0.25;
       this.sawNeutral = false;
       ev.turn = true;
+      this.downUntil = now + 0.45;
       if (!this.saidTurn) {
         this.saidTurn = true;
-        this.tip(ev, "wall", now);
+        this.tip(ev, this.spinBoard ? "newFloor" : "wall", now);
       }
     }
 
     const here = this.cell(this.z, this.face);
-    if (!this.saidGap && this.z >= TUBE_GAP_Z - 2) {
+    if (!this.saidGap && this.z >= this.gapZ - 2) {
       this.saidGap = true;
       this.tip(ev, "lit", now);
     }
+    if (input.jump && !this.jumpWas && this.steer === 0) this.hop = this.lowG ? 0.55 : 0.28;
+    this.jumpWas = input.jump;
+    if (this.hop > 0) this.hop -= dt;
+    if (here === "L") this.lowG = true;
     if (here === "w") {
       if (!this.saidWire) {
         this.saidWire = true;
@@ -271,6 +304,7 @@ export class TubeSim {
         return ev;
       }
       ev.win = true;
+      if (this.finishTip) this.tip(ev, this.finishTip, performance.now() / 1000);
       try {
         localStorage.setItem("br-tube-seen", "1");
       } catch {
@@ -282,14 +316,14 @@ export class TubeSim {
 
     const pace = this.slow > 0 ? 0.6 : 1;
     this.slow = Math.max(0, this.slow - dt);
-    const speed = (this.boost > 0 ? 9 : 4.2) * (this.drag > 0 ? 0.35 : 1) * pace;
+    const speed = (this.boost > 0 ? 9 : 4.2) * (this.drag > 0 ? 0.35 : 1) * pace * this.pace * (this.lowG ? 0.6 : 1);
     this.boost = Math.max(0, this.boost - dt);
     this.drag = Math.max(0, this.drag - dt);
-    this.z = Math.min(RINGS.length - 0.05, this.z + speed * dt);
+    this.z = Math.min(this.rings.length - 0.05, this.z + speed * dt);
     this.spark = Math.max(0, this.spark - dt);
 
     const landed = this.cell(this.z, this.face);
-    if (!this.solid(landed) && landed !== "w") {
+    if (!this.solid(landed) && landed !== "w" && this.hop <= 0) {
       this.beginFall();
       return ev;
     }
@@ -324,7 +358,7 @@ export class TubeSim {
     const cy = freeTop + freeH / 2;
     ctx.fillStyle = TUBE.ink;
     ctx.fillRect(0, 0, w, h);
-    this.stars(ctx, cx, cy, ring, reduced);
+    if (!this.spinBoard) this.stars(ctx, cx, cy, ring, reduced);
     if (this.boost > 0 && !reduced && !this.lowFx) this.streaks(ctx, cx, cy, ring);
     const bertyH = w >= 1024 ? 64 : 47;
     const frac = this.z - Math.floor(this.z);
@@ -333,7 +367,7 @@ export class TubeSim {
     ctx.rotate(this.roll);
     for (let step = 19; step >= 0; step--) {
       const tile = Math.floor(this.z) + step;
-      const row = RINGS[tile];
+      const row = this.rings[tile];
       if (!row) continue;
       const depth = step + frac;
       const far = ring / (1.15 + (depth + 1) * 0.55);
@@ -360,7 +394,25 @@ export class TubeSim {
     this.screenY = feet - bertyH * 0.45;
     this.berty(ctx, cx, feet, bertyH, reduced);
     if (this.spark > 0) this.sparks(ctx, cx, feet - bertyH * 0.6);
-    if (this.z >= TUBE_GAP_Z - 2 && this.z < TUBE_GAP_Z + 1.2) this.arrow(ctx, cx, feet - bertyH * 0.2);
+    if (this.z >= this.gapZ - 2 && this.z < this.gapZ + 1.2) this.arrow(ctx, cx, feet - bertyH * 0.2);
+    if (this.downUntil > performance.now() / 1000) this.downArrow(ctx, cx, feet + 8);
+  }
+
+  private downArrow(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    ctx.save();
+    ctx.strokeStyle = "#f6efe2";
+    ctx.fillStyle = "#f6efe2";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + 16);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x - 7, y + 10);
+    ctx.lineTo(x, y + 18);
+    ctx.lineTo(x + 7, y + 10);
+    ctx.fill();
+    ctx.restore();
   }
 
   private stars(ctx: CanvasRenderingContext2D, cx: number, cy: number, ring: number, reduced: boolean) {
@@ -446,7 +498,7 @@ export class TubeSim {
       fill = TUBE.ink;
       edge = this.got < this.gemTotal ? TUBE.muted : TUBE.port;
     }
-    const exitPulse = cell !== "w" && tile >= TUBE_EXIT_Z - 3 && tile <= TUBE_EXIT_Z && face === 0 && this.z > TUBE_WIRE_Z;
+    const exitPulse = cell !== "w" && tile >= this.exitZ - 3 && tile <= this.exitZ && face === 0 && this.z > this.wireZ;
     if (exitPulse) {
       const pulse = this.reduced ? 0.45 : 0.25 + 0.35 * (0.5 + 0.5 * Math.sin(performance.now() / 160));
       ctx.fillStyle = TUBE.saved;
@@ -455,13 +507,36 @@ export class TubeSim {
       ctx.globalAlpha = alpha;
       edge = TUBE.saved;
     }
+    if (face === this.face && this.solid(cell)) fill = "#0c1c18";
     ctx.fillStyle = fill;
     ctx.fill();
+    this.faceMark(ctx, face, near, far, mid);
     ctx.strokeStyle = edge;
     ctx.lineWidth = step < 4 ? 2 : step < 12 ? 1.5 : 1;
     ctx.stroke();
     if (marks) this.mark(ctx, cell, face, near, far, mid, tile);
     ctx.globalAlpha = 1;
+  }
+
+  private faceMark(ctx: CanvasRenderingContext2D, face: number, near: number, far: number, mid: number) {
+    const mx = Math.cos(mid) * ((near + far) / 2);
+    const my = Math.sin(mid) * ((near + far) / 2);
+    ctx.save();
+    ctx.strokeStyle = "#f6efe2";
+    ctx.globalAlpha = 0.55;
+    ctx.lineWidth = 1.5;
+    if (face % 2 === 0) {
+      ctx.beginPath();
+      ctx.moveTo(mx - 5, my);
+      ctx.lineTo(mx + 5, my);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = "#f6efe2";
+      ctx.beginPath();
+      ctx.arc(mx, my, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
   }
 
   private mark(ctx: CanvasRenderingContext2D, cell: Cell, face: number, near: number, far: number, mid: number, tile: number) {

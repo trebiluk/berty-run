@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.20";
+export const CHIP = "BR 1.12.30";
 export const WHATS_NEW =
-  "BR 1.12.20: Change PC works again, the title fits sideways, and the two-hands sticks stay off your buttons.";
+  "BR 1.12.30 — Five new Spin Tube boards: steer onto a wall, spin the tube, and jump from your new floor!";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.20: Cambiar PC funciona otra vez, el título cabe de lado, y los sticks de dos manos no tapan tus botones.",
-  uk: "BR 1.12.20: Зміна ПК знову працює, назва вміщається боком, і стіки двох рук не закривають кнопки.",
-  ru: "BR 1.12.20: Смена ПК снова работает, название помещается боком, и стики двух рук не закрывают кнопки.",
-  ar: "BR 1.12.20: تغيير الحاسوب يعمل من جديد، والعنوان يناسب العرض، وعصا اليدين لا تغطي أزرارك.",
-  "fa-AF": "BR 1.12.20: تغییر کمپیوتر دوباره کار می‌کند، عنوان به‌پهلو جا می‌شود، و اهرم‌های دو دست روی دکمه‌ها نیستند.",
-  rw: "BR 1.12.20: Guhindura PC birakora, izina ririnjiye ku ruhande, kandi insimburira z'amaboko abiri ntizipfuka buto.",
-  ti: "BR 1.12.20: ምቕያር PC ደጊሙ ይሰርሕ፣ ኣርእስቲ ብጎኒ ይኣቱ፣ ናይ ክልተ ኢድ መትሓዚ ድማ መልጎም ኣይሽፍን።",
+  es: "BR 1.12.30 — Cinco niveles nuevos de Tubo Giratorio: sube por una pared, gira el tubo y salta desde tu nuevo suelo.",
+  uk: "BR 1.12.30 — П'ять нових рівнів «Обертова труба»: заїжджай на стіну, обертай трубу та стрибай від нової підлоги!",
+  ru: "BR 1.12.30 — Пять новых уровней «Вращающаяся труба»: заезжай на стену, вращай трубу и прыгай от нового пола!",
+  ar: "BR 1.12.30 — خمسة مستويات جديدة في الأنبوب الدوّار: اصعد على جدار، أدر الأنبوب، واقفز من أرضك الجديدة!",
+  "fa-AF": "BR 1.12.30 — پنج مرحلهٔ جدید تیوب چرخان: روی دیوار برو، تیوب را بچرخان و از زمین جدیدت بپر!",
+  rw: "BR 1.12.30 — Ibyiciro bitanu bishya bya Spin Tube: zamuka ku rukuta, zunguruka umuyoboro, usimbe uva ku butaka bushya!",
+  ti: "BR 1.12.30 — ሓሙሽተ ሓደሽቲ ደረጃታት Spin Tube: ናብ መናወዲ ዕጠፍ፣ ነቲ ቱቦ ኣዙሮ፣ ካብ ሓድሽ መሬትካ ዝለል!",
 };
 
 export function whatsNew(lang: string) {

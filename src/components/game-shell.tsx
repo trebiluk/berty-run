@@ -2394,7 +2394,7 @@ function LevelPicker({
   const groups = [
     { title: "2D", items: [courseById("practice-2d"), ...trackCourses("2d")] },
     { title: "3D", items: [courseById("practice-3d"), ...trackCourses("3d")] },
-    { title: courseLabel(access.lang, "tube-run", "Bus Tube"), items: [courseById("tube-run")] },
+    { title: courseLabel(access.lang, "tube-run", "Bus Tube"), items: [courseById("tube-run"), courseById("spin-1"), courseById("spin-2"), courseById("spin-3"), courseById("spin-4"), courseById("spin-5")] },
   ];
   return (
     <div className="flex flex-col gap-3">

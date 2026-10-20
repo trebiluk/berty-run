@@ -23,6 +23,7 @@ import { makePack, parsePack, markHowto, postScore, CHIP, type BertyPack } from 
 import { drivePatch, readAccess, writeAccess } from "./access";
 import { recordClear, signedWho, stashRun } from "./who";
 import { TubeSim, TUBE_LEN } from "@/arcade/tube";
+import { spinBoard } from "@/arcade/spin-boards";
 import { line16, tubeTip } from "./hud-copy";
 import { hudScore, scoreFor } from "./score";
 import type { Course, CourseId, HudSnap } from "./types";
@@ -375,7 +376,7 @@ export class Engine {
   }
 
   isTube() {
-    return this.course.id === "tube-run";
+    return this.course.id === "tube-run" || this.course.mode === "tube";
   }
 
   async boot() {
@@ -783,7 +784,8 @@ export class Engine {
 
   private loadCourse(id: CourseId, crew: boolean, keepPhase = false) {
     this.course = courseById(id);
-    this.tubeSim = id === "tube-run" ? new TubeSim() : null;
+    const spin = spinBoard(id);
+    this.tubeSim = id === "tube-run" || spin ? new TubeSim(spin?.rings, spin ? { spin: true, pace: spin.pace, gapZ: spin.gapZ, wireZ: spin.wireZ, exitZ: spin.exitZ, finishTip: id === "spin-5" ? "everySide" : "" } : undefined) : null;
     this.saidPit = false;
     this.saidFan = false;
     this.saidIce = false;
@@ -2619,7 +2621,7 @@ export class Engine {
       warp: this.warp,
       tubeZ: this.tubeSim?.z ?? 0,
       tubeWire: this.tubeSim?.onWire() ?? false,
-      tubeLen: TUBE_LEN,
+      tubeLen: this.tubeSim?.rings.length ?? TUBE_LEN,
     };
     this.onHud(snap);
     window.__bertyRun = { phase: snap.phase, gems: snap.gems, time: snap.time };
