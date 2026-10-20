@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.32";
+export const CHIP = "BR 1.12.33";
 export const WHATS_NEW =
-  "BR 1.12.32: Language links open in your language, and the Two hands stick has more room.";
+  "BR 1.12.33: All levels are open, the fact card only shows after a win, and tilt steers every way.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.32: Links use your language. The stick has room.",
-  es: "BR 1.12.32: Los enlaces de idioma se abren en tu idioma y el joystick de Dos manos tiene más espacio.",
-  uk: "BR 1.12.32: Мовні посилання відкриваються вашою мовою, а стік «Дві руки» має більше місця.",
-  ru: "BR 1.12.32: Языковые ссылки открываются на вашем языке, а у стика «Две руки» больше места.",
-  ar: "BR 1.12.32: روابط اللغة تُفتح بلغتك، وعصا وضع اليدين صار لها مساحة أكبر.",
-  "fa-AF": "BR 1.12.32: لینک‌های زبان به زبان شما باز می‌شوند و دستهٔ حالت دو دست جای بیشتری دارد.",
-  rw: "BR 1.12.32: Amahuza y'ururimi afunguka mu rurimi rwawe, kandi inkoni ya Amaboko abiri ifite umwanya uhagije.",
-  ti: "BR 1.12.32: ናይ ቋንቋ መላግቦታት ብቋንቋኻ ይኽፈቱ፣ ናይ ክልተ ኢድ መቆጻጸሪ ድማ ዝያዳ ቦታ ኣለዎ።",
+  simple: "BR 1.12.33: All levels open. Tilt goes every way.",
+  es: "BR 1.12.33: Todos los niveles están abiertos, la tarjeta de datos solo sale al ganar y la inclinación mueve en todas direcciones.",
+  uk: "BR 1.12.33: Усі рівні відкриті, картка з фактом з'являється лише після перемоги, а нахил керує в усі боки.",
+  ru: "BR 1.12.33: Все уровни открыты, карточка с фактом появляется только после победы, а наклон управляет во все стороны.",
+  ar: "BR 1.12.33: كل المستويات مفتوحة، وبطاقة المعلومة تظهر بعد الفوز فقط، والإمالة توجّه في كل الاتجاهات.",
+  "fa-AF": "BR 1.12.33: همهٔ مرحله‌ها باز است، کارت معلومات فقط بعد از برد دیده می‌شود و کج کردن به هر طرف می‌برد.",
+  rw: "BR 1.12.33: Inzego zose zirafunguye, ikarita y'amakuru igaragara nyuma yo gutsinda gusa, kandi kunyeganyeza bigenda impande zose.",
+  ti: "BR 1.12.33: ኩሎም ደረጃታት ክፉታት እዮም፣ ናይ ሓበሬታ ካርድ ድሕሪ ዓወት ጥራይ ይርአ፣ ምዝንባል ድማ ናብ ኩሉ ኣንፈት ይመርሕ።",
 };
 
 export function whatsNew(lang: string) {

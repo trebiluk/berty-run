@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.33 — 2026-10-20
+
+- Levels unlocked. Best time replaces the lock.
+
 ## BR 1.12.32 — 2026-10-20
 
 - What's new: Language links open in your language, and the Two hands stick has more room.

@@ -427,8 +427,9 @@ export function campaignClears(bests: Record<string, number>) {
 
 export const TUBE_ORDER = ["tube-run", "spin-1", "spin-2", "spin-3", "spin-4", "spin-5"];
 
-export function isUnlocked(c: Course, bests: Record<string, number>) {
-  if (c.mode === "tube") {
+export function isUnlocked(_c: Course, _bests: Record<string, number>) {
+  return true;
+  if (_c.mode === "tube") {
     const i = TUBE_ORDER.indexOf(c.id);
     if (i <= 0) return true;
     return cleared(TUBE_ORDER[i - 1], bests);

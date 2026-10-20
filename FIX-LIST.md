@@ -26,3 +26,4 @@
 - [x] BR 1.12.32-1 Language link beats the saved language
 - [x] BR 1.12.32-2 Spin Tube seed opens the board and step() moves
 - [x] BR 1.12.32-3 Two hands stick 8px clear of Jump
+- [x] BR 1.12.33-1 Every level open, best time replaces the lock

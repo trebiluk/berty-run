@@ -761,8 +761,8 @@ export class Engine {
     this.emit();
   }
 
-  private boardsOpen(c: Course) {
-    return this.fullUnlock || isUnlocked(c, this.save.best);
+  private boardsOpen(_c: Course) {
+    return true;
   }
 
   setCrew(on: boolean) {

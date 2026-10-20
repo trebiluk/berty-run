@@ -2442,22 +2442,22 @@ function LevelPicker({
         <div key={group.title} className="flex flex-col gap-2">
           <p className="text-xs font-bold uppercase tracking-wide text-gold">{group.title}</p>
           <div className="grid grid-cols-2 gap-2">
-            {group.items.map((c, n) => {
-              const open = hud.fullUnlock || isUnlocked(c, hud.bests);
+            {group.items.map((c) => {
               const on = hud.courseId === c.id;
+              const best = hud.bests[c.id];
+              const spin = c.id.startsWith("spin-");
               return (
                 <button
                   key={c.id}
                   type="button"
-                  disabled={!open}
-                  onClick={() => open && onCourse(c.id)}
+                  onClick={() => onCourse(c.id)}
                   className={cn(
                     "flex !min-h-12 items-center gap-2 px-3 text-left text-base font-bold ring-1",
                     on ? "bg-orange text-ink ring-orange" : "bg-navy-2 text-fg ring-line",
-                    !open && "opacity-70",
                   )}
                 >
-                  {open ? <span className="w-6 shrink-0 tabular-nums">{n}</span> : <Lock className="size-5 shrink-0" aria-label={line16(access.lang, "clearToOpen", { board: previousCourse(c)?.name || "" })} />}
+                  <span className="w-14 shrink-0 tabular-nums text-sm">{best != null ? fmtTime(best) : "-"}</span>
+                  {spin ? <span className="inline-flex items-center gap-1 text-xs"><svg viewBox="0 0 16 16" className="size-4" aria-hidden="true"><path d="M8 2a6 6 0 1 1-4.2 1.8" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M3 2.5V6h3.5" fill="none" stroke="currentColor" strokeWidth="2"/></svg>Spin</span> : null}
                   <span className="leading-tight">{courseLabel(access.lang, c.id, c.name)}</span>
                 </button>
               );
