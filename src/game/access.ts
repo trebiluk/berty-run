@@ -1,4 +1,4 @@
-import { applyDom, normLang, sayLine, type Lang } from "@/game/hub";
+import { applyDom, hideLive, normLang, sayLine, type Lang } from "@/game/hub";
 import { QUIZ } from "@/game/quiz";
 
 export type { Lang };
@@ -104,6 +104,7 @@ export function say(text: string, lang: Lang) {
 
 export function stopSay() {
   window.speechSynthesis?.cancel();
+  hideLive();
 }
 
 type Pack = { title: string; line: string; prompt: string; choices: string[]; help: string };

@@ -183,10 +183,7 @@ export function sayLine(text: string, lang: Lang) {
   const want = (lang === "simple" ? "en" : lang).toLowerCase().split("-")[0];
   const got = String(voice?.lang || "").toLowerCase().replace(/_/g, "-");
   const match = !!voice && (got === want || got.startsWith(`${want}-`));
-  if (!match || !window.speechSynthesis) {
-    if (line) line.textContent = `${words} ${shared("noVoice")}`;
-    return;
-  }
+  if (!match || !window.speechSynthesis) return;
   try {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(words);
@@ -195,8 +192,13 @@ export function sayLine(text: string, lang: Lang) {
     u.rate = lang === "simple" ? 0.85 : 0.95;
     window.speechSynthesis.speak(u);
   } catch {
-    if (line) line.textContent = `${words} ${shared("noVoice")}`;
+    /* voice failed: the words stay on the line */
   }
+}
+
+export function hideLive() {
+  const line = document.getElementById("kp-live");
+  if (line) line.hidden = true;
 }
 
 export function chooseLang(lang: Lang, write: (lang: Lang) => void) {

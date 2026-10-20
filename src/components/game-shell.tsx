@@ -479,6 +479,11 @@ export function GameShell() {
   }, []);
 
   useEffect(() => {
+    const box = document.getElementById("kp-live");
+    if (box) box.hidden = true;
+  }, [hud.phase]);
+
+  useEffect(() => {
     const flush = () => engineRef.current?.flushSave();
     const onPop = () => {
       if (engineRef.current?.guardBack()) history.pushState({ brGuard: 1 }, "");
@@ -2057,6 +2062,24 @@ function RoomBoard({ courseId, code }: { courseId: string; code: string }) {
   );
 }
 
+
+function FactCard() {
+  const [open, setOpen] = useState(true);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  if (!open) return null;
+  return (
+    <div className="flex w-full max-w-lg items-start gap-2 rounded-2xl bg-navy-2 px-4 py-3 text-fg ring-1 ring-cyan" role="dialog" aria-label="CPU">
+      <p className="flex-1 text-base font-semibold leading-snug">CPU: the computer's brain. It works in a loop: fetch, decode, execute.</p>
+      <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="inline-flex size-11 shrink-0 items-center justify-center text-lg font-bold ring-1 ring-line">×</button>
+    </div>
+  );
+}
+
 function WinBoard({
   hud,
   arcade,
@@ -2098,6 +2121,7 @@ function WinBoard({
       ) : (
         <p className="win-kicker text-xs font-bold uppercase tracking-[0.18em] text-orange">{ui.stageClear}</p>
       )}
+      <FactCard />
       <div className="reward-card w-full max-w-lg rounded-2xl bg-orange px-4 py-4 text-ink">
         <p className="text-xs font-bold uppercase tracking-wide">{ui.yourReward}</p>
         <h2 className="part-snap text-4xl leading-none font-extrabold tracking-tight">{partName}</h2>
@@ -2368,7 +2392,7 @@ function PartBrief({
   const shown = choices.map((choice, i) => ({ choice, i })).filter(({ i }) => !access.fewer || i === brief.answer || i === spare);
   useEffect(() => {
     if (!access.speak) return;
-    say(`${title}. ${line} ${prompt} ${shown.map((row) => row.choice).join(". ")}`, access.lang);
+    say(`${title}. ${line}`, access.lang);
     return () => stopSay();
   }, [courseId, access.speak, access.lang]);
   return (
