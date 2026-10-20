@@ -729,7 +729,7 @@ export function GameShell() {
         }}
       />
 
-      <header className={cn("pointer-events-none absolute inset-x-0 top-0 z-50 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]", styleOpen && "invisible")}>
+      <header className={cn("pointer-events-none absolute inset-x-0 top-0 z-50 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]", (styleOpen || hud.phase === "pause") && "invisible")}>
         <div className={hud.phase === "play" || hud.phase === "pause" ? "hud-stack flex min-w-0 flex-col gap-1" : ""}>
             <div className="flex min-w-0 items-center gap-1.5">
             <div className="pointer-events-auto flex shrink-0">
@@ -2224,7 +2224,8 @@ function GearArt({ id, on }: { id: string; on: boolean }) {
 }
 
 function BotTrack({ stamps }: { stamps: number }) {
-  const ui = face(useAccess().lang);
+  const access = useAccess();
+  const ui = face(access?.lang || "en");
   const next = nextBot(stamps);
   const left = next ? next.at - stamps : 0;
   return (
@@ -2264,7 +2265,7 @@ function BotTrack({ stamps }: { stamps: number }) {
           {BOT_FEATURES.map((f) => (
             <li key={f.id} className="text-sm">
               <span className="font-bold">{f.name}. </span>
-              {featureLine(access.lang, f.id, f.line)} {f.at} {f.at === 1 ? ui.win : ui.wins}.
+              {featureLine(access?.lang || "en", f.id, f.line)} {f.at} {f.at === 1 ? ui.win : ui.wins}.
             </li>
           ))}
         </ul>

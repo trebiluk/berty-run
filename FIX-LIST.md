@@ -13,3 +13,8 @@
 - [x] BR 1.12.19-1d One changelog heading
 - [x] BR 1.12.19-2 Port open and Glow translated; What's new is 1.12.19
 - [x] BR 1.12.19-3 Phone fit and contrast
+- [x] BR 1.12.20-0 Change PC no longer crashes (access defined in BotTrack)
+- [x] BR 1.12.20-1 Title Play and Levels whole at short height
+- [x] BR 1.12.20-2 Title blurb is a plain kid line in every language
+- [x] BR 1.12.20-3a Two hands right stick clear of Jump and Full screen
+- [x] BR 1.12.20-3b Pause Settings button clear of the HUD

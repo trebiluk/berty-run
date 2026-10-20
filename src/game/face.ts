@@ -1121,6 +1121,8 @@ export function face(lang: Lang): Face {
   put("settings", "settings");
   put("language", "language");
   put("sound", "sound");
+  const SOUND: Record<string, string> = { en: "Sound", simple: "Sound", es: "Sonido", uk: "Звук", ru: "Звук", ar: "الصوت", "fa-AF": "صدا", rw: "Ijwi", ti: "ድምጺ" };
+  if (lang !== "en" && lang !== "simple" && ((ui as { sound?: string }).sound === "Sound" || !(ui as { sound?: string }).sound)) (ui as { sound: string }).sound = SOUND[lang] || "Sound";
   put("home", "home");
   put("back", "back");
   put("signIn", "signIn");
@@ -1141,6 +1143,8 @@ export function face(lang: Lang): Face {
   ui.whatsNew = shared("whatsNew") || "What's new";
   ui.closeWord = shared("close") || "Close";
   ui.noVoice = shared("noVoice") || "No voice yet. Read the words.";
+  const NO_VOICE: Record<string, string> = { "fa-AF": "هنوز صدا نیست. کلمه‌ها را بخوان.", ar: "لا صوت بعد. اقرأ الكلمات.", uk: "Голосу ще нема. Читай слова.", ru: "Голоса ещё нет. Читай слова.", es: "Aún no hay voz. Lee las palabras.", rw: "Nta jwi. Soma amagambo.", ti: "ድምጺ የለን። ቃላት ኣንብብ።" };
+  if (NO_VOICE[lang] && ui.noVoice === "No voice yet. Read the words.") ui.noVoice = NO_VOICE[lang];
   const menu = shared("menu");
   if (menu && (lang === "en" || lang === "simple" || menu !== "Menu")) bag.menu = menu;
   return ui;

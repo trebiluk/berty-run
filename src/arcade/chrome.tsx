@@ -101,7 +101,7 @@ export function Attract({ skin }: { skin: string }) {
       >
         {ui.coin}
       </p>
-      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{whatsNew(useLang())}</p>
+      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{face(useLang()).blurb}</p>
     </div>
   );
 }

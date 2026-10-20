@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.20 — 2026-10-19
+
+- What's new: Change PC works again, the title fits sideways, and the two-hands sticks stay off your buttons.
+
 ## BR 1.12.19 — 2026-10-19
 
 - What's new: Pause buttons fit sideways again, Two hands steers right again, every word shows in your language, and the screen fits better on phones.

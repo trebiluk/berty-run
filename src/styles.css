@@ -244,6 +244,7 @@ html[dir="rtl"] body {
 }
 
 .hands-controls {
+  top: auto;
   bottom: max(9.75rem, calc(env(safe-area-inset-bottom) + 9.2rem));
 }
 
@@ -285,8 +286,8 @@ html[dir="rtl"] body {
     right: max(1rem, env(safe-area-inset-right));
   }
   .play-controls.hands-controls {
-    top: calc(env(safe-area-inset-top) + 7.25rem);
-    bottom: auto;
+    top: auto;
+    bottom: max(8.6rem, calc(env(safe-area-inset-bottom) + 8.2rem));
     right: max(0.75rem, env(safe-area-inset-right));
   }
   .play-controls [data-hud="jump"] {
@@ -808,17 +809,26 @@ html[data-lights="gold"] {
     font-size: 1.05rem;
   }
   .title-card {
-    gap: 0.4rem;
+    gap: 0.25rem;
+    padding-bottom: 0.6rem;
   }
   .title-card h2 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
   .title-card > div {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+  }
+  .title-card .script-font,
+  .title-card p {
+    margin-top: 0.15rem;
   }
   .title-card button {
     min-height: 44px !important;
+  }
+  .menu-layer .overlay-panel:has(.title-card) {
+    max-height: calc(100dvh - 0.5rem);
+    overflow: hidden;
   }
 }
 .gear-row {

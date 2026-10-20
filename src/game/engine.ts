@@ -468,7 +468,7 @@ export class Engine {
     const size = h < 720 ? 108 : 112;
     const y = h - size - (h < 720 ? 28 : 14);
     if (which === "p1") return { x: 12, y, w: size, h: size };
-    return { x: w - size - 12, y: Math.max(96, y - size - 16), w: size, h: size };
+    return { x: w - size - 12, y, w: size, h: size };
   }
 
   private onPtrDown = (e: PointerEvent) => {

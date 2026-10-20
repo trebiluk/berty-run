@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.19";
+export const CHIP = "BR 1.12.20";
 export const WHATS_NEW =
-  "BR 1.12.19: Pause buttons fit sideways again, Two hands steers right again, every word shows in your language, and the screen fits better on phones.";
+  "BR 1.12.20: Change PC works again, the title fits sideways, and the two-hands sticks stay off your buttons.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: WHATS_NEW,
-  es: "BR 1.12.19: Los botones de pausa caben de lado otra vez, Dos manos dirige bien otra vez, cada palabra sale en tu idioma, y la pantalla cabe mejor en el teléfono.",
-  uk: "BR 1.12.19: Кнопки паузи знову вміщаються боком, Дві руки знову керують правильно, кожне слово твоїм мовою, і екран краще сідає на телефон.",
-  ru: "BR 1.12.19: Кнопки паузы снова помещаются боком, Две руки снова рулят правильно, каждое слово на твоём языке, и экран лучше садится на телефон.",
-  ar: "BR 1.12.19: أزرار الإيقاف تناسب العرض من جديد، واليدان توجّهان بشكل صحيح من جديد، وكل كلمة تظهر بلغتك، والشاشة تناسب الهاتف أفضل.",
-  "fa-AF": "BR 1.12.19: دکمه‌های توقف دوباره به‌پهلو جا می‌شوند، دو دست دوباره درست هدایت می‌کند، هر واژه به زبان تو می‌آید، و صفحه بهتر در گوشی جا می‌شود.",
-  rw: "BR 1.12.19: Buto zo guhagarara zongera kwinjira ku ruhande, amaboko abiri ayobora neza, ijambo ryose risa mu rurimi rwawe, kandi ekara yuzura neza kuri terefone.",
-  ti: "BR 1.12.19: ናይ ምዕጋት መልጎም ብጎኒ ደጊሙ ይኣቱ፣ ክልተ ኢድ ደጊሙ ብትኽክል ይመርሕ፣ ኩሉ ቃል ብቋንቋኻ ይረአ፣ ስክሪን ድማ ኣብ ስልኪ ይሰማማዕ።",
+  es: "BR 1.12.20: Cambiar PC funciona otra vez, el título cabe de lado, y los sticks de dos manos no tapan tus botones.",
+  uk: "BR 1.12.20: Зміна ПК знову працює, назва вміщається боком, і стіки двох рук не закривають кнопки.",
+  ru: "BR 1.12.20: Смена ПК снова работает, название помещается боком, и стики двух рук не закрывают кнопки.",
+  ar: "BR 1.12.20: تغيير الحاسوب يعمل من جديد، والعنوان يناسب العرض، وعصا اليدين لا تغطي أزرارك.",
+  "fa-AF": "BR 1.12.20: تغییر کمپیوتر دوباره کار می‌کند، عنوان به‌پهلو جا می‌شود، و اهرم‌های دو دست روی دکمه‌ها نیستند.",
+  rw: "BR 1.12.20: Guhindura PC birakora, izina ririnjiye ku ruhande, kandi insimburira z'amaboko abiri ntizipfuka buto.",
+  ti: "BR 1.12.20: ምቕያር PC ደጊሙ ይሰርሕ፣ ኣርእስቲ ብጎኒ ይኣቱ፣ ናይ ክልተ ኢድ መትሓዚ ድማ መልጎም ኣይሽፍን።",
 };
 
 export function whatsNew(lang: string) {
