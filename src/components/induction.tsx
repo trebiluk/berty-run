@@ -10,6 +10,7 @@ const EN: Beat[] = [
   { kicker: "Fact", title: "The CPU fact waits for a win.", body: "After a clear you see: CPU: the computer's brain. It works in a loop: fetch, decode, execute.", icon: "fact" },
   { kicker: "Tilt", title: "Tilt steers every way.", body: "Tip forward, back, left, or right. Tilt is the second row in Controls.", icon: "tilt" },
   { kicker: "Par", title: "The clock says Under par or Over par.", body: "Finish faster than the mark and it says Under par.", icon: "clock" },
+  { kicker: "Board", title: "The boards look like real circuit boards.", body: "Chips and parts are walls. Black hatched holes are pits. The bug with a ! is a virus.", icon: "open" },
 ];
 
 const STEPS: Record<string, Beat[]> = {

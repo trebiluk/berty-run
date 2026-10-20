@@ -33,3 +33,7 @@
 - [x] BR 1.12.34-1 How to covers the four 1.12.33 changes
 - [x] BR 1.12.34-2 Esc closes the CPU card first
 - [x] BR 1.12.34-3 Tilt is second at both sizes, proof tilt hook
+- [x] BR 1.12.35-1 Board base and traces in each board's own color
+- [x] BR 1.12.35-2 Obstacles as parts
+- [x] BR 1.12.35-3 Virus is a bug glyph
+- [x] BR 1.12.35-4 Soft path glow

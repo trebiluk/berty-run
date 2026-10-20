@@ -1678,6 +1678,35 @@ export class Engine {
     else this.cam.y = this.worldH / 2;
   }
 
+
+  private cbGlow(ctx: CanvasRenderingContext2D) {
+    if (this.is3d() || this.isTube()) return;
+    const look = pcbLook(this.course.id);
+    const breathe = this.reduced ? 0.45 : 0.45 + 0.15 * Math.sin(this.time * Math.PI * 2 * 0.35);
+    ctx.save();
+    ctx.strokeStyle = look.glow;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    const rows = this.course.rows;
+    ctx.beginPath();
+    for (let r = 0; r < rows.length; r++) {
+      for (let c = 0; c < rows[r].length; c++) {
+        if (rows[r][c] === "#" || rows[r][c] === "X") continue;
+        const x = c * TILE + TILE / 2;
+        const y = r * TILE + TILE / 2;
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 0.1, y);
+      }
+    }
+    ctx.lineWidth = 14;
+    ctx.globalAlpha = 0.16 + breathe * 0.14;
+    ctx.stroke();
+    ctx.lineWidth = 4;
+    ctx.globalAlpha = 0.55 + breathe * 0.2;
+    ctx.stroke();
+    ctx.restore();
+  }
+
   private drawBoard(ctx: CanvasRenderingContext2D) {
     const key = `${this.course.id}:${this.worldW}x${this.worldH}`;
     if (!this.boardImg || this.boardFor !== key) {
@@ -1719,6 +1748,7 @@ export class Engine {
     ctx.fill();
     ctx.fillStyle = look.mask;
     ctx.fillRect(0, 0, this.worldW, this.worldH);
+    this.cbBackdrop(ctx, look);
     if (this.floorPat) {
       ctx.save();
       ctx.fillStyle = this.floorPat;
@@ -1751,19 +1781,34 @@ export class Engine {
       ctx.stroke();
     }
     for (const ring of this.checks) {
-      ctx.strokeStyle = "rgba(244,239,230,0.7)";
+      const cx = ring.x + ring.w / 2;
+      const cy = ring.y + ring.h / 2;
+      ctx.fillStyle = "#d4af37";
+      ctx.beginPath();
+      ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = look.silk;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(ring.x + ring.w / 2, ring.y + ring.h / 2, 14, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 14, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.fillStyle = look.silk;
+      ctx.font = "bold 10px sans-serif";
+      ctx.fillText("TP", cx - 7, cy - 16);
     }
     for (const pit of this.pits) {
       ctx.fillStyle = "#040910";
       ctx.fillRect(pit.x + 2, pit.y + 2, pit.w - 4, pit.h - 4);
-      ctx.fillStyle = "#3ee0ff";
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) ctx.fillRect(pit.x + 12 + i * 10, pit.y + 12 + j * 10, 3, 3);
-      }
+      ctx.strokeStyle = look.silk;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(pit.x + 4, pit.y + 4, pit.w - 8, pit.h - 8);
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(236,235,224,0.35)";
+      ctx.beginPath();
+      ctx.moveTo(pit.x + 6, pit.y + pit.h - 6);
+      ctx.lineTo(pit.x + pit.w - 6, pit.y + 6);
+      ctx.stroke();
     }
     const lx = (WALL_H / OB_DEPTH) * OB_SHEAR;
     const ly = -WALL_H / OB_DEPTH;
@@ -1794,8 +1839,71 @@ export class Engine {
       ctx.fillStyle = look.chip;
       ctx.globalAlpha = 1;
       ctx.fillRect(x + lx, y + ly, ww, hh);
+      this.cbPart(ctx, x + lx, y + ly, ww, hh, look);
+    }
+  }
+
+  private cbBackdrop(ctx: CanvasRenderingContext2D, look: ReturnType<typeof pcbLook>) {
+    ctx.save();
+    ctx.globalAlpha = 0.38;
+    ctx.strokeStyle = look.copper;
+    ctx.lineWidth = 1.5;
+    let seed = 7;
+    const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    for (let i = 0; i < 18; i++) {
+      const x = rnd() * this.worldW;
+      const y = rnd() * this.worldH;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + 40 + rnd() * 60, y);
+      ctx.lineTo(x + 40 + rnd() * 60, y + 20 + rnd() * 40);
+      ctx.stroke();
       ctx.fillStyle = look.copper;
-      ctx.fillRect(x + lx + 3, y + ly + Math.min(4, hh * 0.35), Math.max(0, ww - 6), 3);
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "#d4af37";
+    for (const [hx, hy] of [[18, 18], [this.worldW - 18, 18], [18, this.worldH - 18], [this.worldW - 18, this.worldH - 18]]) {
+      ctx.beginPath();
+      ctx.arc(hx, hy, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = look.silk;
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillText(`${look.name.toUpperCase()} · REV 1.12`, 14, this.worldH - 12);
+    ctx.restore();
+  }
+
+  private cbPart(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, look: ReturnType<typeof pcbLook>) {
+    const cells = Math.max(1, Math.round(w / TILE) * Math.round(h / TILE));
+    ctx.strokeStyle = look.silk;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+    if (cells >= 4) {
+      ctx.fillStyle = "#c5c9c4";
+      for (let i = 6; i < w - 4; i += 8) ctx.fillRect(x + i, y - 3, 2, 4);
+      for (let i = 6; i < w - 4; i += 8) ctx.fillRect(x + i, y + h - 1, 2, 4);
+      ctx.fillStyle = look.silk;
+      ctx.beginPath();
+      ctx.arc(x + 6, y + 6, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = "bold 9px sans-serif";
+      ctx.fillText("U" + (1 + Math.round(x / TILE) % 9), x + 8, y + 14);
+    } else if (cells >= 2) {
+      ctx.fillStyle = "#d8c39a";
+      ctx.fillRect(x + 6, y + h * 0.3, w - 12, h * 0.4);
+      ctx.fillStyle = "#5a3a22";
+      ctx.fillRect(x + w * 0.3, y + h * 0.3, 4, h * 0.4);
+    } else {
+      ctx.fillStyle = "#9aa0a6";
+      ctx.beginPath();
+      ctx.arc(x + w / 2, y + h / 2, Math.min(w, h) * 0.32, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = look.silk;
+      ctx.font = "bold 10px sans-serif";
+      ctx.fillText("+", x + w / 2 - 3, y + h / 2 + 4);
     }
   }
 
@@ -1805,8 +1913,10 @@ export class Engine {
       const row = rows[r];
       for (let c = 0; c < row.length; c++) {
         if (row[c] === "#") continue;
-        ctx.fillStyle = "rgba(210, 245, 170, 0.22)";
+        ctx.fillStyle = pcbLook(this.course.id).lane;
+        ctx.globalAlpha = 0.55;
         ctx.fillRect(c * TILE + 2, r * TILE + 2, TILE - 4, TILE - 4);
+        ctx.globalAlpha = 1;
       }
     }
     ctx.fillStyle = "rgba(122, 240, 255, 0.45)";
@@ -1820,6 +1930,7 @@ export class Engine {
       if (!row || c < 0 || c >= row.length) return false;
       return row[c] !== "#";
     };
+    const look = pcbLook(this.course.id);
     ctx.fillStyle = copper;
     for (let r = 0; r < rows.length; r++) {
       const row = rows[r];
@@ -1829,10 +1940,20 @@ export class Engine {
         const y = r * TILE;
         const mid = TILE * 0.42;
         ctx.globalAlpha = 0.9;
-        ctx.fillRect(x + mid, y + mid, TILE * 0.16, TILE * 0.16);
-        ctx.globalAlpha = 0.55;
-        if (open(r, c + 1)) ctx.fillRect(x + mid, y + mid, TILE, TILE * 0.1);
-        if (open(r + 1, c)) ctx.fillRect(x + mid, y + mid, TILE * 0.1, TILE);
+        ctx.fillRect(x + mid, y + mid - 2, 8, 8);
+        if (open(r, c + 1)) ctx.fillRect(x + mid, y + mid, TILE, 8);
+        if (open(r + 1, c)) ctx.fillRect(x + mid, y + mid, 8, TILE);
+        if ((r + c) % 2 === 0) {
+          ctx.fillStyle = "#d4af37";
+          ctx.beginPath();
+          ctx.arc(x + TILE / 2, y + TILE / 2, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#1a1208";
+          ctx.beginPath();
+          ctx.arc(x + TILE / 2, y + TILE / 2, 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = copper;
+        }
       }
     }
     ctx.globalAlpha = 1;
@@ -1922,6 +2043,7 @@ export class Engine {
     ctx.transform(1, 0, OB_SHEAR, OB_DEPTH, 0, 0);
     ctx.translate(-this.cam.x, -this.cam.y);
     this.drawBoard(ctx);
+    this.cbGlow(ctx);
     if (this.exit && this.gems.length && this.gems.every((g) => g.got)) {
       const cx = this.exit.x + this.exit.w / 2;
       const cy = this.exit.y + this.exit.h / 2;
@@ -1953,13 +2075,23 @@ export class Engine {
     for (const v of this.viruses) {
       if (v.dead) continue;
       this.drawUpright(v.x, v.y, viewZ, () => {
-        ctx.fillStyle = "#ff4fd8";
+        ctx.fillStyle = "#C2185B";
         ctx.beginPath();
-        ctx.moveTo(0, -16);
-        ctx.lineTo(10, 6);
-        ctx.lineTo(-10, 6);
-        ctx.closePath();
+        ctx.ellipse(0, -2, 10, 7, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.strokeStyle = "#ECEBE0";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.beginPath();
+        for (const side of [-1, 1]) {
+          ctx.moveTo(side * 8, -6); ctx.lineTo(side * 14, -12);
+          ctx.moveTo(side * 9, -1); ctx.lineTo(side * 16, -1);
+          ctx.moveTo(side * 8, 4); ctx.lineTo(side * 14, 8);
+        }
+        ctx.stroke();
+        ctx.fillStyle = "#ECEBE0";
+        ctx.font = "bold 11px sans-serif";
+        ctx.fillText("!", -3, 2);
       });
     }
 

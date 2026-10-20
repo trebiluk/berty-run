@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.35 — 2026-10-20
+
+- 2D boards restyled as circuit boards. Each board keeps its own color. Play is the same.
+
 ## BR 1.12.34 — 2026-10-20
 
 - How to covers open levels, CPU fact, 4-way tilt, Under/Over par.
