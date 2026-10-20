@@ -638,6 +638,21 @@ export class Engine {
     this.emit();
   }
 
+  testWin(under: boolean) {
+    if (!(window as unknown as { KulibertTest?: { on?: () => boolean } }).KulibertTest?.on?.()) return;
+    this.testMode = true;
+    this.time = under ? Math.max(0.5, this.course.par - 1) : this.course.par + 2;
+    this.phase = "win";
+    this.emit();
+  }
+
+  testLose() {
+    if (!(window as unknown as { KulibertTest?: { on?: () => boolean } }).KulibertTest?.on?.()) return;
+    this.testMode = true;
+    this.phase = "fail";
+    this.emit();
+  }
+
   forceTube(id: CourseId) {
     this.testMode = true;
     this.needGoal = false;

@@ -40,3 +40,4 @@
 - [x] BR 1.12.36-1 Board step and What's new in every language
 - [x] BR 1.12.36-2 Jump stays 44px sideways, title and timer don't touch
 - [ ] BR 1.12.36-3 Test win switch waiting on hub kw-test.js
+- [x] BR 1.12.37-1 Staff test win wired to shared/kw-test.js

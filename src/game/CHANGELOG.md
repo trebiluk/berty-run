@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.37 — 2026-10-20
+
+- Staff test win uses the shared hub switch. Test wins do not post to real boards.
+
 ## BR 1.12.36 — 2026-10-20
 
 - Board help in every language. Jump is easier to hit sideways. Title and timer no longer touch.

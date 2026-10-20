@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.36";
+export const CHIP = "BR 1.12.37";
 export const WHATS_NEW =
-  "BR 1.12.36: Every language has the board help, and the Jump button is easier to hit sideways.";
+  "BR 1.12.37: Behind-the-scenes fixes so we can test wins faster.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.36: Board help in every language. Jump is easier to hit.",
-  es: "BR 1.12.36: Todos los idiomas tienen la ayuda de la placa, y el botón Saltar es más fácil de tocar de lado.",
-  uk: "BR 1.12.36: Кожна мова має довідку про плату, а кнопку стрибка легше натиснути, коли телефон боком.",
-  ru: "BR 1.12.36: На каждом языке есть подсказка о плате, а кнопку прыжка легче нажать, когда телефон боком.",
-  ar: "BR 1.12.36: كل لغة فيها مساعدة اللوحة، وزر القفز أسهل للضغط والهاتف بالعرض.",
-  "fa-AF": "BR 1.12.36: هر زبان راهنمای بورد را دارد و دکمه پرش در حالت افقی آسان‌تر زده می‌شود.",
-  rw: "BR 1.12.36: Buri rurimi rufite ubufasha ku kibaho, kandi akabuto ko gusimbuka korohereye gukanda telefoni iri ku ruhande.",
-  ti: "BR 1.12.36: ኩሉ ቋንቋ ሓገዝ ሰሌዳ ኣለዎ፣ መልጎም ዝላ ድማ ብጎኒ ብቐሊሉ ይጽቀጥ።",
+  simple: "BR 1.12.37: Small fixes behind the scenes.",
+  es: "BR 1.12.37: Arreglos internos para probar las victorias más rápido.",
+  uk: "BR 1.12.37: Внутрішні виправлення, щоб швидше перевіряти перемоги.",
+  ru: "BR 1.12.37: Внутренние исправления, чтобы быстрее проверять победы.",
+  ar: "BR 1.12.37: إصلاحات داخلية لنختبر الفوز بسرعة أكبر.",
+  "fa-AF": "BR 1.12.37: اصلاحات داخلی تا بردها را زودتر آزمایش کنیم.",
+  rw: "BR 1.12.37: Ivugurura ry'imbere kugira ngo tugerageze intsinzi vuba.",
+  ti: "BR 1.12.37: ውሽጣዊ ምዕራያት ዓወታት ብቕልጡፍ ንምፍታን።",
 };
 
 export function whatsNew(lang: string) {

@@ -1336,6 +1336,7 @@ export function GameShell() {
               </div>
             ) : null}
 
+            <TestChip onWin={(under) => e?.testWin(under)} onLose={() => e?.testLose()} />
             {hud.phase === "fail" ? (
               <div className="flex flex-col gap-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-orange">{ui.outHearts}</p>
@@ -2077,6 +2078,34 @@ function RoomBoard({ courseId, code }: { courseId: string; code: string }) {
   );
 }
 
+
+
+function TestChip({ onWin, onLose }: { onWin: (under: boolean) => void; onLose: () => void }) {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const tick = () => {
+      const gate = (window as unknown as { KulibertTest?: { on?: () => boolean } }).KulibertTest;
+      setOn(!!gate?.on?.());
+    };
+    tick();
+    const id = window.setInterval(tick, 800);
+    return () => window.clearInterval(id);
+  }, []);
+  if (!on) return null;
+  return (
+    <div className="pointer-events-auto fixed right-2 top-16 z-[80] flex flex-col gap-2" role="group" aria-label="Test mode">
+      <button type="button" className="min-h-11 min-w-11 rounded-full bg-navy px-3 text-sm font-bold text-gold ring-1 ring-gold" onClick={() => onWin(true)}>
+        Jump to win · under
+      </button>
+      <button type="button" className="min-h-11 min-w-11 rounded-full bg-navy px-3 text-sm font-bold text-gold ring-1 ring-gold" onClick={() => onWin(false)}>
+        Jump to win · over
+      </button>
+      <button type="button" className="min-h-11 min-w-11 rounded-full bg-navy px-3 text-sm font-bold text-gold ring-1 ring-gold" onClick={onLose}>
+        Jump to lose
+      </button>
+    </div>
+  );
+}
 
 function FactCard() {
   const [open, setOpen] = useState(true);

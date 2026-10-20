@@ -36,6 +36,7 @@ export const Route = createRootRoute({
         <script src="/shared/kulibert-i18n.js?v=2026-10-05-signin" />
         {ON_CART ? (
           <>
+            <script src="/shared/kw-test.js?v=2026-10-20-test-win-switch" defer />
             <script src="/shared/kulibert-bar.js?v=2026-10-12-one-menu" data-app="berty-run" data-name="Berty's Run" data-version={CHIP} data-menu="[data-game-menu]" data-rtl="1" defer />
             <script
               dangerouslySetInnerHTML={{
