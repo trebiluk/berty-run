@@ -180,7 +180,7 @@ function AccessPanel({
         </button>
         <p className="mt-3 text-[10px] font-bold uppercase tracking-wide text-gold">{ui.playStyle}</p>
         <div className="mt-1 flex flex-col gap-1">
-          {(window.innerWidth < 700 ? ["lean", "tilt", "hands", "keys", "follow"] : DRIVES.map((d) => d.id)).map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
+          {["lean", "tilt", "hands", "keys", "follow"].map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
             <div key={item.id} className="flex flex-col gap-1">
             <button
               type="button"
@@ -386,6 +386,17 @@ export function GameShell() {
       let parentQ = "";
       try { parentQ = window.parent !== window ? window.parent.location.search : ""; } catch { parentQ = ""; }
       const pq = new URLSearchParams(parentQ);
+      if (q.get("proof") === "1" || pq.get("proof") === "1") {
+        (window as unknown as { __BR_PROOF?: { tilt: (beta: number, gamma: number) => void } }).__BR_PROOF = {
+          tilt(beta: number, gamma: number) {
+            engine.deviceTilt = true;
+            (engine as unknown as { tiltRead: { x: number; y: number } | null }).tiltRead = {
+              x: Math.max(-1, Math.min(1, gamma / 30)),
+              y: Math.max(-1, Math.min(1, beta / 30)),
+            };
+          },
+        };
+      }
       const test = q.get("test") || pq.get("test");
       const board = Number(q.get("board") || pq.get("board") || "1");
       if (test === "spintube" && board >= 1 && board <= 5) {
@@ -985,7 +996,7 @@ export function GameShell() {
           }}>
             {ui.levelsWord}
           </button>
-          {(window.innerWidth < 700 ? ["lean", "tilt", "hands", "keys", "follow"] : DRIVES.map((d) => d.id)).map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
+          {["lean", "tilt", "hands", "keys", "follow"].map((id) => DRIVES.find((d) => d.id === id)!).map((item) => (
             <div key={item.id} className="flex flex-col gap-1">
             <button
               type="button"
@@ -2070,10 +2081,22 @@ function RoomBoard({ courseId, code }: { courseId: string; code: string }) {
 function FactCard() {
   const [open, setOpen] = useState(true);
   useEffect(() => {
-    if (!open) return;
-    const onKey = (ev: KeyboardEvent) => { if (ev.key === "Escape") setOpen(false); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    if (!open) {
+      document.documentElement.removeAttribute("data-kb-modal-open");
+      return;
+    }
+    document.documentElement.setAttribute("data-kb-modal-open", "1");
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key !== "Escape") return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      setOpen(false);
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => {
+      window.removeEventListener("keydown", onKey, true);
+      document.documentElement.removeAttribute("data-kb-modal-open");
+    };
   }, [open]);
   if (!open) return null;
   return (

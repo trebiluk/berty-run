@@ -1,5 +1,11 @@
 # Berty's Run
 
+## BR 1.12.34 — 2026-10-20
+
+- How to covers open levels, CPU fact, 4-way tilt, Under/Over par.
+- Esc on the win screen closes the CPU card first.
+- Tilt is the second Controls row at both sizes. Proof-only tilt hook.
+
 ## BR 1.12.33 — 2026-10-20
 
 - Levels unlocked. Best time replaces the lock.

@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.33";
+export const CHIP = "BR 1.12.34";
 export const WHATS_NEW =
-  "BR 1.12.33: All levels are open, the fact card only shows after a win, and tilt steers every way.";
+  "BR 1.12.34: How to explains open levels, the CPU fact, tilt and par, and Esc closes the fact card.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.33: All levels open. Tilt goes every way.",
-  es: "BR 1.12.33: Todos los niveles están abiertos, la tarjeta de datos solo sale al ganar y la inclinación mueve en todas direcciones.",
-  uk: "BR 1.12.33: Усі рівні відкриті, картка з фактом з'являється лише після перемоги, а нахил керує в усі боки.",
-  ru: "BR 1.12.33: Все уровни открыты, карточка с фактом появляется только после победы, а наклон управляет во все стороны.",
-  ar: "BR 1.12.33: كل المستويات مفتوحة، وبطاقة المعلومة تظهر بعد الفوز فقط، والإمالة توجّه في كل الاتجاهات.",
-  "fa-AF": "BR 1.12.33: همهٔ مرحله‌ها باز است، کارت معلومات فقط بعد از برد دیده می‌شود و کج کردن به هر طرف می‌برد.",
-  rw: "BR 1.12.33: Inzego zose zirafunguye, ikarita y'amakuru igaragara nyuma yo gutsinda gusa, kandi kunyeganyeza bigenda impande zose.",
-  ti: "BR 1.12.33: ኩሎም ደረጃታት ክፉታት እዮም፣ ናይ ሓበሬታ ካርድ ድሕሪ ዓወት ጥራይ ይርአ፣ ምዝንባል ድማ ናብ ኩሉ ኣንፈት ይመርሕ።",
+  simple: "BR 1.12.34: Help shows what's new. Esc closes the fact card.",
+  es: "BR 1.12.34: Cómo jugar explica los niveles abiertos, el dato de la CPU, la inclinación y el par, y Esc cierra la tarjeta del dato.",
+  uk: "BR 1.12.34: «Як грати» пояснює відкриті рівні, факт про процесор, нахил і пар, а Esc закриває картку з фактом.",
+  ru: "BR 1.12.34: «Как играть» объясняет открытые уровни, факт о процессоре, наклон и пар, а Esc закрывает карточку с фактом.",
+  ar: "BR 1.12.34: يشرح «طريقة اللعب» المستويات المفتوحة ومعلومة المعالج والإمالة والوقت المثالي، وزر Esc يغلق بطاقة المعلومة.",
+  "fa-AF": "BR 1.12.34: «طرز بازی» مرحله‌های باز، نکتهٔ پردازنده، کج کردن و زمان هدف را توضیح می‌دهد، و Esc کارت نکته را می‌بندد.",
+  rw: "BR 1.12.34: \"Uko bikinwa\" isobanura ingazi zifunguye, amakuru ya CPU, kugoreka na par, kandi Esc ifunga ikarita y'amakuru.",
+  ti: "BR 1.12.34: \"ከመይ ይጽወት\" ክፉታት ደረጃታት፣ ሓበሬታ CPU፣ ምዝንባልን ፓርን ይገልጽ፣ Esc ድማ ካርድ ሓበሬታ ይዓጹ።",
 };
 
 export function whatsNew(lang: string) {

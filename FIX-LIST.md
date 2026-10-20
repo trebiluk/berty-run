@@ -30,3 +30,6 @@
 - [x] BR 1.12.33-2 Fact card only on the clear screen, read-aloud box hides
 - [x] BR 1.12.33-3 Tilt steers all four ways, 56px control rows
 - [x] BR 1.12.33-4 Clock says Under par / Over par
+- [x] BR 1.12.34-1 How to covers the four 1.12.33 changes
+- [x] BR 1.12.34-2 Esc closes the CPU card first
+- [x] BR 1.12.34-3 Tilt is second at both sizes, proof tilt hook
