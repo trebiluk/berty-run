@@ -885,7 +885,7 @@ export function GameShell() {
         </div>
       ) : null}
       {!styleOpen && !gear && !overlay ? (
-      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute top-[max(7.4rem,calc(env(safe-area-inset-top)+7rem))] z-30 inline-flex size-11 items-center justify-center bg-navy/80 text-[10px] font-bold leading-none text-fg ring-1 ring-line", access.lang === "ar" || access.lang === "fa-AF" ? "left-2" : "right-2")} onClick={() => {
+      <button type="button" data-fs="1" aria-label={line16(access.lang, "fullScreen")} className={cn("absolute top-[max(7.4rem,calc(env(safe-area-inset-top)+7rem))] max-h-[500px]:top-[11rem] z-30 inline-flex size-11 items-center justify-center bg-navy/80 text-[10px] font-bold leading-none text-fg ring-1 ring-line", access.lang === "ar" || access.lang === "fa-AF" ? "left-2" : "right-2")} onClick={() => {
         const root = document.documentElement;
         if (document.fullscreenElement) { void document.exitFullscreen(); localStorage.setItem("kulibert-fullscreen", "0"); setFsOn(false); }
         else { void root.requestFullscreen?.(); localStorage.setItem("kulibert-fullscreen", "1"); setFsOn(true); }
