@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.44";
+export const CHIP = "BR 1.12.45";
 export const WHATS_NEW =
-  "BR 1.12.44: What's new in the menu now shows the latest Berty's Run news in your language.";
+  "BR 1.12.45: Every board now shows its own part colors and name, and pickups pop.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.44: Menu shows Berty's Run news.",
-  es: "BR 1.12.44: Novedades en el menú ya muestra las últimas noticias de Berty's Run en tu idioma.",
-  uk: "BR 1.12.44: «Що нового» в меню тепер показує останні новини Berty's Run твоєю мовою.",
-  ru: "BR 1.12.44: «Что нового» в меню теперь показывает последние новости Berty's Run на твоём языке.",
-  ar: "BR 1.12.44: «ما الجديد» في القائمة يعرض الآن آخر أخبار Berty's Run بلغتك.",
-  "fa-AF": "BR 1.12.44: «تازه‌ها» در فهرست اکنون آخرین خبرهای Berty's Run را به زبان تو نشان می‌دهد.",
-  rw: "BR 1.12.44: «Ibishya» muri menu ubu byerekana amakuru mashya ya Berty's Run mu rurimi rwawe.",
-  ti: "BR 1.12.44: «ሓድሽ እንታይ ኣሎ» ኣብ ዝርዝር ሕጂ ናይ Berty's Run ሓድሽ ዜና ብቋንቋኻ የርኢ።",
+  simple: "BR 1.12.45: Each board has its own colors. Pickups pop.",
+  es: "BR 1.12.45: Cada placa muestra sus colores y su nombre, y las piezas saltan.",
+  uk: "BR 1.12.45: Кожна плата показує свої кольори й назву, а деталі підстрибують.",
+  ru: "BR 1.12.45: Каждая плата показывает свои цвета и имя, а детали подпрыгивают.",
+  ar: "BR 1.12.45: كل لوحة تعرض ألوانها واسمها، والقطع تقفز.",
+  "fa-AF": "BR 1.12.45: هر بورد رنگ‌ها و نام خودش را نشان می‌دهد و قطعه‌ها می‌پرند.",
+  rw: "BR 1.12.45: Buri kibaho kigaragaza amabara n'izina ryacyo, kandi ibice birasimba.",
+  ti: "BR 1.12.45: ነፍሲ ወከፍ ሰሌዳ ንሕብሪን ስምን ትርኢ፣ ክፋላት ድማ ይዝለሉ።",
 };
 
 export function whatsNew(lang: string) {

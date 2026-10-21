@@ -879,3 +879,7 @@ body:has(.kb-bar) .menu-drawer {
     top: 9.2rem;
   }
 }
+
+@keyframes br-pop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+[data-hud="score"].br-pop { animation: br-pop 220ms ease-out; }
+@media (prefers-reduced-motion: reduce) { [data-hud="score"].br-pop { animation: none; } }

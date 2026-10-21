@@ -55,3 +55,15 @@
 - [x] BR 1.12.43-2 Turn on tilt speaks the language
 - [x] BR 1.12.43-3 What's new line
 - [x] BR 1.12.44-1 What's new line in the drawer
+- [x] BR 1.12.45-1 Board palettes already per-part
+- [x] BR 1.12.45-2 Part banner on start
+- [x] BR 1.12.45-3 Pickup pop + combo
+- [x] BR 1.12.45-4 Feature ideas
+
+## Feature ideas (BR 1.12.45 investigate)
+- Ghost replay of your best run (S, low risk): kids love racing their own shadow; uses the existing best-time save.
+- Daily board seed that everyone shares (M, low risk): one board a day, same for the class; builds on the existing course list.
+- Part quiz after a clear (S, low risk): the fact card already exists; add one tap-to-answer question.
+- Soft co-op where two Bertys share a board (L, medium risk): needs a second stick and no new save keys.
+- Sound that matches the board part (M, low risk): the CPU board hums, the fan board whooshes; uses the existing audio engine.
+Best next: the part quiz. It is small, uses the fact card that already ships, and teaches the part names the banner just introduced.

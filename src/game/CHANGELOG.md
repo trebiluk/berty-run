@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.45 — 2026-10-21
+
+- Every board shows its own part colors and name, and pickups pop.
+
 ## BR 1.12.44 — 2026-10-21
 
 - What's new in the menu shows the latest Berty's Run news in your language.

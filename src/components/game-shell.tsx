@@ -5,6 +5,7 @@ import { COURSES, courseById, courseHasZap, courseMode, dyeFor, fmtTime, isUnloc
 import { Engine } from "@/game/engine";
 import { unlockAudio } from "@/game/audio";
 import { CHIP, ROOM, boardFor, downloadPack, placeLabel, readLaunch, rivalOf, studentsOnBoard, whatsNew } from "@/game/techworks";
+import { pcbLook } from "@/game/pcb";
 import { BOARD_SLOT, BOT_FEATURES, briefFor, botUnlocked, guideTeach, nextBot, slotPart, type LessonId, type PcGoal } from "@/game/curriculum";
 import { BuildLab } from "@/components/build-lab";
 import { ShopDesk } from "@/components/shop-desk";
@@ -523,6 +524,22 @@ export function GameShell() {
   const [styleOpen, setStyleOpen] = useState(false);
   const [keysOn, setKeysOn] = useState(false);
   const [askRestart, setAskRestart] = useState(false);
+  const [banner, setBanner] = useState("");
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const icons: Record<string, string> = { CPU: "⚙", "Power supply": "🔌", Cooler: "❄", RAM: "▦", SSD: "▣", GPU: "◆", "Network card": "◎", Practice: "★", Motherboard: "▣", "The board": "▣" };
+    const PART: Record<string, Record<string, string>> = {
+      en: { CPU: "CPU board", "Power supply": "PSU board", Cooler: "Cooler board", RAM: "RAM board", SSD: "SSD board", GPU: "GPU board", "Network card": "Network board", Practice: "Practice board", Motherboard: "Motherboard", "The board": "The board" },
+      es: { CPU: "Placa CPU", "Power supply": "Placa PSU", Cooler: "Placa cooler", RAM: "Placa RAM", SSD: "Placa SSD", GPU: "Placa GPU", "Network card": "Placa de red", Practice: "Práctica", Motherboard: "Placa base", "The board": "La placa" },
+      ar: { CPU: "لوحة المعالج", "Power supply": "لوحة التغذية", Cooler: "لوحة المبرد", RAM: "لوحة الذاكرة", SSD: "لوحة التخزين", GPU: "لوحة الرسوم", "Network card": "لوحة الشبكة", Practice: "لوحة التدريب", Motherboard: "اللوحة الأم", "The board": "اللوحة" },
+    };
+    const lang = access.lang;
+    const table = PART[lang] || PART.en;
+    setBanner((icons[part] || "▣") + " " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const [fsOn, setFsOn] = useState(false);
   useEffect(() => {
     const onKey = () => setKeysOn(true);
@@ -1017,6 +1034,9 @@ export function GameShell() {
         </div>
       ) : null}
 
+      {banner && hud.phase === "play" ? (
+        <p className="pointer-events-none absolute left-1/2 top-[5.5rem] z-20 -translate-x-1/2 rounded-full bg-navy/90 px-3 py-1 text-sm font-bold text-fg ring-1 ring-cyan" data-banner="1">{banner}</p>
+      ) : null}
       {hud.phase === "play" && !styleOpen ? (
         <div
           className={cn(
@@ -1051,6 +1071,9 @@ export function GameShell() {
           </button>
           )}
         </div>
+      ) : null}
+      {banner && hud.phase === "play" ? (
+        <p className="pointer-events-none absolute left-1/2 top-[5.5rem] z-20 -translate-x-1/2 rounded-full bg-navy/90 px-3 py-1 text-sm font-bold text-fg ring-1 ring-cyan" data-banner="1">{banner}</p>
       ) : null}
       {hud.phase === "play" && !styleOpen ? (
         <p

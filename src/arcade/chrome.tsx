@@ -137,6 +137,12 @@ export function ArcadeScore({
     if (gems > last.current) {
       const now = performance.now();
       combo.current = now - comboAt.current < 1400 ? combo.current + 1 : 1;
+      const scoreEl = document.querySelector('[data-hud="score"]');
+      if (scoreEl && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        scoreEl.classList.remove("br-pop");
+        void (scoreEl as HTMLElement).offsetWidth;
+        scoreEl.classList.add("br-pop");
+      }
       comboAt.current = now;
       arcadeBlip("pickup");
       setPopup(combo.current >= 4 ? "PERFECT!" : combo.current >= 2 ? "GREAT!" : "");
