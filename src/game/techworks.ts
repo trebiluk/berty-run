@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.48";
+export const CHIP = "BR 1.12.49";
 export const WHATS_NEW =
-  "BR 1.12.47 — Berty's Run loads again.";
+  "BR 1.12.49 — The What's new note shows in every language again.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.47 — Berty's Run loads again.",
-  es: "BR 1.12.47 — Berty's Run carga de nuevo.",
-  uk: "BR 1.12.47 — Berty's Run знову завантажується.",
-  ru: "BR 1.12.47 — Berty's Run снова загружается.",
-  ar: "BR 1.12.47 — Berty's Run يعمل مرة أخرى.",
-  "fa-AF": "BR 1.12.47 — Berty's Run دوباره بارگذاری می‌شود.",
-  rw: "BR 1.12.47 — Berty's Run isubira gufunguka.",
-  ti: "BR 1.12.47 — Berty's Run ዳግማይ ይጽዕን።",
+  simple: "BR 1.12.49 — The What's new note shows in every language again.",
+  es: "BR 1.12.49 — La nota de novedades se muestra en todos los idiomas otra vez.",
+  uk: "BR 1.12.49 — Нотатка «Що нового» знову показується всіма мовами.",
+  ru: "BR 1.12.49 — Заметка «Что нового» снова показывается на всех языках.",
+  ar: "BR 1.12.49 — ملاحظة «ما الجديد» تظهر بكل اللغات مرة أخرى.",
+  "fa-AF": "BR 1.12.49 — یادداشت «تازه‌ها» دوباره به همه زبان‌ها نشان داده می‌شود.",
+  rw: "BR 1.12.49 — Agasanduku k'amakuru ntigisubira gupfuka umukino. Kimenya muri Menu.",
+  ti: "BR 1.12.49 — ናይ «ሓድሽ እዩ» ኖት ኣብ ኩሉ ቋንቋታት ዳግማይ ይርአ።",
 };
 
 export function whatsNew(lang: string) {
