@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.51";
+export const CHIP = "BR 1.12.52";
 export const WHATS_NEW =
-  "BR 1.12.51 — The version number in the game matches the top bar.";
+  "BR 1.12.52 — The Full screen button no longer covers your score.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.51 — The version number in the game matches the top bar.",
-  es: "BR 1.12.51 — El número de versión en el juego coincide con la barra superior.",
-  uk: "BR 1.12.51 — Номер версії в грі збігається з верхньою панеллю.",
-  ru: "BR 1.12.51 — Номер версии в игре совпадает с верхней панелью.",
-  ar: "BR 1.12.51 — رقم الإصدار في اللعبة يطابق الشريط العلوي.",
-  "fa-AF": "BR 1.12.51 — شماره نسخه در بازی با نوار بالا مطابقت دارد.",
-  rw: "BR 1.12.51 — Nimero y'uburyo mu mukino ihuye n'umurongo wo hejuru.",
-  ti: "BR 1.12.51 — ቁጽሪ ስሪት ኣብ ጸወታ ምስ ላዕለዋይ ባር ይሰማማዕ።",
+  simple: "BR 1.12.52 — The Full screen button no longer covers your score.",
+  es: "BR 1.12.52 — El botón de pantalla completa ya no cubre tu puntuación.",
+  uk: "BR 1.12.52 — Кнопка повного екрана більше не перекриває рахунок.",
+  ru: "BR 1.12.52 — Кнопка полного экрана больше не перекрывает счёт.",
+  ar: "BR 1.12.52 — زر ملء الشاشة لم يعد يغطي نقاطك.",
+  "fa-AF": "BR 1.12.52 — دکمه تمام‌صفحه دیگر امتیاز شما را نمی‌پوشاند.",
+  rw: "BR 1.12.52 — Buto ya ecran yuzuye ntigisubira gupfuka amanota yawe.",
+  ti: "BR 1.12.52 — ቁልፊ ምሉእ ስክሪን ንነጥቢ ኣይካልእን።",
 };
 
 export function whatsNew(lang: string) {
