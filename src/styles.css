@@ -852,3 +852,17 @@ html[data-lights="gold"] {
 body:has(.kb-bar) .menu-drawer {
   top: calc(3.25rem + env(safe-area-inset-top));
 }
+
+@media (orientation: landscape) and (max-height: 500px) {
+  [data-fs="1"] {
+    top: 3.2rem;
+    right: max(0.5rem, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 430px) {
+  [data-hud="hint"] {
+    top: 11.5rem;
+    max-width: 90%;
+    white-space: normal;
+  }
+}

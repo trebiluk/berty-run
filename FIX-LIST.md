@@ -41,3 +41,6 @@
 - [x] BR 1.12.36-2 Jump stays 44px sideways, title and timer don't touch
 - [ ] BR 1.12.36-3 Test win switch waiting on hub kw-test.js
 - [x] BR 1.12.37-1 Staff test win wired to shared/kw-test.js
+- [x] BR 1.12.38-1 testModeHelp already in shared i18n
+- [x] BR 1.12.38-2 Full-screen clear of Jump sideways
+- [x] BR 1.12.38-3 Hint stays below the HUD on phones

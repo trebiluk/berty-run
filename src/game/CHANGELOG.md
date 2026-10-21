@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.38 — 2026-10-20
+
+- Full-screen stays clear of Jump sideways. The hint stays visible on phones.
+
 ## BR 1.12.37 — 2026-10-20
 
 - Staff test win uses the shared hub switch. Test wins do not post to real boards.

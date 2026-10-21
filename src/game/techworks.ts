@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.37";
+export const CHIP = "BR 1.12.38";
 export const WHATS_NEW =
-  "BR 1.12.37: Behind-the-scenes fixes so we can test wins faster.";
+  "BR 1.12.38: Full-screen no longer gets in the way of Jump, and the hint stays visible on phones.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.37: Small fixes behind the scenes.",
-  es: "BR 1.12.37: Arreglos internos para probar las victorias más rápido.",
-  uk: "BR 1.12.37: Внутрішні виправлення, щоб швидше перевіряти перемоги.",
-  ru: "BR 1.12.37: Внутренние исправления, чтобы быстрее проверять победы.",
-  ar: "BR 1.12.37: إصلاحات داخلية لنختبر الفوز بسرعة أكبر.",
-  "fa-AF": "BR 1.12.37: اصلاحات داخلی تا بردها را زودتر آزمایش کنیم.",
-  rw: "BR 1.12.37: Ivugurura ry'imbere kugira ngo tugerageze intsinzi vuba.",
-  ti: "BR 1.12.37: ውሽጣዊ ምዕራያት ዓወታት ብቕልጡፍ ንምፍታን።",
+  simple: "BR 1.12.38: Jump is easy to tap. You can read the hint.",
+  es: "BR 1.12.38: Pantalla completa ya no estorba a Saltar, y la pista se ve en el teléfono.",
+  uk: "BR 1.12.38: Кнопка на весь екран більше не заважає Стрибку, а підказку видно на телефонах.",
+  ru: "BR 1.12.38: Кнопка полного экрана больше не мешает Прыжку, а подсказка видна на телефонах.",
+  ar: "BR 1.12.38: زر ملء الشاشة لم يعد يعيق القفز، والتلميح ظاهر على الهواتف.",
+  "fa-AF": "BR 1.12.38: دکمه تمام‌صفحه دیگر جلوی پرش را نمی‌گیرد و راهنمایی در تلفن دیده می‌شود.",
+  rw: "BR 1.12.38: Ecran yuzuye ntikibangamira Gusimbuka, kandi inama igaragara kuri telefoni.",
+  ti: "BR 1.12.38: ምሉእ ስክሪን ንዝላ ኣይዓግትን እዩ፣ ምኽሪ ኣብ ሞባይል ይርአ።",
 };
 
 export function whatsNew(lang: string) {
