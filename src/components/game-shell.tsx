@@ -2085,7 +2085,11 @@ function TestChip({ onWin, onLose }: { onWin: (under: boolean) => void; onLose: 
   useEffect(() => {
     const tick = () => {
       const gate = (window as unknown as { KulibertTest?: { on?: () => boolean } }).KulibertTest;
-      setOn(!!gate?.on?.());
+      const live = !!gate?.on?.();
+      setOn(live);
+      const w = window as unknown as { forceWin?: () => void };
+      if (live) w.forceWin = () => onWin(true);
+      else delete w.forceWin;
     };
     tick();
     const id = window.setInterval(tick, 800);

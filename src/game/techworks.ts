@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.40";
+export const CHIP = "BR 1.12.42";
 export const WHATS_NEW =
-  "BR 1.12.40: Full screen no longer covers your lives on wide phones, and no test bits load for kids.";
+  "BR 1.12.42: On phones the hint stays off your score.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.40: Full screen does not cover your lives.",
-  es: "BR 1.12.40: Pantalla completa ya no tapa tus vidas en teléfonos anchos y las piezas de prueba no se cargan para los niños.",
-  uk: "BR 1.12.40: Кнопка «На весь екран» більше не закриває життя на широких телефонах, а тестові елементи не завантажуються для дітей.",
-  ru: "BR 1.12.40: Кнопка «Во весь экран» больше не закрывает жизни на широких телефонах, а тестовые элементы не загружаются для детей.",
-  ar: "BR 1.12.40: زر ملء الشاشة لم يعد يغطي أرواحك على الهواتف العريضة، وعناصر الاختبار لا تُحمَّل للأطفال.",
-  "fa-AF": "BR 1.12.40: دکمهٔ تمام‌صفحه دیگر جان‌های شما را در گوشی‌های پهن نمی‌پوشاند و بخش‌های آزمایشی برای کودکان بار نمی‌شوند.",
-  rw: "BR 1.12.40: Buto ya Ecran yose ntigipfukirana ubuzima bwawe kuri telefoni ngari, kandi ibice by'igerageza ntibifungukira abana.",
-  ti: "BR 1.12.40: ቁልፊ ምሉእ ስክሪን ኣብ ሰፊሕ ተሌፎን ንህይወትካ ኣይሽፍኖን፣ ናይ ፈተና ክፋላት ንቘልዑ ኣይጽዓኑን።",
+  simple: "BR 1.12.42: The hint does not cover your score.",
+  es: "BR 1.12.42: En el teléfono la pista no tapa tu puntuación.",
+  uk: "BR 1.12.42: На телефонах підказка не закриває рахунок.",
+  ru: "BR 1.12.42: На телефонах подсказка не закрывает счёт.",
+  ar: "BR 1.12.42: على الهاتف لا يغطي التلميح نقاطك.",
+  "fa-AF": "BR 1.12.42: در گوشی راهنما امتیاز شما را نمی‌پوشاند.",
+  rw: "BR 1.12.42: Kuri telefoni inama ntipfukirana amanota yawe.",
+  ti: "BR 1.12.42: ኣብ ተሌፎን ምኽሪ ነጥብኻ ኣይሽፍንን።",
 };
 
 export function whatsNew(lang: string) {

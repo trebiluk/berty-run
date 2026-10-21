@@ -48,3 +48,6 @@
 - [x] BR 1.12.39-2 Full screen sits clear of the lives text
 - [x] BR 1.12.40-1 Full screen clear of lives at 924x412
 - [x] BR 1.12.40-2 kw-test-chip already absent for kids
+- [x] BR 1.12.42-1 Goal pill sits below the score on phones
+- [x] BR 1.12.42-2 kw-test-chip already absent for kids
+- [x] BR 1.12.42-3 forceWin hook for staff test mode

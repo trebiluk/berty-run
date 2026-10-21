@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.42 — 2026-10-20
+
+- On phones the hint stays off the score.
+
 ## BR 1.12.40 — 2026-10-20
 
 - Full screen no longer covers the lives count on wide phones.
