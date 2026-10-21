@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.46";
+export const CHIP = "BR 1.12.48";
 export const WHATS_NEW =
-  "BR 1.12.46 — The news box no longer covers the game. Find it in Menu.";
+  "BR 1.12.47 — Berty's Run loads again.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.46 — News box is in Menu. It no longer covers the game.",
-  es: "BR 1.12.46 — La caja de noticias ya no cubre el juego. Encuéntrala en el Menú.",
-  uk: "BR 1.12.46 — Ящик новин більше не перекриває гру. Знайди його в Меню.",
-  ru: "BR 1.12.46 — Ящик новостей больше не перекрывает игру. Найди его в Меню.",
-  ar: "BR 1.12.46 — صندوق الأخبار لم يعد يغطي اللعبة. ابحث عنه في القائمة.",
-  "fa-AF": "BR 1.12.46 — جعبه خبر دیگر بازی را نمی‌پوشاند. آن را در فهرست بیابید.",
-  rw: "BR 1.12.46 — Agasanduku k'amakuru ntigisubira gupfuka umukino. Kimenya muri Menu.",
-  ti: "BR 1.12.46 — ናይ ሓበሬታ ሳጥን ንብይ ኣይካልእን። ኣብ መንያ ርካብ.",
+  simple: "BR 1.12.47 — Berty's Run loads again.",
+  es: "BR 1.12.47 — Berty's Run carga de nuevo.",
+  uk: "BR 1.12.47 — Berty's Run знову завантажується.",
+  ru: "BR 1.12.47 — Berty's Run снова загружается.",
+  ar: "BR 1.12.47 — Berty's Run يعمل مرة أخرى.",
+  "fa-AF": "BR 1.12.47 — Berty's Run دوباره بارگذاری می‌شود.",
+  rw: "BR 1.12.47 — Berty's Run isubira gufunguka.",
+  ti: "BR 1.12.47 — Berty's Run ዳግማይ ይጽዕን።",
 };
 
 export function whatsNew(lang: string) {

@@ -20,7 +20,9 @@
     "selftest": "node --experimental-strip-types --import ./scripts/register-ts.mjs scripts/selftest.mjs",
     "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build:apps": "BERT_CART_BASE=/berty-run/ vite build",
+    "check:base": "node scripts/check-base.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
