@@ -529,15 +529,9 @@ export function GameShell() {
   useEffect(() => {
     if (hud.phase !== "play") return;
     const part = pcbLook(hud.courseId).name;
-    const icons: Record<string, string> = { CPU: "CPU", "Power supply": "PSU", Cooler: "Cooler", RAM: "RAM", SSD: "SSD", GPU: "GPU", "Network card": "Net", Practice: "Practice", Motherboard: "Board", "The board": "Board" };
-    const PART: Record<string, Record<string, string>> = {
-      en: { CPU: "CPU board", "Power supply": "PSU board", Cooler: "Cooler board", RAM: "RAM board", SSD: "SSD board", GPU: "GPU board", "Network card": "Network board", Practice: "Practice board", Motherboard: "Motherboard", "The board": "The board" },
-      es: { CPU: "Placa CPU", "Power supply": "Placa PSU", Cooler: "Placa cooler", RAM: "Placa RAM", SSD: "Placa SSD", GPU: "Placa GPU", "Network card": "Placa de red", Practice: "Practica", Motherboard: "Placa base", "The board": "La placa" },
-      ar: { CPU: "CPU", "Power supply": "PSU", Cooler: "Cooler", RAM: "RAM", SSD: "SSD", GPU: "GPU", "Network card": "Net", Practice: "Practice", Motherboard: "Board", "The board": "Board" },
-    };
     const lang = access.lang;
-    const table = PART[lang] || PART.en;
-    setBanner((icons[part] || "Board") + ": " + (table[part] || part));
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
     const t = setTimeout(() => setBanner(""), 2000);
     return () => clearTimeout(t);
   }, [hud.phase, hud.courseId, access.lang]);
@@ -2105,6 +2099,12 @@ const TILT_ON: Record<string, string> = {
   es: "Activar inclinación", uk: "Увімкнути нахил", ru: "Включить наклон",
   ar: "تشغيل الإمالة", "fa-AF": "روشن کردن کج‌کردن", rw: "Fungura guhengamisha", ti: "ምዝንባል ኣብርህ",
 };
+const BANNER_PARTS: Record<string, Record<string, string>> = {
+  en: { CPU: "CPU board", "Power supply": "PSU board", Cooler: "Cooler board", RAM: "RAM board", SSD: "SSD board", GPU: "GPU board", "Network card": "Network board", Practice: "Practice board", Motherboard: "Motherboard", "The board": "The board" },
+  es: { CPU: "Placa CPU", "Power supply": "Placa PSU", Cooler: "Placa cooler", RAM: "Placa RAM", SSD: "Placa SSD", GPU: "Placa GPU", "Network card": "Placa de red", Practice: "Practica", Motherboard: "Placa base", "The board": "La placa" },
+  ar: { CPU: "CPU", "Power supply": "PSU", Cooler: "Cooler", RAM: "RAM", SSD: "SSD", GPU: "GPU", "Network card": "Net", Practice: "Practice", Motherboard: "Board", "The board": "Board" },
+};
+const BANNER_ICONS: Record<string, string> = { CPU: "CPU", "Power supply": "PSU", Cooler: "Cooler", RAM: "RAM", SSD: "SSD", GPU: "GPU", "Network card": "Net", Practice: "Practice", Motherboard: "Board", "The board": "Board" };
 function TestChip({ onWin, onLose }: { onWin: (under: boolean) => void; onLose: () => void }) {
   const [on, setOn] = useState(false);
   useEffect(() => {
