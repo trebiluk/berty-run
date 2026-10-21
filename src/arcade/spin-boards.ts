@@ -60,7 +60,7 @@ export const SPIN_BOARDS: SpinBoard[] = [
   board("spin-4", (add) => {
     add(6, "####");
     add(6, "LLLL");
-    add(1, "s###");
+    add(3, "s###");
     add(4, "#...");
     add(6, "####");
     add(2, ".o#o");
