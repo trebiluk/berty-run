@@ -131,6 +131,15 @@ function AccessPanel({
 }) {
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const set = (patch: Partial<Access>) => {
     const next = { ...access, ...patch };
     if (patch.lang) {
@@ -527,15 +536,6 @@ export function GameShell() {
   const [banner, setBanner] = useState("");
   const [fsOn, setFsOn] = useState(false);
   useEffect(() => {
-    if (hud.phase !== "play") return;
-    const part = pcbLook(hud.courseId).name;
-    const lang = access.lang;
-    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
-    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
-    const t = setTimeout(() => setBanner(""), 2000);
-    return () => clearTimeout(t);
-  }, [hud.phase, hud.courseId, access.lang]);
-  useEffect(() => {
     const onKey = () => setKeysOn(true);
     window.addEventListener("keydown", onKey);
     setFsOn(localStorage.getItem("kulibert-fullscreen") === "1");
@@ -583,6 +583,15 @@ export function GameShell() {
   }, [styleOpen, gear]);
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const hudWords = hudCopy(access.lang);
   const coarse = useCoarse();
   const hintText = localizeLine(
@@ -2188,6 +2197,15 @@ function WinBoard({
   const shortLand = useShortLandscape();
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const [note, setNote] = useState("");
   const part = slotPart(hud.courseId);
   const ahead = nextBoard(hud.courseId, hud.bests, hud.fullUnlock);
@@ -2466,6 +2484,15 @@ function PartBrief({
   const brief = briefFor(courseId, goal);
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const pack = packFor(brief.lessonId ?? courseId, access.lang) ?? packFor(courseId, access.lang) ?? (brief.lessonId ? null : packFor("boot", access.lang));
   const title = pack?.title ?? brief.title;
   const line = pack?.line ?? brief.line;
@@ -2537,6 +2564,15 @@ function LevelPicker({
 }) {
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const groups = [
     { title: "2D", items: [courseById("practice-2d"), ...trackCourses("2d")] },
     { title: "3D", items: [courseById("practice-3d"), ...trackCourses("3d")] },
@@ -2591,6 +2627,15 @@ function TitleCard({
   const cabinet = useCabinet();
   const access = useAccess();
   const ui = face(access.lang);
+  useEffect(() => {
+    if (hud.phase !== "play") return;
+    const part = pcbLook(hud.courseId).name;
+    const lang = access.lang;
+    const table = BANNER_PARTS[lang] || BANNER_PARTS.en;
+    setBanner((BANNER_ICONS[part] || "Board") + ": " + (table[part] || part));
+    const t = setTimeout(() => setBanner(""), 2000);
+    return () => clearTimeout(t);
+  }, [hud.phase, hud.courseId, access.lang]);
   const arcade = cabinet.look === "arcade";
   if (levels) {
     return (
