@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.44 — 2026-10-21
+
+- What's new in the menu shows the latest Berty's Run news in your language.
+
 ## BR 1.12.43 — 2026-10-21
 
 - The staff test script no longer loads for kids. The tilt switch speaks your language.

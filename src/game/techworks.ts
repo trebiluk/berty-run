@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.43";
+export const CHIP = "BR 1.12.44";
 export const WHATS_NEW =
-  "BR 1.12.43: A staff-only test tool no longer loads for kids, and the tilt switch speaks your language.";
+  "BR 1.12.44: What's new in the menu now shows the latest Berty's Run news in your language.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.43: Test tool hidden. Tilt in your language.",
-  es: "BR 1.12.43: Una herramienta de prueba solo para el personal ya no se carga para los niños, y el interruptor de inclinación habla tu idioma.",
-  uk: "BR 1.12.43: Інструмент тестування для персоналу більше не завантажується для дітей, а перемикач нахилу говорить твоєю мовою.",
-  ru: "BR 1.12.43: Тестовый инструмент для персонала больше не загружается у детей, а переключатель наклона говорит на твоём языке.",
-  ar: "BR 1.12.43: أداة الاختبار الخاصة بالموظفين لم تعد تُحمَّل للأطفال، ومفتاح الإمالة يتحدث لغتك.",
-  "fa-AF": "BR 1.12.43: ابزار آزمایشی کارکنان دیگر برای کودکان بارگذاری نمی‌شود و کلید کج‌کردن به زبان تو است.",
-  rw: "BR 1.12.43: Igikoresho cy'igerageza cy'abakozi ntikigifungukira abana, kandi buto yo guhengamisha ivuga ururimi rwawe.",
-  ti: "BR 1.12.43: ናይ ሰራሕተኛታት መፈተኒ መሳርሒ ንቘልዑ ኣይጽዓንን፣ መቐየሪ ምዝንባልውን ብቋንቋኻ ይዛረብ።",
+  simple: "BR 1.12.44: Menu shows Berty's Run news.",
+  es: "BR 1.12.44: Novedades en el menú ya muestra las últimas noticias de Berty's Run en tu idioma.",
+  uk: "BR 1.12.44: «Що нового» в меню тепер показує останні новини Berty's Run твоєю мовою.",
+  ru: "BR 1.12.44: «Что нового» в меню теперь показывает последние новости Berty's Run на твоём языке.",
+  ar: "BR 1.12.44: «ما الجديد» في القائمة يعرض الآن آخر أخبار Berty's Run بلغتك.",
+  "fa-AF": "BR 1.12.44: «تازه‌ها» در فهرست اکنون آخرین خبرهای Berty's Run را به زبان تو نشان می‌دهد.",
+  rw: "BR 1.12.44: «Ibishya» muri menu ubu byerekana amakuru mashya ya Berty's Run mu rurimi rwawe.",
+  ti: "BR 1.12.44: «ሓድሽ እንታይ ኣሎ» ኣብ ዝርዝር ሕጂ ናይ Berty's Run ሓድሽ ዜና ብቋንቋኻ የርኢ።",
 };
 
 export function whatsNew(lang: string) {

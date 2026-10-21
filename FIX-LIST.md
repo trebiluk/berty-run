@@ -54,3 +54,4 @@
 - [x] BR 1.12.43-1 kw-test.js loads only for staff with Test on
 - [x] BR 1.12.43-2 Turn on tilt speaks the language
 - [x] BR 1.12.43-3 What's new line
+- [x] BR 1.12.44-1 What's new line in the drawer
