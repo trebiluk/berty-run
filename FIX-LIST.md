@@ -51,3 +51,6 @@
 - [x] BR 1.12.42-1 Goal pill sits below the score on phones
 - [x] BR 1.12.42-2 kw-test-chip already absent for kids
 - [x] BR 1.12.42-3 forceWin hook for staff test mode
+- [x] BR 1.12.43-1 kw-test.js loads only for staff with Test on
+- [x] BR 1.12.43-2 Turn on tilt speaks the language
+- [x] BR 1.12.43-3 What's new line

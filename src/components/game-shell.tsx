@@ -191,7 +191,7 @@ function AccessPanel({
               <span className="block text-sm font-bold">{ui.drives[item.id].name}</span>
               <span className="block text-xs font-semibold opacity-80">{ui.drives[item.id].line}</span>
             </button>
-            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>Turn on tilt</button> : null}
+            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>{TILT_ON[access.lang] || TILT_ON.en}</button> : null}
             </div>
           ))}
         </div>
@@ -1011,7 +1011,7 @@ export function GameShell() {
               <span className="block text-sm font-extrabold">{ui.drives[item.id].name}</span>
               <span className="block text-xs font-semibold opacity-80">{ui.drives[item.id].line}</span>
             </button>
-            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>Turn on tilt</button> : null}
+            {item.id === "tilt" ? <button type="button" className="min-h-14 w-full px-3 text-left text-sm font-bold ring-1 ring-line" onClick={() => { void askTilt(); }}>{TILT_ON[access.lang] || TILT_ON.en}</button> : null}
             </div>
           ))}
         </div>
@@ -2080,6 +2080,11 @@ function RoomBoard({ courseId, code }: { courseId: string; code: string }) {
 
 
 
+const TILT_ON: Record<string, string> = {
+  en: "Turn on tilt", simple: "Turn on tilt",
+  es: "Activar inclinación", uk: "Увімкнути нахил", ru: "Включить наклон",
+  ar: "تشغيل الإمالة", "fa-AF": "روشن کردن کج‌کردن", rw: "Fungura guhengamisha", ti: "ምዝንባል ኣብርህ",
+};
 function TestChip({ onWin, onLose }: { onWin: (under: boolean) => void; onLose: () => void }) {
   const [on, setOn] = useState(false);
   useEffect(() => {

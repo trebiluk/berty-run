@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.42";
+export const CHIP = "BR 1.12.43";
 export const WHATS_NEW =
-  "BR 1.12.42: On phones the hint stays off your score.";
+  "BR 1.12.43: A staff-only test tool no longer loads for kids, and the tilt switch speaks your language.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.42: The hint does not cover your score.",
-  es: "BR 1.12.42: En el teléfono la pista no tapa tu puntuación.",
-  uk: "BR 1.12.42: На телефонах підказка не закриває рахунок.",
-  ru: "BR 1.12.42: На телефонах подсказка не закрывает счёт.",
-  ar: "BR 1.12.42: على الهاتف لا يغطي التلميح نقاطك.",
-  "fa-AF": "BR 1.12.42: در گوشی راهنما امتیاز شما را نمی‌پوشاند.",
-  rw: "BR 1.12.42: Kuri telefoni inama ntipfukirana amanota yawe.",
-  ti: "BR 1.12.42: ኣብ ተሌፎን ምኽሪ ነጥብኻ ኣይሽፍንን።",
+  simple: "BR 1.12.43: Test tool hidden. Tilt in your language.",
+  es: "BR 1.12.43: Una herramienta de prueba solo para el personal ya no se carga para los niños, y el interruptor de inclinación habla tu idioma.",
+  uk: "BR 1.12.43: Інструмент тестування для персоналу більше не завантажується для дітей, а перемикач нахилу говорить твоєю мовою.",
+  ru: "BR 1.12.43: Тестовый инструмент для персонала больше не загружается у детей, а переключатель наклона говорит на твоём языке.",
+  ar: "BR 1.12.43: أداة الاختبار الخاصة بالموظفين لم تعد تُحمَّل للأطفال، ومفتاح الإمالة يتحدث لغتك.",
+  "fa-AF": "BR 1.12.43: ابزار آزمایشی کارکنان دیگر برای کودکان بارگذاری نمی‌شود و کلید کج‌کردن به زبان تو است.",
+  rw: "BR 1.12.43: Igikoresho cy'igerageza cy'abakozi ntikigifungukira abana, kandi buto yo guhengamisha ivuga ururimi rwawe.",
+  ti: "BR 1.12.43: ናይ ሰራሕተኛታት መፈተኒ መሳርሒ ንቘልዑ ኣይጽዓንን፣ መቐየሪ ምዝንባልውን ብቋንቋኻ ይዛረብ።",
 };
 
 export function whatsNew(lang: string) {

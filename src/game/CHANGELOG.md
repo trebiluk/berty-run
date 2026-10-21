@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.43 — 2026-10-21
+
+- The staff test script no longer loads for kids. The tilt switch speaks your language.
+
 ## BR 1.12.42 — 2026-10-20
 
 - On phones the hint stays off the score.
