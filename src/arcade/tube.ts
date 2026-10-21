@@ -346,23 +346,35 @@ export class TubeSim {
     this.reduced = reduced;
     this.lowFx = typeof document !== "undefined" && document.documentElement.dataset.fx === "low";
     const hud = 94;
-    const thumb = Math.min(140, h * 0.22);
-    const freeTop = hud + (h > w ? 28 : 56);
-    const freeBot = h - thumb;
-    const freeH = Math.max(80, freeBot - freeTop);
-    const freeW = w;
-    const upright = h > w;
-    const bertyNeed = (w >= 1024 ? 64 : 47) * 3;
-    const ring = upright
-      ? Math.min(freeW * 0.72, freeH * 0.9)
-      : Math.max(bertyNeed, Math.min(freeW * 0.62, freeH * 0.92));
+    let freeTop: number;
+    let freeBot: number;
+    let freeH: number;
+    let ring: number;
+    if (this.spinBoard && w > h) {
+      freeTop = hud + 24;
+      freeBot = h - 12;
+      freeH = Math.max(80, freeBot - freeTop);
+      const freeW = w;
+      ring = Math.min(freeW * 0.5, freeH * 0.95);
+    } else {
+      const thumb = Math.min(140, h * 0.22);
+      freeTop = hud + (h > w ? 28 : 56);
+      freeBot = h - thumb;
+      freeH = Math.max(80, freeBot - freeTop);
+      const freeW = w;
+      const upright = h > w;
+      const bertyNeed = (w >= 1024 ? 64 : 47) * 3;
+      ring = upright
+        ? Math.min(freeW * 0.72, freeH * 0.9)
+        : Math.max(bertyNeed, Math.min(freeW * 0.62, freeH * 0.92));
+    }
     const cx = w / 2;
     const cy = freeTop + freeH / 2;
     ctx.fillStyle = TUBE.ink;
     ctx.fillRect(0, 0, w, h);
     if (!this.spinBoard) this.stars(ctx, cx, cy, ring, reduced);
     if (this.boost > 0 && !reduced && !this.lowFx) this.streaks(ctx, cx, cy, ring);
-    const bertyH = w >= 1024 ? 64 : 47;
+    const bertyH = (this.spinBoard && w > h) ? Math.max(56, w >= 1024 ? 64 : 47) : (w >= 1024 ? 64 : 47);
     const frac = this.z - Math.floor(this.z);
     ctx.save();
     ctx.translate(cx, cy);
