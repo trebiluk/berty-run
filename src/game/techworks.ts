@@ -8,7 +8,7 @@ export const CHIP = "BR 1.12.48";
 export const WHATS_NEW =
   "BR 1.12.47 — Berty's Run loads again.";
 
-const WHATS_NEW_LANG: Record<string, string> = {
+export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
   simple: "BR 1.12.47 — Berty's Run loads again.",
   es: "BR 1.12.47 — Berty's Run carga de nuevo.",
