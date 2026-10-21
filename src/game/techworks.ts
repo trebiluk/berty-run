@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.49";
+export const CHIP = "BR 1.12.51";
 export const WHATS_NEW =
-  "BR 1.12.49 — The What's new note shows in every language again.";
+  "BR 1.12.51 — The version number in the game matches the top bar.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.49 — The What's new note shows in every language again.",
-  es: "BR 1.12.49 — La nota de novedades se muestra en todos los idiomas otra vez.",
-  uk: "BR 1.12.49 — Нотатка «Що нового» знову показується всіма мовами.",
-  ru: "BR 1.12.49 — Заметка «Что нового» снова показывается на всех языках.",
-  ar: "BR 1.12.49 — ملاحظة «ما الجديد» تظهر بكل اللغات مرة أخرى.",
-  "fa-AF": "BR 1.12.49 — یادداشت «تازه‌ها» دوباره به همه زبان‌ها نشان داده می‌شود.",
-  rw: "BR 1.12.49 — Agasanduku k'amakuru ntigisubira gupfuka umukino. Kimenya muri Menu.",
-  ti: "BR 1.12.49 — ናይ «ሓድሽ እዩ» ኖት ኣብ ኩሉ ቋንቋታት ዳግማይ ይርአ።",
+  simple: "BR 1.12.51 — The version number in the game matches the top bar.",
+  es: "BR 1.12.51 — El número de versión en el juego coincide con la barra superior.",
+  uk: "BR 1.12.51 — Номер версії в грі збігається з верхньою панеллю.",
+  ru: "BR 1.12.51 — Номер версии в игре совпадает с верхней панелью.",
+  ar: "BR 1.12.51 — رقم الإصدار في اللعبة يطابق الشريط العلوي.",
+  "fa-AF": "BR 1.12.51 — شماره نسخه در بازی با نوار بالا مطابقت دارد.",
+  rw: "BR 1.12.51 — Nimero y'uburyo mu mukino ihuye n'umurongo wo hejuru.",
+  ti: "BR 1.12.51 — ቁጽሪ ስሪት ኣብ ጸወታ ምስ ላዕለዋይ ባር ይሰማማዕ።",
 };
 
 export function whatsNew(lang: string) {
