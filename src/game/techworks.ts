@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.39";
+export const CHIP = "BR 1.12.40";
 export const WHATS_NEW =
-  "BR 1.12.39: On phones the hint and your lives are no longer covered.";
+  "BR 1.12.40: Full screen no longer covers your lives on wide phones, and no test bits load for kids.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.39: You can see the hint and your lives.",
-  es: "BR 1.12.39: En el teléfono, la pista y tus vidas ya no quedan tapadas.",
-  uk: "BR 1.12.39: На телефонах підказку й життя більше нічого не закриває.",
-  ru: "BR 1.12.39: На телефонах подсказка и жизни больше ничем не закрыты.",
-  ar: "BR 1.12.39: على الهواتف لم يعد التلميح وعدد الأرواح مغطّى.",
-  "fa-AF": "BR 1.12.39: در تلفن، راهنما و جان‌های شما دیگر پوشیده نمی‌شوند.",
-  rw: "BR 1.12.39: Kuri telefoni, inama n'ubuzima bwawe ntibigipfukiranwa.",
-  ti: "BR 1.12.39: ኣብ ተሌፎን ምኽርን ህይወትካን ድሕሪ ሕጂ ኣይሽፈኑን።",
+  simple: "BR 1.12.40: Full screen does not cover your lives.",
+  es: "BR 1.12.40: Pantalla completa ya no tapa tus vidas en teléfonos anchos y las piezas de prueba no se cargan para los niños.",
+  uk: "BR 1.12.40: Кнопка «На весь екран» більше не закриває життя на широких телефонах, а тестові елементи не завантажуються для дітей.",
+  ru: "BR 1.12.40: Кнопка «Во весь экран» больше не закрывает жизни на широких телефонах, а тестовые элементы не загружаются для детей.",
+  ar: "BR 1.12.40: زر ملء الشاشة لم يعد يغطي أرواحك على الهواتف العريضة، وعناصر الاختبار لا تُحمَّل للأطفال.",
+  "fa-AF": "BR 1.12.40: دکمهٔ تمام‌صفحه دیگر جان‌های شما را در گوشی‌های پهن نمی‌پوشاند و بخش‌های آزمایشی برای کودکان بار نمی‌شوند.",
+  rw: "BR 1.12.40: Buto ya Ecran yose ntigipfukirana ubuzima bwawe kuri telefoni ngari, kandi ibice by'igerageza ntibifungukira abana.",
+  ti: "BR 1.12.40: ቁልፊ ምሉእ ስክሪን ኣብ ሰፊሕ ተሌፎን ንህይወትካ ኣይሽፍኖን፣ ናይ ፈተና ክፋላት ንቘልዑ ኣይጽዓኑን።",
 };
 
 export function whatsNew(lang: string) {

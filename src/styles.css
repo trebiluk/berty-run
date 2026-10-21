@@ -856,7 +856,8 @@ body:has(.kb-bar) .menu-drawer {
 @media (orientation: landscape) and (max-height: 500px) {
   [data-fs="1"] {
     top: 3.2rem;
-    right: max(0.5rem, env(safe-area-inset-right));
+    left: max(0.5rem, env(safe-area-inset-left));
+    right: auto;
   }
 }
 @media (max-width: 430px) {
