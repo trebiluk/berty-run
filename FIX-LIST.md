@@ -67,3 +67,4 @@
 - Soft co-op where two Bertys share a board (L, medium risk): needs a second stick and no new save keys.
 - Sound that matches the board part (M, low risk): the CPU board hums, the fan board whooshes; uses the existing audio engine.
 Best next: the part quiz. It is small, uses the fact card that already ships, and teaches the part names the banner just introduced.
+- [x] BR 1.12.46-1 whatsnew-stub-covers-play
