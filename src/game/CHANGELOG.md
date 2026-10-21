@@ -1,5 +1,9 @@
 # Berty's Run
 
+## BR 1.12.39 — 2026-10-20
+
+- On phones the hint and the lives text are no longer covered.
+
 ## BR 1.12.38 — 2026-10-20
 
 - Full-screen stays clear of Jump sideways. The hint stays visible on phones.

@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.38";
+export const CHIP = "BR 1.12.39";
 export const WHATS_NEW =
-  "BR 1.12.38: Full-screen no longer gets in the way of Jump, and the hint stays visible on phones.";
+  "BR 1.12.39: On phones the hint and your lives are no longer covered.";
 
 const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.38: Jump is easy to tap. You can read the hint.",
-  es: "BR 1.12.38: Pantalla completa ya no estorba a Saltar, y la pista se ve en el teléfono.",
-  uk: "BR 1.12.38: Кнопка на весь екран більше не заважає Стрибку, а підказку видно на телефонах.",
-  ru: "BR 1.12.38: Кнопка полного экрана больше не мешает Прыжку, а подсказка видна на телефонах.",
-  ar: "BR 1.12.38: زر ملء الشاشة لم يعد يعيق القفز، والتلميح ظاهر على الهواتف.",
-  "fa-AF": "BR 1.12.38: دکمه تمام‌صفحه دیگر جلوی پرش را نمی‌گیرد و راهنمایی در تلفن دیده می‌شود.",
-  rw: "BR 1.12.38: Ecran yuzuye ntikibangamira Gusimbuka, kandi inama igaragara kuri telefoni.",
-  ti: "BR 1.12.38: ምሉእ ስክሪን ንዝላ ኣይዓግትን እዩ፣ ምኽሪ ኣብ ሞባይል ይርአ።",
+  simple: "BR 1.12.39: You can see the hint and your lives.",
+  es: "BR 1.12.39: En el teléfono, la pista y tus vidas ya no quedan tapadas.",
+  uk: "BR 1.12.39: На телефонах підказку й життя більше нічого не закриває.",
+  ru: "BR 1.12.39: На телефонах подсказка и жизни больше ничем не закрыты.",
+  ar: "BR 1.12.39: على الهواتف لم يعد التلميح وعدد الأرواح مغطّى.",
+  "fa-AF": "BR 1.12.39: در تلفن، راهنما و جان‌های شما دیگر پوشیده نمی‌شوند.",
+  rw: "BR 1.12.39: Kuri telefoni, inama n'ubuzima bwawe ntibigipfukiranwa.",
+  ti: "BR 1.12.39: ኣብ ተሌፎን ምኽርን ህይወትካን ድሕሪ ሕጂ ኣይሽፈኑን።",
 };
 
 export function whatsNew(lang: string) {

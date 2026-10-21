@@ -866,3 +866,12 @@ body:has(.kb-bar) .menu-drawer {
     white-space: normal;
   }
 }
+
+@media (max-width: 430px) and (orientation: portrait) {
+  [data-hud="goal"] {
+    top: 7.6rem;
+  }
+  [data-fs="1"] {
+    top: 9.2rem;
+  }
+}
