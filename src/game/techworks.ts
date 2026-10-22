@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.55";
+export const CHIP = "BR 1.12.57";
 export const WHATS_NEW =
-  "BR 1.12.55 — The start screen words are bigger and easier to read.";
+  "BR 1.12.57 — Space only jumps now. On Game over, press Enter or R, or tap Retry.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.55 — Bigger words on the start screen.",
-  es: "BR 1.12.55 — Las palabras de la pantalla de inicio son más grandes y fáciles de leer.",
-  uk: "BR 1.12.55 — Слова на стартовому екрані більші й легше читати.",
-  ru: "BR 1.12.55 — Слова на стартовом экране больше и легче читать.",
-  ar: "BR 1.12.55 — كلمات شاشة البداية أكبر وأسهل للقراءة.",
-  "fa-AF": "BR 1.12.55 — کلمات صفحه شروع بزرگ‌تر و خواناتر هستند.",
-  rw: "BR 1.12.55 — Amagambo yo ku rubuga rw'itangira ararenze kandi byoroshye gusoma.",
-  ti: "BR 1.12.55 — ናይ መጀመርታ ስክሪን ቃላት ዝዓበዩን ቀሊል ንምንባብን እዮም።",
+  simple: "BR 1.12.57 — Space is jump. To play again, press Enter or tap Retry.",
+  es: "BR 1.12.57 — Espacio ahora solo salta. En Fin del juego, pulsa Enter o R, o toca Reintentar.",
+  uk: "BR 1.12.57 — Пробіл тепер лише стрибок. Після «Кінець гри» натисни Enter або R чи торкнися «Ще раз».",
+  ru: "BR 1.12.57 — Пробел теперь только прыжок. После «Конец игры» нажми Enter или R или нажми «Ещё раз».",
+  ar: "BR 1.12.57 — مفتاح المسافة للقفز فقط الآن. عند انتهاء اللعبة اضغط Enter أو R أو المس إعادة.",
+  "fa-AF": "BR 1.12.57 — حالا Space فقط برای پرش است. وقتی بازی تمام شد، Enter یا R را بزن یا «دوباره» را لمس کن.",
+  rw: "BR 1.12.57 — Space ubu ni ugusimbuka gusa. Umukino urangiye, kanda Enter cyangwa R, cyangwa ukande Ongera.",
+  ti: "BR 1.12.57 — Space ሕጂ ንዝላይ ጥራይ እዩ። ጸወታ ምስ ተወድአ Enter ወይ R ጠውቕ፡ ወይ 'ደጊምካ ፈትን' ተንክፍ።",
 };
 
 export function whatsNew(lang: string) {
