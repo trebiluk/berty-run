@@ -95,13 +95,13 @@ export function Attract({ skin }: { skin: string }) {
         className={
           script
             ? "script-font px-3 pt-1.5 text-center text-sm font-semibold leading-relaxed text-[#c8fbff]"
-            : "px-3 pt-1.5 text-center text-[10px] leading-relaxed tracking-wide text-[#7af0ff]"
+            : "px-3 pt-1.5 text-center text-xs leading-relaxed tracking-wide text-[#7af0ff]"
         }
         style={script ? undefined : { fontFamily: '"Press Start 2P", ui-monospace, monospace' }}
       >
         {ui.coin}
       </p>
-      <p className="px-3 pb-1 text-center text-xs font-semibold leading-snug text-[#ffe56a]">{face(useLang()).blurb}</p>
+      <p className="px-3 pb-1 text-center text-base font-semibold leading-snug text-[#ffe56a]">{face(useLang()).blurb}</p>
     </div>
   );
 }

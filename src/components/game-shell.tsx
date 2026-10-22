@@ -2666,7 +2666,7 @@ function TitleCard({
         <div className="px-1 py-3 text-center">
           <h2 className="text-3xl font-extrabold leading-none tracking-tight text-paper"><bdi>BERTY'S RUN</bdi></h2>
           <p className="script-font mt-2 text-sm font-bold text-gold">{ui.coin}</p>
-          <p className="mt-2 text-xs font-semibold leading-snug text-gold">{ui.blurb}</p>
+          <p className="mt-2 text-base font-semibold leading-snug text-gold">{ui.blurb}</p>
         </div>
       )}
       <Button className="!min-h-16 w-full text-xl" onClick={onPlay}>
