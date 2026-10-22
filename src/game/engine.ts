@@ -450,7 +450,7 @@ export class Engine {
       this.retry();
     }
     if ((e.code === "Space" || e.code === "Enter") && this.phase === "title") this.startPlay();
-    if ((e.code === "Space" || e.code === "Enter") && (this.phase === "win" || this.phase === "fail")) this.retry();
+    if (e.code === "Enter" && (this.phase === "win" || this.phase === "fail")) this.retry();
   };
   private onKeyUp = (e: KeyboardEvent) => {
     this.keys.delete(e.code);
