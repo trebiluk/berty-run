@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.54";
+export const CHIP = "BR 1.12.55";
 export const WHATS_NEW =
-  "BR 1.12.54 — The Try again card tells you what got you.";
+  "BR 1.12.55 — The start screen words are bigger and easier to read.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.54 — Now it says what got you.",
-  es: "BR 1.12.54 — La tarjeta Inténtalo de nuevo te dice qué te atrapó.",
-  uk: "BR 1.12.54 — Картка «Спробуй знову» каже, що тебе спіймало.",
-  ru: "BR 1.12.54 — Карточка «Попробуй снова» говорит, что тебя поймало.",
-  ar: "BR 1.12.54 — بطاقة حاول مرة أخرى تخبرك ما الذي أمسك بك.",
-  "fa-AF": "BR 1.12.54 — کارت دوباره تلاش کن می‌گوید چه چیزی تو را گرفت.",
-  rw: "BR 1.12.54 — Ikarita y'ongera igerageza ikubwira icyo cyakufashe.",
-  ti: "BR 1.12.54 — ካርድ ዳግማይ ፈትን እዩ ዝበለካ ይነግረካ።",
+  simple: "BR 1.12.55 — Bigger words on the start screen.",
+  es: "BR 1.12.55 — Las palabras de la pantalla de inicio son más grandes y fáciles de leer.",
+  uk: "BR 1.12.55 — Слова на стартовому екрані більші й легше читати.",
+  ru: "BR 1.12.55 — Слова на стартовом экране больше и легче читать.",
+  ar: "BR 1.12.55 — كلمات شاشة البداية أكبر وأسهل للقراءة.",
+  "fa-AF": "BR 1.12.55 — کلمات صفحه شروع بزرگ‌تر و خواناتر هستند.",
+  rw: "BR 1.12.55 — Amagambo yo ku rubuga rw'itangira ararenze kandi byoroshye gusoma.",
+  ti: "BR 1.12.55 — ናይ መጀመርታ ስክሪን ቃላት ዝዓበዩን ቀሊል ንምንባብን እዮም።",
 };
 
 export function whatsNew(lang: string) {
