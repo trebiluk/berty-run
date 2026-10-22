@@ -1367,7 +1367,11 @@ export function GameShell() {
                 {arcade ? <ContinueClock onContinue={() => e?.retry()} /> : null}
                 <p className="text-lg font-extrabold tabular-nums">{hud.gems}/{hud.gemTotal} {ui.bits} · {fmt(hud.time)}</p>
                 <p className="text-muted">
-                  {hud.is3d ? ui.early3d : ui.holes}
+                  {hud.lastHurt === "hole" ? "🕳 " + (hudCopy(access.lang).fellHole || "Fell in a hole")
+                    : hud.lastHurt === "hazard" ? "⚡ " + (hudCopy(access.lang).hitSpark || "Hit a spark")
+                    : hud.lastHurt === "enemy" ? "🤖 " + (hudCopy(access.lang).bumpedBug || "Bumped a bug")
+                    : hud.lastHurt === "time" ? "⏱ " + (hudCopy(access.lang).outTime || "Out of time")
+                    : (hud.is3d ? ui.early3d : ui.holes)}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => e?.retry()}>{ui.retry}</Button>

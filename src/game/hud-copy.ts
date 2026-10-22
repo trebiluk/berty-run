@@ -25,6 +25,10 @@ export type HudCopy = {
   hintStick: string;
   hintTouch: string;
   hintTouchZap: string;
+  fellHole: string;
+  hitSpark: string;
+  bumpedBug: string;
+  outTime: string;
 };
 
 const EN: HudCopy = {
@@ -68,6 +72,10 @@ const SIMPLE: HudCopy = {
   hintStick: "Stick or WASD. Jump is Space. Zap is E.",
   hintTouch: "Left thumb steers. Tap Jump.",
   hintTouchZap: "Left thumb steers. Tap Jump. Tap Zap to zap.",
+  fellHole: "Fell in a hole",
+  hitSpark: "Hit a spark",
+  bumpedBug: "Bumped a bug",
+  outTime: "Out of time",
 };
 
 const ES: HudCopy = {
@@ -94,6 +102,10 @@ const ES: HudCopy = {
   hintStick: "Palanca o WASD. Salto es Espacio. Zap es E.",
   hintTouch: "El pulgar izquierdo gira. Toca Salto.",
   hintTouchZap: "El pulgar izquierdo gira. Toca Salto. Toca Zap para zapear.",
+  fellHole: "Cayó en un agujero",
+  hitSpark: "Golpeó una chispa",
+  bumpedBug: "Chocó con un bicho",
+  outTime: "Se acabó el tiempo",
 };
 
 const UK: HudCopy = {
@@ -120,6 +132,10 @@ const UK: HudCopy = {
   hintStick: "Стік або WASD. Стрибок — пробіл. Зап — E.",
   hintTouch: "Лівий палець керує. Торкни Стрибок.",
   hintTouchZap: "Лівий палець керує. Торкни Стрибок. Торкни Зап, щоб запнути.",
+  fellHole: "Впав у дірку",
+  hitSpark: "Влучив у іскру",
+  bumpedBug: "Вдарився об жука",
+  outTime: "Закінчився час",
 };
 
 const RU: HudCopy = {
@@ -146,6 +162,10 @@ const RU: HudCopy = {
   hintStick: "Стик или WASD. Прыжок — пробел. Зап — E.",
   hintTouch: "Левый палец рулит. Нажми Прыжок.",
   hintTouchZap: "Левый палец рулит. Нажми Прыжок. Нажми Зап, чтобы запнуть.",
+  fellHole: "Упал в дыру",
+  hitSpark: "Попал в искру",
+  bumpedBug: "Столкнулся с жуком",
+  outTime: "Время вышло",
 };
 
 const AR: HudCopy = {
@@ -172,6 +192,10 @@ const AR: HudCopy = {
   hintStick: "العصا أو WASD. القفز مسافة. زاب هو E.",
   hintTouch: "الإبهام الأيسر يوجه. المس القفز.",
   hintTouchZap: "الإبهام الأيسر يوجه. المس القفز. المس زاب للزاب.",
+  fellHole: "سقط في حفرة",
+  hitSpark: "ضرب شرارة",
+  bumpedBug: "اصطدم بحشرة",
+  outTime: "انتهى الوقت",
 };
 
 /** Dari (fa-AF), not Iranian Persian. Needs a native check. */
@@ -199,6 +223,10 @@ const FA: HudCopy = {
   hintStick: "سویچ یا WASD. پرش Space است. زاپ E است.",
   hintTouch: "شست چپ می‌راند. پرش را بزن.",
   hintTouchZap: "شست چپ می‌راند. پرش را بزن. زاپ را بزن تا بزنی.",
+  fellHole: "در چاله افتاد",
+  hitSpark: "به جرقه خورد",
+  bumpedBug: "به حشره برخورد",
+  outTime: "وقت تمام شد",
 };
 
 /** Ikinyarwanda. Needs a native check. */
@@ -226,6 +254,10 @@ const RW: HudCopy = {
   hintStick: "Agakoni cyangwa WASD. Gusimbuka ni Space. Zap ni E.",
   hintTouch: "Agakono k'ibumoso kayobora. Kanda Gusimbuka.",
   hintTouchZap: "Agakono k'ibumoso kayobora. Kanda Gusimbuka. Kanda Zap kugira ngo uzape.",
+  fellHole: "Yaguye mu mwobo",
+  hitSpark: "Yakubise urumuri",
+  bumpedBug: "Yahuye n'ikimungu",
+  outTime: "Igihe cyarangiye",
 };
 
 /** ትግርኛ (Ge'ez). Needs a native check. */
@@ -253,6 +285,10 @@ const TI: HudCopy = {
   hintStick: "ስቲክ ወይ WASD። ዘላይ Space እዩ። ዛፕ E እዩ።",
   hintTouch: "ጸጋም ኣጻብዕ የመርሕ። ዘላይ ጠውቕ።",
   hintTouchZap: "ጸጋም ኣጻብዕ የመርሕ። ዘላይ ጠውቕ። ዛፕ ንኽትዛፕ ጠውቕ።",
+  fellHole: "ኣብ ጉድጓድ ወዲቑ",
+  hitSpark: "ንብልጭጭ ምትንካፍ",
+  bumpedBug: "ንሓሽራ ምትንካፍ",
+  outTime: "ግዜ ተወዲኡ",
 };
 
 const ALL: Record<Lang, HudCopy> = {
