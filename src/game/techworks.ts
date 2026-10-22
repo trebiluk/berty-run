@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.52";
+export const CHIP = "BR 1.12.53";
 export const WHATS_NEW =
-  "BR 1.12.52 — The Full screen button no longer covers your score.";
+  "BR 1.12.53 — The start screen shows the whole welcome line sideways.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.52 — The Full screen button no longer covers your score.",
-  es: "BR 1.12.52 — El botón de pantalla completa ya no cubre tu puntuación.",
-  uk: "BR 1.12.52 — Кнопка повного екрана більше не перекриває рахунок.",
-  ru: "BR 1.12.52 — Кнопка полного экрана больше не перекрывает счёт.",
-  ar: "BR 1.12.52 — زر ملء الشاشة لم يعد يغطي نقاطك.",
-  "fa-AF": "BR 1.12.52 — دکمه تمام‌صفحه دیگر امتیاز شما را نمی‌پوشاند.",
-  rw: "BR 1.12.52 — Buto ya ecran yuzuye ntigisubira gupfuka amanota yawe.",
-  ti: "BR 1.12.52 — ቁልፊ ምሉእ ስክሪን ንነጥቢ ኣይካልእን።",
+  simple: "BR 1.12.53 — The start screen shows the whole welcome line sideways.",
+  es: "BR 1.12.53 — La pantalla de inicio muestra toda la línea de bienvenida de lado.",
+  uk: "BR 1.12.53 — Стартовий екран показує весь рядок привітання боком.",
+  ru: "BR 1.12.53 — Стартовый экран показывает всю строку приветствия боком.",
+  ar: "BR 1.12.53 — شاشة البداية تعرض سطر الترحيب بالكامل جانبياً.",
+  "fa-AF": "BR 1.12.53 — صفحه شروع کل خط خوشامد را به صورت افقی نشان می‌دهد.",
+  rw: "BR 1.12.53 — Urubuga rw'itangira rwerekana umurongo wose w'ikaze mu buryo butambitse.",
+  ti: "BR 1.12.53 — መጀመርታ ስክሪን ኩሉ መስቀለኛ መስመር ብጎኒ ይርኢ።",
 };
 
 export function whatsNew(lang: string) {
