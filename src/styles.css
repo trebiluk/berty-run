@@ -236,10 +236,13 @@ html[dir="rtl"] body {
 
 @media (pointer: coarse) and (max-height: 500px) {
   .menu-layer .arcade-attract {
-    height: 5.5rem;
+    height: auto;
   }
   .menu-layer .arcade-logo {
     font-size: 1.75rem;
+  }
+  .menu-layer .arcade-attract .relative.h-24 {
+    height: 4rem; /* h-16 */
   }
 }
 

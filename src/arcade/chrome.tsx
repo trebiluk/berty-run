@@ -85,7 +85,7 @@ export function Attract({ skin }: { skin: string }) {
   const script = lang === "uk" || lang === "ru" || lang === "ar" || lang === "fa-AF" || lang === "ti";
   return (
     <div className="arcade-attract pointer-events-none" dir="ltr">
-      <div className="relative h-24 overflow-hidden min-[800px]:h-28" aria-hidden="true">
+      <div className="relative h-24 overflow-hidden max-h-[500px]:h-16 min-[800px]:h-28" aria-hidden="true">
         <canvas ref={sky} className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-0 grid place-items-center">
           <p className="arcade-logo text-lg leading-tight text-[#ffe56a] min-[800px]:text-2xl"><bdi>BERTY'S RUN</bdi></p>
