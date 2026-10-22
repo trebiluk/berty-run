@@ -305,6 +305,7 @@ export class Engine {
   last = 0;
   time = 0;
   hearts = HEARTS;
+  lastHurt: 'hole' | 'hazard' | 'enemy' | 'time' | null = null;
   particles: Particle[] = [];
   pops: Pop[] = [];
   hitstop = 0;
@@ -1171,6 +1172,7 @@ export class Engine {
       if (ev?.tip) this.note(ev.tip);
       if (ev?.hurt && !this.assist) {
         sfxHurt();
+        this.lastHurt = 'hazard';
         this.hearts -= 1;
         this.hitstop = 0.07;
         if (!this.saidHurt) {
@@ -1207,6 +1209,7 @@ export class Engine {
       if (ev?.tipKey === "bit") sfxBuzz();
       if (ev?.hurt && !this.assist) {
         sfxHurt();
+        this.lastHurt = 'hazard';
         this.hearts -= 1;
         this.hitstop = 0.06;
         if (this.hearts <= 0) {
@@ -1624,6 +1627,7 @@ export class Engine {
     this.shake(0.55);
     this.hitstop = 0.07;
     this.burst(b.x, b.y, "#c8f542", 16);
+    this.lastHurt = 'enemy';
     this.hearts -= 1;
     if (!this.saidHurt) {
       this.saidHurt = true;
@@ -2750,6 +2754,7 @@ export class Engine {
       gems,
       gemTotal,
       hearts: this.hearts,
+      lastHurt: this.lastHurt,
       crew: this.crew,
       mute: this.mute || isMuted(),
       best: this.save.best[this.course.id] ?? null,

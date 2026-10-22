@@ -55,6 +55,7 @@ export type HudSnap = {
   gems: number;
   gemTotal: number;
   hearts: number;
+  lastHurt?: 'hole' | 'hazard' | 'enemy' | 'time' | null;
   crew: boolean;
   mute: boolean;
   best: number | null;
