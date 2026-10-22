@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.53";
+export const CHIP = "BR 1.12.54";
 export const WHATS_NEW =
-  "BR 1.12.53 — The start screen shows the whole welcome line sideways.";
+  "BR 1.12.54 — The Try again card tells you what got you.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.53 — The start screen shows the whole welcome line sideways.",
-  es: "BR 1.12.53 — La pantalla de inicio muestra toda la línea de bienvenida de lado.",
-  uk: "BR 1.12.53 — Стартовий екран показує весь рядок привітання боком.",
-  ru: "BR 1.12.53 — Стартовый экран показывает всю строку приветствия боком.",
-  ar: "BR 1.12.53 — شاشة البداية تعرض سطر الترحيب بالكامل جانبياً.",
-  "fa-AF": "BR 1.12.53 — صفحه شروع کل خط خوشامد را به صورت افقی نشان می‌دهد.",
-  rw: "BR 1.12.53 — Urubuga rw'itangira rwerekana umurongo wose w'ikaze mu buryo butambitse.",
-  ti: "BR 1.12.53 — መጀመርታ ስክሪን ኩሉ መስቀለኛ መስመር ብጎኒ ይርኢ።",
+  simple: "BR 1.12.54 — Now it says what got you.",
+  es: "BR 1.12.54 — La tarjeta Inténtalo de nuevo te dice qué te atrapó.",
+  uk: "BR 1.12.54 — Картка «Спробуй знову» каже, що тебе спіймало.",
+  ru: "BR 1.12.54 — Карточка «Попробуй снова» говорит, что тебя поймало.",
+  ar: "BR 1.12.54 — بطاقة حاول مرة أخرى تخبرك ما الذي أمسك بك.",
+  "fa-AF": "BR 1.12.54 — کارت دوباره تلاش کن می‌گوید چه چیزی تو را گرفت.",
+  rw: "BR 1.12.54 — Ikarita y'ongera igerageza ikubwira icyo cyakufashe.",
+  ti: "BR 1.12.54 — ካርድ ዳግማይ ፈትን እዩ ዝበለካ ይነግረካ።",
 };
 
 export function whatsNew(lang: string) {
