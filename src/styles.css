@@ -227,7 +227,9 @@ html[dir="rtl"] body {
     height: 9rem;
   }
   .menu-layer .arcade-logo {
-    font-size: 2.25rem;
+    font-size: min(2.25rem, 6.6vw);
+    white-space: nowrap;
+    padding-inline: 12px;
   }
   .menu-layer .title-card h2 {
     font-size: 2.5rem;
