@@ -4,20 +4,20 @@ import { signedWho } from "./who";
 import { GUIDE, guideDone } from "./field-guide";
 import type { CourseId } from "./types";
 
-export const CHIP = "BR 1.12.57";
+export const CHIP = "BR 1.12.58";
 export const WHATS_NEW =
-  "BR 1.12.57 — Space only jumps now. On Game over, press Enter or R, or tap Retry.";
+  "BR 1.12.58 — The title logo fits on phones now.";
 
 export const WHATS_NEW_LANG: Record<string, string> = {
   en: WHATS_NEW,
-  simple: "BR 1.12.57 — Space is jump. To play again, press Enter or tap Retry.",
-  es: "BR 1.12.57 — Espacio ahora solo salta. En Fin del juego, pulsa Enter o R, o toca Reintentar.",
-  uk: "BR 1.12.57 — Пробіл тепер лише стрибок. Після «Кінець гри» натисни Enter або R чи торкнися «Ще раз».",
-  ru: "BR 1.12.57 — Пробел теперь только прыжок. После «Конец игры» нажми Enter или R или нажми «Ещё раз».",
-  ar: "BR 1.12.57 — مفتاح المسافة للقفز فقط الآن. عند انتهاء اللعبة اضغط Enter أو R أو المس إعادة.",
-  "fa-AF": "BR 1.12.57 — حالا Space فقط برای پرش است. وقتی بازی تمام شد، Enter یا R را بزن یا «دوباره» را لمس کن.",
-  rw: "BR 1.12.57 — Space ubu ni ugusimbuka gusa. Umukino urangiye, kanda Enter cyangwa R, cyangwa ukande Ongera.",
-  ti: "BR 1.12.57 — Space ሕጂ ንዝላይ ጥራይ እዩ። ጸወታ ምስ ተወድአ Enter ወይ R ጠውቕ፡ ወይ 'ደጊምካ ፈትን' ተንክፍ።",
+  simple: "BR 1.12.58 — The name fits on your phone.",
+  es: "BR 1.12.58 — El logo del título ya cabe en el móvil.",
+  uk: "BR 1.12.58 — Логотип на титулі тепер вміщається на телефоні.",
+  ru: "BR 1.12.58 — Логотип на титуле теперь помещается на телефоне.",
+  ar: "BR 1.12.58 — شعار العنوان يتسع الآن على الهاتف.",
+  "fa-AF": "BR 1.12.58 — لوگوی عنوان حالا در تلفن جا می‌شود.",
+  rw: "BR 1.12.58 — Ikirango cy'umutwe ubu gikwira kuri telefoni.",
+  ti: "BR 1.12.58 — ምልክት አርእስቲ ሕጂ ኣብ ተለፎን ይኣቱ።",
 };
 
 export function whatsNew(lang: string) {
